@@ -1,0 +1,177 @@
+---
+// Mock data cho reviews
+const comments = [
+  {
+    id: '1',
+    user: { name: 'Tám Phạm' },
+    rating: 5,
+    content: 'Ghế công thái học này thực sự rất thoải mái, ngồi làm việc lâu không bị đau lưng. Chất liệu tốt, lắp ráp dễ dàng. Rất đáng tiền!',
+    date: '26/4/2025',
+    likes: 156,
+    publisherReply: {
+      name: 'G3-TECH',
+      date: '26/4/2025',
+      content: 'Cảm ơn bạn đã tin tưởng và lựa chọn ghế công thái học của G3-TECH. Chúng tôi rất vui khi sản phẩm giúp bạn làm việc thoải mái hơn. Nếu cần hỗ trợ thêm, bạn cứ liên hệ với chúng tôi nhé!'
+    }
+  },
+  {
+    id: '2',
+    user: { name: 'Anh Trương' },
+    rating: 4,
+    content: 'Ghế ngồi êm, tựa lưng tốt nhưng phần kê tay hơi thấp so với mình. Mong shop có thêm phụ kiện nâng kê tay.',
+    date: '11/5/2025',
+    likes: 23
+  },
+  {
+    id: '3',
+    user: { name: 'Minh Hằng' },
+    rating: 5,
+    content: 'Mình rất thích thiết kế của ghế, hiện đại và chắc chắn. Giao hàng nhanh, đóng gói cẩn thận. Sẽ giới thiệu cho bạn bè!',
+    date: '2/6/2025',
+    likes: 41
+  }
+];
+
+const ratingSummary = {
+  average: 4.1,
+  total: 394168,
+  stars: [
+    { star: 5, count: 300000 },
+    { star: 4, count: 60000 },
+    { star: 3, count: 20000 },
+    { star: 2, count: 8000 },
+    { star: 1, count: 6200 },
+  ]
+};
+
+// Helper function to get random color from name for avatar
+const getRandomColor = (name: string) => {
+  const colors = [
+    'bg-red-500',
+    'bg-blue-500',
+    'bg-green-500',
+    'bg-yellow-500',
+    'bg-purple-500',
+    'bg-pink-500',
+    'bg-indigo-500',
+  ];
+  const index = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return colors[index % colors.length];
+};
+
+// Helper function to get initials
+const getInitials = (name: string) => {
+  return name
+    .split(' ')
+    .map(word => word[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+};
+---
+
+<div class="mt-12">
+  <h2 class="text-2xl font-bold mb-4">Đánh giá & Nhận xét</h2>
+  
+  <!-- Rating Summary -->
+  <div class="flex items-center gap-6 mb-6 p-4 bg-gray-50 rounded-lg">
+    <div class="flex flex-col items-center min-w-[70px]">
+      <span class="text-4xl font-bold text-gray-900 leading-none">
+        {ratingSummary.average.toFixed(1)}
+      </span>
+      <div class="flex items-center mt-1">
+        {[...Array(5)].map((_, i) => (
+          <svg 
+            class={`w-5 h-5 ${i < Math.round(ratingSummary.average) ? 'text-yellow-400' : 'text-gray-300'}`} 
+            fill="currentColor" 
+            viewBox="0 0 20 20"
+          >
+            <polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6" />
+          </svg>
+        ))}
+      </div>
+      <span class="text-xs text-gray-500 mt-1">{ratingSummary.total.toLocaleString()}</span>
+    </div>
+    
+    <!-- Star Distribution -->
+    <div class="flex-1 flex flex-col gap-1">
+      {ratingSummary.stars.map((starItem) => {
+        const percent = (starItem.count / ratingSummary.total) * 100;
+        return (
+          <div class="flex items-center gap-2">
+            <span class="text-xs w-3 text-gray-700">{starItem.star}</span>
+            <div class="relative flex-1 h-2 overflow-hidden rounded bg-gray-200">
+              <div
+                class="h-full bg-blue-500 rounded transition-all duration-1000"
+                style={`width: ${percent}%`}
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+  
+  <!-- Comments List -->
+  <div class="space-y-8">
+    {comments.map((comment) => (
+      <div class="rounded-lg p-4 hover:bg-gray-50 transition-colors">
+        <div class="flex items-start gap-3">
+          <div class="flex items-center justify-center">
+            <div 
+              class={`w-10 h-10 rounded-full ${getRandomColor(comment.user.name)} flex items-center justify-center text-white font-medium text-lg`}
+            >
+              {getInitials(comment.user.name)}
+            </div>
+          </div>
+          
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="font-medium text-gray-900">{comment.user.name}</span>
+              <span class="text-xs text-gray-500">{comment.date}</span>
+            </div>
+            <div class="flex items-center gap-1 mt-1">
+              {[...Array(5)].map((_, i) => (
+                <svg 
+                  class={`w-4 h-4 ${i < comment.rating ? 'text-yellow-400' : 'text-gray-300'}`} 
+                  fill="currentColor" 
+                  viewBox="0 0 20 20"
+                >
+                  <polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6" />
+                </svg>
+              ))}
+            </div>
+            <p class="text-gray-800 text-sm mt-2">
+              {comment.content}
+            </p>
+            <div class="mt-2 text-xs text-gray-500">
+              {comment.likes} người thấy bài đánh giá này hữu ích
+            </div>
+            <div class="flex items-center gap-2 mt-2">
+              <span class="text-sm text-gray-700">Bài đánh giá này có hữu ích không?</span>
+              <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-1">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                </svg>
+                Có
+              </button>
+              <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                Không
+              </button>
+            </div>
+            
+            {comment.publisherReply && (
+              <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mt-4">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="font-semibold text-xs text-gray-700">{comment.publisherReply.name}</span>
+                  <span class="text-xs text-gray-400">{comment.publisherReply.date}</span>
+                </div>
+                <div class="text-gray-700 text-sm whitespace-pre-line">{comment.publisherReply.content}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div> 

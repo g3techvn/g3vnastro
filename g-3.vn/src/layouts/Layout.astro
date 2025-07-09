@@ -1,0 +1,174 @@
+---
+import HeaderIsland from '../components/HeaderIsland.astro';
+import StickyNavMenuIsland from '../components/StickyNavMenuIsland.astro';
+import Footer from '../components/Footer.astro';
+import ZaloBoxIsland from '../components/ZaloBoxIsland.astro';
+import CallBoxIsland from '../components/CallBoxIsland.astro';
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/contact-buttons.css';
+import '../styles/global.css';
+import '../styles/antd.css';
+
+export interface Props {
+	title: string;
+	description?: string;
+	image?: string;
+}
+
+const { title, description = 'G-3.vn - Cung cấp các sản phẩm chất lượng cao', image } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="vi" class="h-full">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+		
+		<ViewTransitions />
+		
+		<!-- Favicon -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="mask-icon" href="/masked-icon.svg" color="#000000" />
+		
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#ffffff" />
+		
+		<!-- Preconnect to external domains -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+		<link rel="preconnect" href="https://cdn.g-3.vn" crossorigin="anonymous" />
+		
+		<!-- PWA manifest -->
+		<link rel="manifest" href="/manifest.json" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta name="apple-mobile-web-app-title" content="G3 Store" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		
+		<!-- SEO Meta Tags -->
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
+		
+		<!-- Open Graph -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="vi_VN" />
+		{image && <meta property="og:image" content={image} />}
+		
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		{image && <meta name="twitter:image" content={image} />}
+		
+		<!-- Structured Data -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "WebSite",
+				"name": "G-3.vn",
+				"description": description,
+				"url": canonicalURL
+			}
+		</script>
+
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	</head>
+	<body class="h-full font-sans bg-gray-100" transition:animate="fade">
+		<!-- Desktop Layout -->
+		<div class="desktop-layout hidden md:block">
+			<!-- React Header Island -->
+			<HeaderIsland />
+			<!-- React StickyNavMenu Island -->
+			<StickyNavMenuIsland />
+			<!-- Main Content -->
+			<main class="pl-16 py-8">
+				<div class="container mx-auto px-0">
+					<slot />
+				</div>
+			</main>
+		</div>
+
+		<!-- Footer - Hidden on mobile -->
+		<div class="hidden md:block">
+			<Footer />
+		</div>
+
+		<!-- Fixed Contact Buttons -->
+		<div class="fixed bottom-4 right-4 z-50 flex flex-col gap-4">
+			<CallBoxIsland />
+			<ZaloBoxIsland />
+		</div>
+
+		<!-- Mobile Layout -->
+		<div class="mobile-layout md:hidden">
+			<div class="pb-24">
+				<slot />
+			</div>
+			
+			<!-- Mobile Bottom Navigation -->
+			<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+				<div class="flex justify-around items-center py-2">
+					<a href="/" class="flex flex-col items-center p-2 text-gray-600 hover:text-red-600">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+						</svg>
+						<span class="text-xs mt-1">Trang chủ</span>
+					</a>
+					<a href="/uu-dai" class="flex flex-col items-center p-2 text-gray-600 hover:text-red-600">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+						</svg>
+						<span class="text-xs mt-1">Ưu đãi</span>
+					</a>
+					<a href="/video" class="flex flex-col items-center p-2 text-gray-600 hover:text-red-600">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+						</svg>
+						<span class="text-xs mt-1">Video</span>
+					</a>
+					<a href="/gio-hang" class="flex flex-col items-center p-2 text-gray-600 hover:text-red-600">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+						</svg>
+						<span class="text-xs mt-1">Giỏ hàng</span>
+					</a>
+					<a href="/nhan-tin" class="flex flex-col items-center p-2 text-gray-600 hover:text-red-600">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+						</svg>
+						<span class="text-xs mt-1">Nhắn tin</span>
+					</a>
+				</div>
+			</nav>
+		</div>
+
+		<!-- Service Worker Registration -->
+		<script>
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('/sw.js').then(
+						function(registration) {
+							console.log('Service Worker registration successful with scope: ', registration.scope);
+						},
+						function(err) {
+							console.log('Service Worker registration failed: ', err);
+						}
+					);
+				});
+			}
+		</script>
+	</body>
+</html>
+
+

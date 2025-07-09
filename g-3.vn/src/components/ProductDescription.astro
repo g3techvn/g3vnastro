@@ -1,0 +1,169 @@
+---
+interface Props {
+  product: {
+    key_features?: string[];
+    benefits?: string[] | { benefits: string[] } | string;
+    instructions?: string;
+    overview?: string;
+    content?: string;
+  };
+}
+
+const { product } = Astro.props;
+
+// Function to handle JSONB format for benefits
+const getBenefitItems = (): string[] => {
+  if (!product.benefits) return [];
+  
+  // Handle format: { "benefits": [...] }
+  if (typeof product.benefits === 'object' && product.benefits !== null && !Array.isArray(product.benefits) && 'benefits' in product.benefits && Array.isArray((product.benefits as { benefits: string[] }).benefits)) {
+    return (product.benefits as { benefits: string[] }).benefits;
+  }
+  
+  // Handle direct array format
+  if (Array.isArray(product.benefits)) {
+    return product.benefits;
+  }
+  
+  // Handle string format (JSON string)
+  if (typeof product.benefits === 'string') {
+    try {
+      const parsed = JSON.parse(product.benefits);
+      if (Array.isArray(parsed)) return parsed;
+      if (parsed && typeof parsed === 'object' && 'benefits' in parsed && Array.isArray(parsed.benefits)) {
+        return parsed.benefits;
+      }
+      return [product.benefits]; // Return as single item if parsing doesn't yield an array
+    } catch (e) {
+      return [product.benefits]; // Not valid JSON, return as a single item
+    }
+  }
+  
+  return [];
+};
+
+// Check which tabs have content
+const hasOverview = Boolean(product.overview || product.content);
+const hasFeatures = Boolean(product.key_features && product.key_features.length > 0);
+const hasBenefits = getBenefitItems().length > 0;
+const hasInstructions = product.instructions;
+
+// Determine available tabs
+const availableTabs = [
+  { id: 'overview', label: 'Tổng quan', hasContent: hasOverview },
+  { id: 'features', label: 'Tính năng nổi bật', hasContent: hasFeatures },
+  { id: 'benefits', label: 'Lợi ích sử dụng', hasContent: hasBenefits },
+  { id: 'guide', label: 'Hướng dẫn sử dụng', hasContent: hasInstructions }
+].filter(tab => tab.hasContent);
+
+// Don't render if there are no tabs with content
+if (availableTabs.length === 0) {
+  return null;
+}
+---
+
+<div class="space-y-8">
+  {product.overview && (
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Tổng quan</h2>
+      <div class="prose max-w-none" set:html={product.overview} />
+    </div>
+  )}
+
+  {product.key_features && product.key_features.length > 0 && (
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Tính năng chính</h2>
+      <ul class="list-disc list-inside space-y-2">
+        {product.key_features.map(feature => (
+          <li class="text-gray-600">{feature}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {getBenefitItems().length > 0 && (
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Lợi ích</h2>
+      <ul class="list-disc list-inside space-y-2">
+        {getBenefitItems().map(benefit => (
+          <li class="text-gray-600">{benefit}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {product.instructions && (
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Hướng dẫn sử dụng</h2>
+      <div class="prose max-w-none" set:html={product.instructions} />
+    </div>
+  )}
+
+  {product.content && (
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Chi tiết sản phẩm</h2>
+      <div class="prose max-w-none" set:html={product.content} />
+    </div>
+  )}
+</div>
+
+<script>
+// Tab functionality
+const tabButtons = document.querySelectorAll('[role="tab"]');
+const tabPanels = document.querySelectorAll('[role="tabpanel"]');
+
+function switchTab(oldTab: Element, newTab: Element) {
+  (newTab as HTMLElement).focus();
+  newTab.setAttribute('aria-selected', 'true');
+  oldTab.setAttribute('aria-selected', 'false');
+  oldTab.classList.remove('text-red-600', 'border-red-600');
+  oldTab.classList.add('text-gray-600', 'border-transparent');
+  newTab.classList.add('text-red-600', 'border-red-600');
+  newTab.classList.remove('text-gray-600', 'border-transparent');
+  
+  const newPanelId = newTab.getAttribute('aria-controls');
+  const oldPanelId = oldTab.getAttribute('aria-controls');
+  
+  if (!newPanelId || !oldPanelId) return;
+  
+  document.getElementById(oldPanelId)?.classList.add('hidden');
+  document.getElementById(newPanelId)?.classList.remove('hidden');
+}
+
+tabButtons.forEach(tabButton => {
+  tabButton.addEventListener('click', e => {
+    const selectedTab = e.currentTarget as Element;
+    const activeTab = document.querySelector('[role="tab"][aria-selected="true"]');
+    if (activeTab && selectedTab !== activeTab) {
+      switchTab(activeTab, selectedTab);
+    }
+  });
+});
+
+// Dialog functionality
+const dialog = document.getElementById('contentDialog') as HTMLDialogElement;
+const showMoreBtn = document.getElementById('showMoreBtn');
+const closeDialogBtn = document.getElementById('closeDialog');
+
+if (dialog && showMoreBtn && closeDialogBtn) {
+  showMoreBtn.addEventListener('click', () => {
+    dialog.showModal();
+  });
+
+  closeDialogBtn.addEventListener('click', () => {
+    dialog.close();
+  });
+
+  dialog.addEventListener('click', (e) => {
+    const dialogDimensions = dialog.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      dialog.close();
+    }
+  });
+}
+</script> 

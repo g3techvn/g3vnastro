@@ -1,0 +1,33 @@
+/* Import Ant Design CSS */
+@import 'antd/dist/reset.css';
+
+/* Custom styles for map drawer */
+.map-drawer .ant-drawer-content-wrapper {
+  z-index: 1000;
+}
+
+.map-drawer .ant-drawer-mask {
+  z-index: 999;
+}
+
+/* Ensure proper spacing */
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+.space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+/* Custom button styles */
+.ant-btn-primary {
+  height: 48px;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .map-drawer .ant-drawer-content-wrapper {
+    width: 100% !important;
+  }
+} 

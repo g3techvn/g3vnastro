@@ -1,0 +1,31 @@
+---
+import ProductGallery from './ProductGallery';
+
+export interface Props {
+  productName: string;
+  galleryUrl?: string;
+  mainImageUrl?: string;
+  videoInfo?: {
+    videoUrl: string;
+    thumbnail: string;
+  };
+  className?: string;
+}
+
+const { 
+  productName, 
+  galleryUrl, 
+  mainImageUrl,
+  videoInfo,
+  className = "" 
+} = Astro.props;
+---
+
+<ProductGallery 
+  client:load
+  productName={productName}
+  galleryUrl={galleryUrl}
+  mainImageUrl={mainImageUrl}
+  videoInfo={videoInfo}
+  className={className}
+/> 

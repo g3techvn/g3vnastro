@@ -1,0 +1,6 @@
+---
+import { ReviewsSection } from './ReviewsSection';
+const { comments, ratingSummary } = Astro.props;
+---
+
+<ReviewsSection client:load comments={comments} ratingSummary={ratingSummary} /> 

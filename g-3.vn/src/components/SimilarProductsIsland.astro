@@ -1,0 +1,13 @@
+---
+// SimilarProductsIsland.astro
+import { SimilarProducts } from './react/SimilarProducts';
+
+export interface Props {
+  products: any[];
+  loading?: boolean;
+}
+
+const { products, loading = false } = Astro.props;
+---
+
+<SimilarProducts products={products} loading={loading} client:load /> 

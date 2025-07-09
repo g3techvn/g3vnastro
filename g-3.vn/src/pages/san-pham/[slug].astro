@@ -1,0 +1,218 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { supabase } from '../../lib/supabase';
+import TechnicalSpecsIsland from '../../components/TechnicalSpecsIsland.astro';
+import ProductDescriptionIsland from '../../components/ProductDescriptionIsland.astro';
+import ProductInfo from '../../components/ProductInfo.astro';
+import ReviewsSection from '../../components/ReviewsSection.astro';
+import SimilarProductsIsland from '../../components/SimilarProductsIsland.astro';
+import { getRelatedProducts } from '../../utils/relatedProducts';
+import FAQ from '../../components/FAQWithAnimation.astro';
+import ProductGalleryIsland from '../../components/ProductGalleryIsland.astro';
+import FloatProductAction from '../../components/FloatProductAction.astro';
+
+export async function getStaticPaths() {
+  try {
+    const { data: products, error } = await supabase
+      .from('products')
+      .select('*');
+
+    if (error) {
+      console.error('Error fetching products:', error);
+      return [];
+    }
+
+    return products?.map((product) => ({
+      params: { slug: product.slug },
+      props: { product },
+    })) || [];
+  } catch (error) {
+    console.error('Error in getStaticPaths:', error);
+    return [];
+  }
+}
+
+const { product } = Astro.props;
+
+// Get related products
+const relatedProducts = await getRelatedProducts(product, 6);
+
+// Process technical specifications from Supabase
+function processTechnicalSpecs(thongSoKyThuat: any): Array<{ title: string; value: string }> {
+  if (!thongSoKyThuat) {
+    return [];
+  }
+
+  try {
+    // Handle different formats the API might return
+    if (Array.isArray(thongSoKyThuat)) {
+      // If already in the correct format, use it directly
+      if (thongSoKyThuat.length > 0 && 
+          typeof thongSoKyThuat[0] === 'object' &&
+          ('title' in thongSoKyThuat[0] || 'name' in thongSoKyThuat[0]) && 
+          'value' in thongSoKyThuat[0]) {
+        // Map to ensure title property exists
+        return thongSoKyThuat.map((spec: { title?: string; name?: string; value: string }) => ({
+          title: spec.title || spec.name || '',
+          value: spec.value
+        }));
+      } else {
+        // Convert array of strings to title/value pairs
+        return thongSoKyThuat.map((spec: string, index: number) => ({
+          title: `Thông số ${index + 1}`,
+          value: spec
+        }));
+      }
+    } else if (typeof thongSoKyThuat === 'object') {
+      // Convert object to array of title/value pairs
+      return Object.entries(thongSoKyThuat).map(([key, value]) => ({
+        title: key,
+        value: value as string
+      }));
+    } else if (typeof thongSoKyThuat === 'string') {
+      // Split string by newlines and create title/value pairs
+      const specs = thongSoKyThuat.split('\n').filter((line: string) => line.trim() !== '');
+      return specs.map((spec: string, index: number) => {
+        const parts = spec.split(':');
+        if (parts.length > 1) {
+          return {
+            title: parts[0].trim(),
+            value: parts.slice(1).join(':').trim()
+          };
+        }
+        return {
+          title: `Thông số ${index + 1}`,
+          value: spec.trim()
+        };
+      });
+    }
+  } catch (error) {
+    console.error('Error processing technical specs:', error);
+  }
+
+  return [];
+}
+
+// Process other product data
+function processKeyFeatures(tinhNang: any): string[] {
+  if (!tinhNang) return [];
+  return Array.isArray(tinhNang) ? tinhNang : [tinhNang];
+}
+
+function processBenefits(loiIch: any): string[] {
+  if (!loiIch) return [];
+  return Array.isArray(loiIch) ? loiIch : [loiIch];
+}
+
+function processInstructions(huongDan: any): string[] {
+  if (!huongDan) return [];
+  return Array.isArray(huongDan) ? huongDan : [huongDan];
+}
+
+// Get processed data
+const technicalSpecs = processTechnicalSpecs(product?.thong_so_ky_thuat);
+const keyFeatures = processKeyFeatures(product?.tinh_nang);
+const benefits = processBenefits(product?.loi_ich);
+const instructions = processInstructions(product?.huong_dan);
+const overview = product?.description || '';
+
+
+
+
+
+// Check if components should be rendered
+const hasTechnicalSpecs = technicalSpecs.length > 0;
+const hasKeyFeatures = keyFeatures.length > 0;
+const hasBenefits = benefits.length > 0;
+const hasInstructions = instructions.length > 0;
+const hasOverview = overview && overview.trim() !== '';
+const hasContent = product?.content && product.content.trim() !== '';
+const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || hasBenefits || hasInstructions;
+
+---
+
+<Layout title={product?.name || 'Sản phẩm'}>
+  <div class="py-8">
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-gray-500 mb-8">
+      <ol class="flex items-center space-x-2">
+        <li><a href="/" class="hover:text-gray-700">Trang chủ</a></li>
+        <li>/</li>
+        <li><a href="/san-pham" class="hover:text-gray-700">Sản phẩm</a></li>
+        <li>/</li>
+        <li class="text-gray-900">{product?.name}</li>
+      </ol>
+    </nav>
+
+    <div class="mt-8" id="overview">
+      <!-- Product Content -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-8 relative overflow-visible">
+        <!-- Product Gallery - 3 columns -->
+        <div class="md:col-span-3">
+          <ProductGalleryIsland
+            productName={product?.name || 'Sản phẩm'}
+            galleryUrl={product?.gallery_url}
+            mainImageUrl={product?.image_url}
+            videoInfo={product?.video_url ? {
+              videoUrl: product.video_url,
+              thumbnail: product?.image_url || ''
+            } : undefined}
+          />
+        </div>
+
+        <!-- Product Info - 2 columns -->
+        <div class="md:col-span-2">
+          <ProductInfo product={product} />
+        </div>
+      </div>
+
+      {/* Only show separator if there's content below */}
+      {(hasProductDescription || hasTechnicalSpecs) && (
+        <div class="my-8 h-px bg-gray-200"></div>
+      )}
+
+      {/* Product Description Section - Only render if there's content */}
+      {hasProductDescription && (
+        <div class="grid grid-cols-5 gap-8">
+          {/* Main Content - 3 columns */}
+          <div class="col-span-3 space-y-8">
+            <ProductDescriptionIsland
+              overview={overview}
+              content={product?.content}
+              keyFeatures={keyFeatures}
+              benefits={benefits}
+              instructions={instructions}
+            />
+
+            {/* FAQ Section - Only show if there's meaningful content */}
+            <FAQ />
+
+            {/* Reviews Section - Only show if there are reviews */}
+            <ReviewsSection />
+          </div>
+
+          {/* Technical Specifications - 2 columns - Only show if there are specs */}
+          {hasTechnicalSpecs && (
+            <div class="col-span-2">
+              <TechnicalSpecsIsland specifications={technicalSpecs} />
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* If no product description but has technical specs, show specs in full width */}
+      {!hasProductDescription && hasTechnicalSpecs && (
+        <div class="mt-8">
+          <TechnicalSpecsIsland specifications={technicalSpecs} />
+        </div>
+      )}
+
+      {/* Related Products Section */}
+      <div class="mt-16">
+        <SimilarProductsIsland products={relatedProducts} loading={false} />
+      </div>
+    </div>
+  </div>
+  <FloatProductAction product={product} />
+</Layout>
+

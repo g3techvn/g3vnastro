@@ -1,0 +1,178 @@
+---
+export interface FAQItem {
+  question: string;
+  answer: string;
+  category?: string;
+}
+
+export interface Props {
+  title?: string;
+  items: FAQItem[];
+  className?: string;
+  allowMultiple?: boolean;
+  defaultOpen?: number[];
+  showCategories?: boolean;
+}
+
+const { 
+  title = "Câu hỏi thường gặp", 
+  items, 
+  className = "",
+  allowMultiple = false,
+  defaultOpen = [],
+  showCategories = false
+} = Astro.props;
+
+// Group items by category if showCategories is true
+const groupedItems = showCategories 
+  ? items.reduce((acc, item) => {
+      const category = item.category || 'Chung';
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(item);
+      return acc;
+    }, {} as Record<string, FAQItem[]>)
+  : { '': items };
+---
+
+<div class={`faq-advanced ${className}`}>
+  <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">{title}</h2>
+  
+  {Object.entries(groupedItems).map(([category, categoryItems]) => (
+    <div class="mb-8">
+      {showCategories && category && (
+        <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
+          {category}
+        </h3>
+      )}
+      
+      <div class="space-y-3">
+        {categoryItems.map((item, index) => {
+          const globalIndex = items.indexOf(item);
+          const isDefaultOpen = defaultOpen.includes(globalIndex);
+          
+          return (
+            <div class="faq-item bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <button
+                class="faq-question w-full text-left px-6 py-4 font-semibold text-gray-900 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                data-index={globalIndex}
+                aria-expanded={isDefaultOpen ? "true" : "false"}
+              >
+                <span class="flex-1 pr-4">{item.question}</span>
+                <svg
+                  class="faq-icon w-5 h-5 transform transition-transform duration-300 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  class:list={[
+                    "faq-icon w-5 h-5 transform transition-transform duration-300 flex-shrink-0",
+                    { "rotate-180": isDefaultOpen }
+                  ]}
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                class="faq-answer overflow-hidden transition-all duration-300"
+                data-index={globalIndex}
+                class:list={[
+                  "faq-answer overflow-hidden transition-all duration-300",
+                  { 
+                    "max-h-0 opacity-0": !isDefaultOpen,
+                    "max-h-96 opacity-100": isDefaultOpen 
+                  }
+                ]}
+              >
+                <div class="px-6 pb-4 text-gray-700 leading-relaxed">
+                  {item.answer}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .faq-advanced {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .faq-item {
+    transition: all 0.3s ease;
+  }
+  
+  .faq-item:hover {
+    border-color: #3b82f6;
+  }
+  
+  .faq-question:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  .faq-answer {
+    border-top: 1px solid #f3f4f6;
+  }
+</style>
+
+<script>
+  // Advanced FAQ functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach((question: Element) => {
+      question.addEventListener('click', function(this: HTMLButtonElement) {
+        const index = this.getAttribute('data-index');
+        const answer = document.querySelector(`.faq-answer[data-index="${index}"]`) as HTMLElement;
+        const icon = this.querySelector('.faq-icon') as HTMLElement;
+        
+        if (!answer || !icon) return;
+        
+        // Check if multiple answers can be open
+        const allowMultiple = this.closest('.faq-advanced')?.getAttribute('data-allow-multiple') === 'true';
+        
+        // Toggle current answer
+        const isOpen = answer.classList.contains('max-h-0');
+        
+        // Close other answers if not allowing multiple
+        if (!allowMultiple) {
+          document.querySelectorAll('.faq-answer').forEach((ans: Element) => {
+            const answerEl = ans as HTMLElement;
+            if (answerEl !== answer) {
+              answerEl.classList.add('max-h-0', 'opacity-0');
+              answerEl.classList.remove('max-h-96', 'opacity-100');
+            }
+          });
+          
+          document.querySelectorAll('.faq-icon').forEach((ic: Element) => {
+            const iconEl = ic as HTMLElement;
+            if (iconEl !== icon) {
+              iconEl.classList.remove('rotate-180');
+            }
+          });
+        }
+        
+        // Toggle current answer
+        if (isOpen) {
+          answer.classList.remove('max-h-0', 'opacity-0');
+          answer.classList.add('max-h-96', 'opacity-100');
+          icon.classList.add('rotate-180');
+          this.setAttribute('aria-expanded', 'true');
+        } else {
+          answer.classList.add('max-h-0', 'opacity-0');
+          answer.classList.remove('max-h-96', 'opacity-100');
+          icon.classList.remove('rotate-180');
+          this.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  });
+</script> 

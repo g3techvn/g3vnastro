@@ -1,0 +1,172 @@
+---
+import { supabase } from '../lib/supabase';
+
+export interface Props {
+  productName: string;
+  galleryUrl?: string;
+  mainImageUrl?: string;
+  videoInfo?: {
+    videoUrl: string;
+    thumbnail: string;
+  };
+  className?: string;
+}
+
+const { 
+  productName, 
+  galleryUrl, 
+  mainImageUrl,
+  videoInfo,
+  className = "" 
+} = Astro.props;
+
+let galleryItems: Array<{
+  type: 'image' | 'video';
+  url: string;
+  thumbnail?: string;
+  videoUrl?: string;
+  title?: string;
+}> = [];
+
+if (galleryUrl) {
+  try {
+    const bucket = 'g3tech';
+    const folder = galleryUrl.replace(/^\/|\/$/g, '');
+    const { data, error } = await supabase
+      .storage
+      .from(bucket)
+      .list(folder, {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: 'name', order: 'asc' }
+      });
+    if (!error && data) {
+      const files = data.filter(item => 
+        !item.metadata?.mimetype?.includes('directory') && 
+        item.name.includes('.')
+      );
+      const images = await Promise.all(
+        files.map(async (file) => {
+          const filePath = `${folder}/${file.name}`;
+          const { data: urlData } = await supabase
+            .storage
+            .from(bucket)
+            .getPublicUrl(filePath);
+          return {
+            name: file.name,
+            url: urlData.publicUrl,
+            path: filePath
+          };
+        })
+      );
+      const items: typeof galleryItems = [];
+      if (mainImageUrl) {
+        items.push({ type: 'image', url: mainImageUrl });
+      }
+      if (videoInfo?.videoUrl && videoInfo?.thumbnail) {
+        items.push({ 
+          type: 'video', 
+          url: '', 
+          videoUrl: videoInfo.videoUrl, 
+          thumbnail: videoInfo.thumbnail,
+          title: `${productName} - Video`
+        });
+      }
+      images.forEach(img => {
+        if (img.url !== mainImageUrl) {
+          items.push({ type: 'image', url: img.url });
+        }
+      });
+      galleryItems = items;
+    }
+  } catch (error) {
+    console.error('Error fetching gallery images:', error);
+  }
+}
+if (galleryItems.length === 0) {
+  if (mainImageUrl) {
+    galleryItems.push({ type: 'image', url: mainImageUrl });
+  }
+  if (videoInfo?.videoUrl && videoInfo?.thumbnail) {
+    galleryItems.push({ 
+      type: 'video', 
+      url: '', 
+      videoUrl: videoInfo.videoUrl, 
+      thumbnail: videoInfo.thumbnail,
+      title: `${productName} - Video`
+    });
+  }
+}
+const hasImages = galleryItems.length > 0;
+---
+<div class={`product-gallery-server ${className}`}>
+  {hasImages ? (
+    <>
+      <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden relative" style="aspect-ratio: 16/9;">
+        <div class="relative w-full h-full">
+          {galleryItems[0].type === 'video' ? (
+            <iframe
+              src={`${galleryItems[0].videoUrl}?autoplay=1&mute=0&enablejsapi=1`}
+              title={galleryItems[0].title || 'Product video'}
+              allow="autoplay"
+              allowfullscreen
+              class="w-full h-full absolute inset-0 bg-black"
+            />
+          ) : (
+            <img
+              src={galleryItems[0].url}
+              alt={`${productName} - Ảnh chính`}
+              class="w-full h-full object-contain"
+            />
+          )}
+        </div>
+      </div>
+      {galleryItems.length > 1 && (
+        <div class="mt-4 flex overflow-x-auto gap-2 pb-2">
+          {galleryItems.map((item, index) => (
+            <div class="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden border-2 border-gray-200 cursor-pointer hover:border-red-500 transition-colors">
+              {item.type === 'video' ? (
+                <>
+                  <img
+                    src={item.thumbnail || ''}
+                    alt="Video thumbnail"
+                    class="w-full h-full object-cover"
+                  />
+                  <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="20" cy="20" r="20" fill="rgba(0,0,0,0.5)" />
+                      <polygon points="16,12 30,20 16,28" fill="white" />
+                    </svg>
+                  </div>
+                </>
+              ) : (
+                <img
+                  src={item.url}
+                  alt={`${productName} - ${index + 1}`}
+                  class="w-full h-full object-cover"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  ) : (
+    <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden">
+      <div class="aspect-[16/9] flex items-center justify-center">
+        <span class="text-gray-400">Không có ảnh sản phẩm</span>
+      </div>
+    </div>
+  )}
+</div>
+<style>
+  .product-gallery-server {
+    max-width: 100%;
+  }
+  .product-gallery-server img {
+    transition: transform 0.2s ease-in-out;
+  }
+  .product-gallery-server img:hover {
+    transform: scale(1.05);
+  }
+</style> 

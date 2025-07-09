@@ -1,0 +1,12 @@
+---
+import { ProductDescription } from './ProductDescription';
+const { overview, content, keyFeatures, benefits, instructions } = Astro.props;
+---
+
+<ProductDescription client:load 
+  overview={overview}
+  content={content}
+  keyFeatures={keyFeatures}
+  benefits={benefits}
+  instructions={instructions}
+/> 

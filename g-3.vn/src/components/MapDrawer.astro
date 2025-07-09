@@ -1,0 +1,48 @@
+---
+import MapDrawerWrapper from './MapDrawerWrapper';
+
+interface Props {
+  location: {
+    name: string;
+    address: string;
+    coordinates: {
+      lat: number;
+      lng: number;
+    };
+  };
+}
+
+const { location } = Astro.props;
+---
+
+<div id="map-drawer-container">
+  <MapDrawerWrapper 
+    client:load
+    location={location}
+  />
+</div>
+
+<script>
+  // Global functions to control the drawer
+  function openMapDrawer(location: any) {
+    // Find the React component instance and update its props
+    const container = document.getElementById('map-drawer-container');
+    if (container) {
+      // Trigger a custom event to open the drawer
+      const event = new CustomEvent('openMapDrawer', { 
+        detail: { location } 
+      });
+      window.dispatchEvent(event);
+    }
+  }
+
+  function closeMapDrawer() {
+    // Trigger a custom event to close the drawer
+    const event = new CustomEvent('closeMapDrawer');
+    window.dispatchEvent(event);
+  }
+
+  // Make functions globally available
+  (window as any).openMapDrawer = openMapDrawer;
+  (window as any).closeMapDrawer = closeMapDrawer;
+</script> 

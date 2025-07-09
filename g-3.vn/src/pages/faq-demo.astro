@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FAQ from '../components/FAQ.astro';
+import FAQAdvanced from '../components/FAQAdvanced.astro';
+
+// Sample FAQ data
+const basicFAQItems = [
+  {
+    question: "Sản phẩm có bảo hành không?",
+    answer: "Có, tất cả sản phẩm đều được bảo hành chính hãng 12 tháng."
+  },
+  {
+    question: "Thời gian giao hàng bao lâu?",
+    answer: "Thời gian giao hàng từ 1-3 ngày làm việc tùy theo khu vực."
+  },
+  {
+    question: "Có thể đổi trả sản phẩm không?",
+    answer: "Có thể đổi trả trong vòng 30 ngày nếu sản phẩm còn nguyên vẹn."
+  }
+];
+
+const advancedFAQItems = [
+  {
+    question: "Sản phẩm có bảo hành không?",
+    answer: "Có, tất cả sản phẩm đều được bảo hành chính hãng 12 tháng. Bảo hành bao gồm các lỗi kỹ thuật và hư hỏng do nhà sản xuất.",
+    category: "Bảo hành & Dịch vụ"
+  },
+  {
+    question: "Thời gian giao hàng bao lâu?",
+    answer: "Thời gian giao hàng từ 1-3 ngày làm việc tùy theo khu vực. Đối với các tỉnh xa có thể mất 5-7 ngày.",
+    category: "Vận chuyển"
+  },
+  {
+    question: "Có thể đổi trả sản phẩm không?",
+    answer: "Có thể đổi trả trong vòng 30 ngày nếu sản phẩm còn nguyên vẹn và đầy đủ phụ kiện.",
+    category: "Đổi trả"
+  },
+  {
+    question: "Sản phẩm có xuất xứ từ đâu?",
+    answer: "Tất cả sản phẩm đều có xuất xứ rõ ràng và được nhập khẩu chính hãng từ các thương hiệu uy tín.",
+    category: "Thông tin sản phẩm"
+  },
+  {
+    question: "Có hỗ trợ thanh toán trả góp không?",
+    answer: "Có, chúng tôi hỗ trợ thanh toán trả góp 0% lãi suất qua thẻ tín dụng của các ngân hàng đối tác.",
+    category: "Thanh toán"
+  },
+  {
+    question: "Làm thế nào để liên hệ hỗ trợ khách hàng?",
+    answer: "Bạn có thể liên hệ qua hotline 1900-xxxx, email support@g-3.vn hoặc chat trực tuyến trên website.",
+    category: "Hỗ trợ"
+  }
+];
+---
+
+<Layout title="FAQ Demo - G-3">
+  <div class="py-8 px-4">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-3xl font-bold text-center mb-8">Demo FAQ Components</h1>
+      
+      <!-- Basic FAQ -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Basic FAQ Component</h2>
+        <FAQ items={basicFAQItems} />
+      </section>
+      
+      <!-- Advanced FAQ with categories -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Advanced FAQ with Categories</h2>
+        <FAQAdvanced 
+          items={advancedFAQItems} 
+          showCategories={true}
+          allowMultiple={false}
+          defaultOpen={[0]}
+        />
+      </section>
+      
+      <!-- Advanced FAQ with multiple open -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Advanced FAQ - Multiple Open</h2>
+        <FAQAdvanced 
+          items={advancedFAQItems} 
+          showCategories={false}
+          allowMultiple={true}
+          defaultOpen={[0, 2]}
+        />
+      </section>
+      
+      <!-- Custom styled FAQ -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Custom Styled FAQ</h2>
+        <FAQAdvanced 
+          items={basicFAQItems} 
+          title="Hỏi đáp tùy chỉnh"
+          className="bg-gradient-to-r from-blue-50 to-indigo-50 p-8 rounded-xl"
+        />
+      </section>
+    </div>
+  </div>
+</Layout> 
