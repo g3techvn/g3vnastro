@@ -1,0 +1,8 @@
+- Framework: Astro 5.x
+- Styling: Tailwind CSS
+- Database: Supabase
+- Language: TypeScript
+- UI Components: React islands
+- Một số thư viện UI: Ant Design, Radix UI, Framer Motion, react-icons
+- Hỗ trợ build static và deploy trên Vercel/Netlify
+- Node >= 20.3.0

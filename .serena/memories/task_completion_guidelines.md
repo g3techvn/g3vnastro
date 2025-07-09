@@ -1,0 +1,7 @@
+- Khi hoàn thành task, nên kiểm tra lại bằng npm run dev hoặc npm run preview
+- Đảm bảo không có lỗi build, lỗi runtime
+- Kiểm tra UI trên cả desktop và mobile
+- Đảm bảo các tính năng chính (hiển thị sản phẩm, lọc, giỏ hàng, checkout) hoạt động bình thường
+- Kiểm tra SEO (meta tags, structured data)
+- Nếu có thay đổi cấu trúc dữ liệu, cập nhật hướng dẫn trong README
+- Đảm bảo code tuân thủ conventions và đã commit lên git

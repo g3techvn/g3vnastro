@@ -1,0 +1,8 @@
+- Sử dụng TypeScript cho toàn bộ codebase
+- Ưu tiên đặt tên biến, hàm, file theo camelCase
+- Tách biệt rõ ràng giữa Astro components (.astro) và React islands (.tsx)
+- Sử dụng Tailwind CSS cho styling, ưu tiên utility-first
+- Cấu hình alias @ cho src/
+- Đặt các biến môi trường trong file .env
+- Đặt các component động (React) trong src/components/react/
+- Đặt các component tĩnh (Astro) trong src/components/astro/

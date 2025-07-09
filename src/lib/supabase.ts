@@ -10,11 +10,7 @@ export const productAPI = {
   async getProducts(limit = 20, offset = 0) {
     const { data, error } = await supabase
       .from('products')
-      .select(`
-        *,
-        categories(name, slug),
-        brands(name, slug)
-      `)
+      .select('id, name, slug, price, original_price, image_url')
       .range(offset, offset + limit - 1)
       .order('created_at', { ascending: false });
     

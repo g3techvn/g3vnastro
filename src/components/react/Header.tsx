@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { productAPI } from '../../lib/supabase';
 
 // Constants
 const COMPANY_INFO = {
@@ -23,6 +24,15 @@ const formatPhoneNumber = (phone: string) => {
   return phone.replace(/(\d{4})(\d{3})(\d{3})/, '$1.$2.$3');
 };
 
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  original_price?: number;
+  image_url?: string;
+}
+
 interface HeaderProps {
   totalItems?: number;
 }
@@ -33,6 +43,9 @@ const Header: React.FC<HeaderProps> = ({ totalItems = 0 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
 
   // Handle scroll behavior for sticky header
   useEffect(() => {
@@ -65,19 +78,49 @@ const Header: React.FC<HeaderProps> = ({ totalItems = 0 }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    // Fetch products on mount
+    const fetchProducts = async () => {
+      setLoadingProducts(true);
+      try {
+        const data = await productAPI.getProducts(100, 0); // fetch 100 sản phẩm đầu tiên
+        console.log('Fetched products:', data); // DEBUG LOG
+        setProducts(data || []);
+      } catch (err) {
+        console.error('Error fetching products:', err); // DEBUG LOG
+        setProducts([]);
+      } finally {
+        setLoadingProducts(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     if (!query.trim()) {
+      setSearchResults([]);
       setShowResults(false);
       return;
     }
-    setShowResults(true);
+    try {
+      const searchTerm = query.toLowerCase();
+      const filtered = products.filter(product => 
+        product.name.toLowerCase().includes(searchTerm)
+      );
+      setSearchResults(filtered);
+      setShowResults(true);
+    } catch (err) {
+      console.error('Error in search filter:', err); // DEBUG LOG
+      setSearchResults([]);
+      setShowResults(false);
+    }
   };
 
-  const handleProductClick = (productId: string) => {
+  const handleProductClick = (product: Product) => {
     setShowResults(false);
     setSearchQuery('');
-    window.location.href = `/san-pham/${productId}`;
+    window.location.href = `/san-pham/${product.slug || product.id}`;
   };
 
   const openCart = () => {
@@ -126,9 +169,44 @@ const Header: React.FC<HeaderProps> = ({ totalItems = 0 }) => {
               {/* Search Results Dropdown */}
               {showResults && (
                 <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg max-h-[60vh] overflow-y-auto z-50">
-                  <div className="p-4 text-center text-gray-500">
-                    Tính năng tìm kiếm đang được phát triển
-                  </div>
+                  {loadingProducts ? (
+                    <div className="p-4 text-center text-gray-500">Đang tải sản phẩm...</div>
+                  ) : searchResults.length > 0 ? (
+                    <div className="p-2">
+                      {searchResults.map((product) => (
+                        <div
+                          key={product.id}
+                          onClick={() => handleProductClick(product)}
+                          className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer"
+                        >
+                          <div className="w-12 h-12 relative flex-shrink-0">
+                            <img
+                              src={product.image_url || '/images/placeholder-product.jpg'}
+                              alt={product.name}
+                              className="object-cover rounded-md w-full h-full"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-medium text-gray-900 truncate">
+                              {product.name}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="text-sm text-red-600 font-semibold">
+                                {product.price.toLocaleString()}₫
+                              </div>
+                              {product.original_price && product.original_price > product.price && (
+                                <div className="text-xs text-gray-400 line-through">
+                                  {product.original_price.toLocaleString()}₫
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-gray-500">Không tìm thấy sản phẩm nào</div>
+                  )}
                 </div>
               )}
             </div>

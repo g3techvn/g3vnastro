@@ -83,7 +83,7 @@ export function SimilarProducts({ products, loading }: SimilarProductsProps) {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="space-y-4"
+      className="space-y-4 z-10"
     >
       <h2 className="text-2xl font-bold text-gray-900">Sản phẩm tương tự</h2>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">

@@ -1,0 +1,10 @@
+- src/components/: Astro & React components
+- src/layouts/: Layout components
+- src/pages/: Các route chính, có thư mục san-pham/ cho trang sản phẩm
+- src/lib/: Utility functions, supabase.ts (client)
+- src/types/: TypeScript types
+- public/: Static assets
+- astro.config.mjs: Cấu hình Astro
+- package.json: Scripts, dependencies
+- .env: Biến môi trường cho Supabase, site URL
+- Hỗ trợ cấu trúc mở rộng cho các backend khác (ví dụ: Medusa)

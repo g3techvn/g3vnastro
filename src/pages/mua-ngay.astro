@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BuyerInfoFormIsland from '../../g3astro/src/components/checkout/BuyerInfoFormIsland.astro';
+import ShippingInfoFormIsland from '../../g3astro/src/components/checkout/ShippingInfoFormIsland.astro';
+import PaymentMethodFormIsland from '../../g3astro/src/components/checkout/PaymentMethodFormIsland.astro';
+import PlaceOrderButtonIsland from '../../g3astro/src/components/checkout/PlaceOrderButtonIsland.astro';
+---
+
+<Layout title="Mua ngay | G3 - Công Thái Học">
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 py-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left column - Forms */}
+        <div class="lg:col-span-2 space-y-6">
+          <BuyerInfoFormIsland />
+          <ShippingInfoFormIsland />
+          <PaymentMethodFormIsland />
+        </div>
+        {/* Right column - Order summary */}
+        <div class="lg:col-span-1">
+          <PlaceOrderButtonIsland />
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout> 

@@ -1,0 +1,8 @@
+- Cài đặt dependencies: npm install
+- Phát triển local: npm run dev
+- Build production: npm run build
+- Preview production build: npm run preview
+- Lệnh Astro CLI: npm run astro
+- Deploy: npm run build rồi deploy lên Vercel/Netlify
+- Node version: >= 20.3.0
+- Cấu hình biến môi trường trong file .env (PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SITE_URL)

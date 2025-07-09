@@ -1,0 +1,1 @@
+Dự án g3astro là một website bán hàng được xây dựng bằng Astro (v5.x) với backend là Supabase. Mục tiêu là xây dựng một e-commerce site hiện đại, tối ưu SEO, responsive, sử dụng React islands cho UI động, hỗ trợ static site generation và dễ dàng mở rộng tích hợp backend khác như Medusa.
