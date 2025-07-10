@@ -1,23 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import MobileLayout from '../layouts/MobileLayout.astro';
 import HeroCarouselIsland from '../components/HeroCarouselIsland.astro';
 import CategorySectionIsland from '../components/CategorySectionIsland.astro';
 import NewProductsIsland from '../components/NewProductsIsland.astro';
 import ComboProductIsland from '../components/ComboProductIsland.astro';
 import SupportSection from '../components/SupportSection.astro';
 import HomeAdModal from '../components/HomeAdModal.astro';
+
 ---
 
-<Layout title="G-3.vn - Trang chủ">
-	<HeroCarouselIsland />
-	
-	<CategorySectionIsland />
-	
-	<NewProductsIsland />
-	
-	<ComboProductIsland />
-	
-	<SupportSection />
-	
-	<HomeAdModal />
-</Layout>
+<div class="md:hidden">
+  <MobileLayout title="G-3.vn - Trang chủ Mobile" />
+</div>
+
+<div class="hidden md:block">
+  <Layout title="G-3.vn - Trang chủ">
+    <HeroCarouselIsland />
+    <CategorySectionIsland />
+    <NewProductsIsland />
+    <ComboProductIsland />
+    <SupportSection />
+    <HomeAdModal />
+  </Layout>
+</div>

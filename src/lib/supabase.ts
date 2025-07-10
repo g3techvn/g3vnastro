@@ -8,15 +8,15 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // API functions for products
 export const productAPI = {
   async getProducts(limit = 20, offset = 0) {
-    const { data, error } = await supabase
-      .from('products')
-      .select('id, name, slug, price, original_price, image_url')
-      .range(offset, offset + limit - 1)
-      .order('created_at', { ascending: false });
-    
-    if (error) throw error;
-    return data;
-  },
+  const { data, error } = await supabase
+    .from('products')
+    .select('id, name, slug, price, original_price, image_url, brand_id, rating, sold_count')
+    .range(offset, offset + limit - 1)
+    .order('created_at', { ascending: false });
+  
+  if (error) throw error;
+  return data;
+},
 
   async getProductsByCategory(categorySlug: string, limit = 20, offset = 0) {
     const { data, error } = await supabase

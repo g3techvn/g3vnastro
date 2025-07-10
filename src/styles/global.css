@@ -45,4 +45,8 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+body, html {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
 } 
