@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ModalBuyNowForm from './ModalBuyNowForm';
 
 interface Product {
   id: string;
@@ -17,7 +18,7 @@ interface ComboProductProps {
   products?: Product[];
 }
 
-const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+const ProductCard: React.FC<{ product: Product; onBuyNow: (product: Product) => void }> = ({ product, onBuyNow }) => {
   const discountPercentage = product.original_price && product.original_price > product.price 
     ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
     : 0;
@@ -61,6 +62,10 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             <button 
               className="p-1.5 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition-colors duration-200"
               aria-label="Thêm vào giỏ hàng"
+              onClick={e => {
+                e.preventDefault();
+                onBuyNow(product);
+              }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -77,6 +82,7 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [loading, setLoading] = useState(!initialProducts.length);
   const [error, setError] = useState<string | null>(null);
+  const [modalProduct, setModalProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     if (initialProducts.length === 0) {
@@ -182,7 +188,7 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
           {/* First 2 products - takes 1 column each */}
           {products.slice(0, 2).map((product) => (
             <div key={product.id} className="col-span-3 lg:col-span-1">
-              <ProductCard product={product} />
+              <ProductCard product={product} onBuyNow={setModalProduct} />
             </div>
           ))}
         </div>
@@ -191,10 +197,18 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {products.slice(2).map((product) => (
             <div key={product.id}>
-              <ProductCard product={product} />
+              <ProductCard product={product} onBuyNow={setModalProduct} />
             </div>
           ))}
         </div>
+        {/* Modal mua hàng nhanh */}
+        {modalProduct && (
+          <ModalBuyNowForm
+            open={!!modalProduct}
+            onClose={() => setModalProduct(null)}
+            product={modalProduct}
+          />
+        )}
       </div>
     </section>
   );

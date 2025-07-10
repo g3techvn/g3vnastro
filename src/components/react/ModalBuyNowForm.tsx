@@ -4,6 +4,10 @@ import { createPortal } from 'react-dom';
 // Thêm import jsPDF từ CDN nếu chưa có
 // @ts-ignore
 import { jsPDF } from "jspdf";
+// Heroicons
+import { PrinterIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/20/solid';
+import { z } from 'zod';
 
 interface ModalBuyNowFormProps {
   open: boolean;
@@ -32,18 +36,53 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
   ]);
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [buyerInfo, setBuyerInfo] = useState({
+    salutation: 'Anh',
     fullName: '',
     phone: '',
-    email: '',
   });
   const [shippingInfo, setShippingInfo] = useState({
     address: '',
   });
   const [paymentMethod, setPaymentMethod] = useState('cod');
-  const [voucher, setVoucher] = useState('FREESHIP G3200k');
+  const [voucher, setVoucher] = useState('FREESHIP G3TECH200');
   const [productsFromApi, setProductsFromApi] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [errorProducts, setErrorProducts] = useState<string | null>(null);
+  const [orderNote, setOrderNote] = useState('');
+
+  // Zod schema cho validate
+  const formSchema = z.object({
+    salutation: z.enum(['Anh', 'Chị']),
+    fullName: z.string()
+      .min(2, 'Vui lòng nhập họ tên hợp lệ (tối thiểu 2 ký tự)')
+      .refine(val => !/\d/.test(val), { message: 'Họ tên không được chứa số' }),
+    phone: z.string()
+      .regex(/^0\d{9,10}$/, 'Số điện thoại phải gồm 10 hoặc 11 số, bắt đầu bằng 0'),
+    address: z.string()
+      .min(6, 'Vui lòng nhập địa chỉ chi tiết (tối thiểu 6 ký tự)'),
+  });
+
+  const [errors, setErrors] = useState<{ fullName?: string; phone?: string; address?: string }>({});
+
+  function validateForm() {
+    const result = formSchema.safeParse({
+      salutation: buyerInfo.salutation,
+      fullName: buyerInfo.fullName,
+      phone: buyerInfo.phone,
+      address: shippingInfo.address,
+    });
+    if (!result.success) {
+      const fieldErrors: { fullName?: string; phone?: string; address?: string } = {};
+      result.error.issues.forEach((err) => {
+        const field = String(err.path[0]);
+        if (field) fieldErrors[field as keyof typeof fieldErrors] = err.message;
+      });
+      setErrors(fieldErrors);
+      return false;
+    }
+    setErrors({});
+    return true;
+  }
 
   // Khóa cuộn body khi modal mở
   useEffect(() => {
@@ -79,18 +118,16 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
   const isPaymentValid = paymentMethod;
   const isFormValid = isBuyerInfoValid && isShippingInfoValid && isPaymentValid;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isFormValid) {
-      alert('Vui lòng nhập đầy đủ thông tin!');
-      return;
-    }
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!validateForm()) return;
     console.log({
       productsInCart,
       buyerInfo,
       shippingInfo,
       paymentMethod,
       voucher,
+      orderNote,
     });
     alert('Đã xác nhận đơn hàng!');
     onClose();
@@ -111,72 +148,20 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
     if (original_price > price) {
       totalAmountSaved += (original_price - price) * quantity;
     }
-    if (voucherCodes.includes('G3200K')) {
+    if (voucherCodes.includes('G3TECH200')) {
       totalVoucherDiscount += 200000 * quantity;
     }
   });
   const totalDiscount = totalAmountSaved + totalVoucherDiscount;
 
   const modalContent = (
-    <div className="fixed inset-0 z-[10000002] bg-black/30 backdrop-blur-sm flex items-center justify-center overflow-auto py-8 md:py-12">
+    <div
+      className="fixed inset-0 z-[10000002] bg-black/30 backdrop-blur-sm flex items-center justify-center overflow-auto py-8 md:py-12"
+      onClick={e => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div className="relative mx-auto bg-white rounded-2xl w-full max-w-6xl" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
-        {/* Header modal */}
-        <div className="relative border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900 text-left">Đặt hàng nhanh</h2>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              className="inline-flex items-center gap-1 px-3 py-1 rounded bg-gray-100 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              onClick={() => window.print()}
-            >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 9V4a2 2 0 012-2h8a2 2 0 012 2v5" />
-                <rect width="16" height="10" x="4" y="9" rx="2" ry="2" stroke="currentColor" strokeWidth="2" fill="none" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18h12" />
-              </svg>
-              In
-            </button>
-            <button
-              type="button"
-              className="inline-flex items-center gap-1 px-3 py-1 rounded bg-gray-100 text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500"
-              onClick={() => {
-                const doc = new jsPDF({ format: 'a4', unit: 'mm' });
-                const modal = document.querySelector('.max-w-6xl');
-                if (modal && modal instanceof HTMLElement) {
-                  // Thêm style font-family cho modal khi xuất PDF
-                  const prevFont = modal.style.fontFamily;
-                  modal.style.fontFamily = 'Arial, Roboto, sans-serif';
-                  doc.html(modal, {
-                    callback: function (pdf: any) {
-                      pdf.save('order.pdf');
-                      modal.style.fontFamily = prevFont;
-                    },
-                    x: 10,
-                    y: 10,
-                    width: 190, // fit A4 width (210mm - 2*10mm margin)
-                    windowWidth: 1200
-                  });
-                }
-              }}
-            >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                <rect width="16" height="20" x="4" y="2" rx="2" ry="2" stroke="currentColor" strokeWidth="2" fill="none" />
-              </svg>
-              Tải PDF
-            </button>
-            <button
-              type="button"
-              className="ml-2 rounded-full p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white shadow-md"
-              onClick={onClose}
-            >
-              <span className="sr-only">Đóng</span>
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
         <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden shadow-2xl min-h-full max-h-screen overflow-y-auto">
           {/* Form nhập thông tin bên trái */}
           <section
@@ -187,68 +172,132 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
               Payment and shipping details
             </h2>
             <form onSubmit={handleSubmit} className="mx-auto max-w-2xl lg:max-w-none">
-              <div>
-                <h3 className="text-lg font-medium text-gray-900">Thông tin liên hệ</h3>
-                <div className="mt-6 grid grid-cols-1 gap-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Họ và tên*</label>
-                    <input
-                      type="text"
-                      className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
-                      value={buyerInfo.fullName}
-                      onChange={e => setBuyerInfo({ ...buyerInfo, fullName: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Số điện thoại*</label>
-                    <input
-                      type="tel"
-                      className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
-                      value={buyerInfo.phone}
-                      onChange={e => setBuyerInfo({ ...buyerInfo, phone: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Email</label>
-                    <input
-                      type="email"
-                      className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
-                      value={buyerInfo.email}
-                      onChange={e => setBuyerInfo({ ...buyerInfo, email: e.target.value })}
-                    />
-                  </div>
+              {Object.keys(errors).length > 0 && (
+                <div className="mb-4 p-3 bg-red-100 text-red-700 rounded text-sm font-medium">
+                  Vui lòng kiểm tra lại các trường thông tin bên dưới.
                 </div>
-              </div>
-              <div className="mt-10">
-                <h3 className="text-lg font-medium text-gray-900">Địa chỉ giao hàng</h3>
-                <div className="mt-6">
-                  <label className="block text-sm font-medium text-gray-700">Địa chỉ*</label>
-                  <input
-                    type="text"
-                    className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
-                    value={shippingInfo.address}
-                    onChange={e => setShippingInfo({ ...shippingInfo, address: e.target.value })}
-                    required
-                  />
+              )}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900">Thông tin liên hệ & giao hàng</h3>
+                <div className="mt-6 grid grid-cols-1 gap-y-6">
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="relative w-full sm:w-2/3">
+                      <label className="absolute -top-2 left-2 inline-block rounded-lg bg-white px-1 text-xs font-medium text-gray-900">Họ tên*</label>
+                      <div className="flex">
+                        <select
+                          id="salutation"
+                          className="rounded-l-md border border-gray-300 bg-white px-3 py-1.5 text-base text-gray-900 focus:outline-2 focus:outline-indigo-600 sm:text-sm/6 border-r-0"
+                          style={{ minWidth: 70 }}
+                          value={buyerInfo.salutation}
+                          onChange={e => setBuyerInfo({ ...buyerInfo, salutation: e.target.value })}
+                        >
+                          <option value="Anh">Anh</option>
+                          <option value="Chị">Chị</option>
+                        </select>
+                        <input
+                          id="fullName"
+                          type="text"
+                          placeholder="Nguyễn Văn A"
+                          className={`block w-full rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 border ${errors.fullName ? 'border-red-400' : 'border-gray-300'} border-l-0 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6`}
+                          value={buyerInfo.fullName}
+                          onChange={e => setBuyerInfo({ ...buyerInfo, fullName: e.target.value })}
+                          onBlur={validateForm}
+                          required
+                        />
+                      </div>
+                      {errors.fullName && <div className="text-red-500 text-xs mt-1">{errors.fullName}</div>}
+                    </div>
+                    <div className="relative w-full sm:w-1/2">
+                      <label
+                        htmlFor="phone"
+                        className="absolute -top-2 left-2 inline-block rounded-lg bg-white px-1 text-xs font-medium text-gray-900"
+                      >
+                        Số điện thoại*
+                      </label>
+                      <input
+                        id="phone"
+                        type="tel"
+                        placeholder="0987654321"
+                        className={`block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border ${errors.phone ? 'border-red-400' : 'border-gray-300'} placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6`}
+                        value={buyerInfo.phone}
+                        onChange={e => setBuyerInfo({ ...buyerInfo, phone: e.target.value })}
+                        onBlur={validateForm}
+                        required
+                      />
+                      {errors.phone && <div className="text-red-500 text-xs mt-1">{errors.phone}</div>}
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <label
+                      htmlFor="address"
+                      className="absolute -top-2 left-2 inline-block rounded-lg bg-white px-1 text-xs font-medium text-gray-900"
+                    >
+                      Địa chỉ*
+                    </label>
+                    <input
+                      id="address"
+                      type="text"
+                      placeholder="123 Đường ABC, Quận 1, TP.HCM"
+                      className={`block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border ${errors.address ? 'border-red-400' : 'border-gray-300'} placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6`}
+                      value={shippingInfo.address}
+                      onChange={e => setShippingInfo({ ...shippingInfo, address: e.target.value })}
+                      onBlur={validateForm}
+                      required
+                    />
+                    {errors.address && <div className="text-red-500 text-xs mt-1">{errors.address}</div>}
+                  </div>
+                  <div className="relative">
+                    <label
+                      htmlFor="orderNote"
+                      className="absolute -top-2 left-2 inline-block rounded-lg bg-white px-1 text-xs font-medium text-gray-900"
+                    >
+                      Ghi chú cho đơn hàng
+                    </label>
+                    <textarea
+                      id="orderNote"
+                      placeholder="Ghi chú thêm cho đơn hàng (nếu có)"
+                      className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 min-h-[48px]"
+                      value={orderNote}
+                      onChange={e => setOrderNote(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="mt-10">
                 <h3 className="text-lg font-medium text-gray-900">Thanh toán & Ưu đãi</h3>
-                <div className="mt-6 grid grid-cols-1 gap-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Phương thức thanh toán</label>
-                    <select
-                      className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300 focus:outline-2 focus:outline-indigo-600"
-                      value={paymentMethod}
-                      onChange={e => setPaymentMethod(e.target.value)}
-                    >
-                      <option value="cod">Thanh toán khi nhận hàng</option>
-                      <option value="bank">Chuyển khoản ngân hàng</option>
-                    </select>
+                <fieldset>
+                  <legend className="text-sm/6 font-semibold text-gray-900 mb-2">Chọn phương thức thanh toán</legend>
+                  <div className="mt-4 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
+                    {[
+                      { id: 'cod', title: 'Thanh toán khi nhận hàng', description: 'Trả tiền mặt khi nhận hàng tại nhà.' },
+                      { id: 'bank', title: 'Chuyển khoản ngân hàng', description: 'Chuyển khoản qua ngân hàng, ví điện tử.' },
+                    ].map((method) => (
+                      <label
+                        key={method.id}
+                        aria-label={method.title}
+                        className={`group relative flex rounded-lg border bg-white p-4 cursor-pointer transition-all duration-150 ${paymentMethod === method.id ? 'border-red-600 ring-2 ring-red-500' : 'border-gray-300'}`}
+                      >
+                        <input
+                          type="radio"
+                          name="payment-method"
+                          value={method.id}
+                          checked={paymentMethod === method.id}
+                          onChange={() => setPaymentMethod(method.id)}
+                          className="absolute inset-0 appearance-none focus:outline-none cursor-pointer"
+                        />
+                        <div className="flex-1">
+                          <span className="block text-sm font-medium text-gray-900">{method.title}</span>
+                          <span className="mt-1 block text-sm text-gray-500">{method.description}</span>
+                        </div>
+                        <CheckCircleIcon
+                          aria-hidden="true"
+                          className={`ml-4 size-5 ${paymentMethod === method.id ? 'text-red-600 visible' : 'invisible'}`}
+                        />
+                      </label>
+                    ))}
                   </div>
-                  <div>
+                </fieldset>
+                  <div className="pt-4">
                     <label className="block text-sm font-medium text-gray-700">Mã giảm giá</label>
                     <input
                       type="text"
@@ -278,14 +327,14 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                     )}
                   </div>
                 </div>
-              </div>
-              <div className="mt-10 flex justify-end border-t border-gray-200 pt-6">
+              <div className="flex justify-end mt-8">
                 <button
-                  type="submit"
+                  type="button"
                   className="rounded-md border border-transparent bg-red-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none disabled:opacity-60"
                   disabled={!isFormValid}
+                  onClick={handleSubmit}
                 >
-                  Xác nhận đặt hàng
+                  Xác nhận đơn hàng
                 </button>
               </div>
             </form>
@@ -327,9 +376,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                         className="size-20 flex-none rounded-md object-cover"
                       />
                       <div className="flex-auto space-y-1">
-                        <h3 className="text-white flex items-center gap-2">{name}
-                          <span className="inline-block bg-indigo-200 text-indigo-900 text-xs font-semibold px-2 py-0.5 rounded ml-1">x{quantity}</span>
-                        </h3>
+                        <h3 className="text-white flex items-center gap-2">{name}</h3>
                         {hasDiscount && (
                           <span className="text-sm text-white/60 line-through">{original_price.toLocaleString('vi-VN')}₫</span>
                         )}
@@ -338,7 +385,9 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                           <button type="button" className="px-2 py-1 border rounded-md bg-white/10 text-white hover:bg-white/20" onClick={() => setProductsInCart(list => list.map((item, i) => i === idx ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item))}>-</button>
                           <input type="number" min={1} value={quantity} onChange={e => setProductsInCart(list => list.map((item, i) => i === idx ? { ...item, quantity: Math.max(1, Number(e.target.value)) } : item))} className="w-16 text-center border rounded-md bg-white/10 text-white" />
                           <button type="button" className="px-2 py-1 border rounded-md bg-white/10 text-white hover:bg-white/20" onClick={() => setProductsInCart(list => list.map((item, i) => i === idx ? { ...item, quantity: item.quantity + 1 } : item))}>+</button>
-                          <button type="button" className="ml-2 text-red-400 hover:text-red-600" onClick={() => setProductsInCart(list => list.filter((_, i) => i !== idx))} title="Xóa sản phẩm">×</button>
+                          {productsInCart.length > 1 && (
+                            <button type="button" className="ml-2 text-red-400 hover:text-red-600" onClick={() => setProductsInCart(list => list.filter((_, i) => i !== idx))} title="Xóa sản phẩm">×</button>
+                          )}
                         </div>
                       </div>
                       <p className="flex-none text-base font-medium text-white">{price.toLocaleString('vi-VN')}₫</p>
@@ -396,7 +445,11 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                 </div>
                 <div className="flex items-center justify-between">
                   <dt>Phí ship</dt>
-                  <dd>0₫</dd>
+                  <dd>
+                    {voucher.toLowerCase().includes('freeship')
+                      ? 'Miễn phí giao hàng'
+                      : '200.000₫'}
+                  </dd>
                 </div>
                 {/* Block giảm giá riêng */}
                 <div className="border-t border-white/20 pt-4 mt-4 rounded">
@@ -409,7 +462,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                   )}
                   {totalVoucherDiscount > 0 && (
                     <div className="flex items-center justify-between mb-1">
-                      <span>Mã G3200k</span>
+                      <span>Mã G3TECH200</span>
                       <span className="text-red-300">- {totalVoucherDiscount.toLocaleString('vi-VN')}₫</span>
                     </div>
                   )}
