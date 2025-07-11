@@ -153,6 +153,7 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
             productName={product?.name || 'Sản phẩm'}
             galleryUrl={product?.gallery_url}
             mainImageUrl={product?.image_url}
+            galleryArray={product?.gallery_array}
             videoInfo={product?.video_url ? {
               videoUrl: product.video_url,
               thumbnail: product?.image_url || ''

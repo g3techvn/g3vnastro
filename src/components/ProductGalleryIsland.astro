@@ -5,6 +5,7 @@ export interface Props {
   productName: string;
   galleryUrl?: string;
   mainImageUrl?: string;
+  galleryArray?: string[];
   videoInfo?: {
     videoUrl: string;
     thumbnail: string;
@@ -16,9 +17,14 @@ const {
   productName, 
   galleryUrl, 
   mainImageUrl,
+  galleryArray,
   videoInfo,
   className = "" 
 } = Astro.props;
+
+const filteredGalleryArray = galleryArray?.filter(
+  (img) => img !== mainImageUrl
+);
 ---
 
 <ProductGallery 
@@ -26,6 +32,7 @@ const {
   productName={productName}
   galleryUrl={galleryUrl}
   mainImageUrl={mainImageUrl}
+  galleryArray={filteredGalleryArray}
   videoInfo={videoInfo}
   className={className}
 /> 

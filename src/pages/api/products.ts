@@ -31,7 +31,10 @@ export const GET: APIRoute = async ({ url }) => {
       return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 
-    return new Response(JSON.stringify({ products: data || [] }), {
+    return new Response(JSON.stringify({ products: (data || []).map(product => ({
+      ...product,
+      gallery_array: product.gallery_array || []
+    })) }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
