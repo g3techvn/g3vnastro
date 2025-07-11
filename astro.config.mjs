@@ -5,18 +5,24 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import path from 'path';
 
+import node from '@astrojs/node';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://g-3.vn',
+
   integrations: [
     react(),
     tailwind(),
     sitemap(),
   ],
+
   output: 'static',
+
   build: {
     assets: 'assets'
   },
+
   vite: {
     optimizeDeps: {
       include: ['@supabase/supabase-js']
@@ -26,5 +32,9 @@ export default defineConfig({
         '@': path.resolve('./src')
       }
     }
-  }
+  },
+
+  adapter: node({
+    mode: 'standalone'
+  })
 });

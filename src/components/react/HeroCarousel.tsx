@@ -114,7 +114,7 @@ export default function HeroCarousel() {
 
   return (
     <section 
-      className="relative overflow-hidden w-full h-[600px] lg:h-[700px] group rounded-2xl"
+      className="relative overflow-hidden w-full h-[600px]  group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       role="region"

@@ -112,7 +112,7 @@ export default function NewProducts({ products: initialProducts = [] }: NewProdu
 
   if (loading) {
     return (
-      <section className="py-8 bg-gray-100">
+      <section className="mx-10 py-8 bg-gray-100">
         <div className="">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold border-b-2 border-gray-300 pb-2 uppercase">
@@ -135,7 +135,7 @@ export default function NewProducts({ products: initialProducts = [] }: NewProdu
 
   if (error) {
     return (
-      <section className="py-8 bg-gray-100">
+      <section className="mx-10 py-8 bg-gray-100">
         <div className="">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold border-b-2 border-gray-300 pb-2 uppercase">
@@ -155,7 +155,7 @@ export default function NewProducts({ products: initialProducts = [] }: NewProdu
   }
 
   return (
-    <section className="py-8 bg-gray-100">
+    <section className="mx-10 py-8 bg-gray-100">
       <div className="relative">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold border-b-2 border-gray-300 pb-2 uppercase">

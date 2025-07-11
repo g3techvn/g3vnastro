@@ -33,7 +33,7 @@ const ProductPage: React.FC = () => {
   };
 
   return (
-    <div className="py-8">
+    <div className="mx-10 py-8">
       {/* Mobile Filter Button */}
       <div className="md:hidden px-4 mb-4">
         <button

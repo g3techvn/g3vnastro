@@ -111,7 +111,7 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
 
   if (loading) {
     return (
-      <section className="py-8 bg-gray-100">
+      <section className="mx-10 py-8 bg-gray-100">
         <div className="">
           <h2 className="text-xl font-bold border-b-2 border-gray-300 pb-2 mb-6 uppercase">
             Combo sản phẩm
@@ -135,7 +135,7 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
 
   if (error) {
     return (
-      <section className="py-8 bg-gray-100">
+      <section className="mx-10 py-8 bg-gray-100">
         <div className="">
           <h2 className="text-xl font-bold border-b-2 border-gray-300 pb-2 mb-6 uppercase">
             Combo sản phẩm
@@ -159,7 +159,7 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
   }
 
   return (
-    <section className="py-8 bg-gray-100">
+    <section className="mx-10 py-8 bg-gray-100">
       <div className="">
         <h2 className="text-xl font-bold border-b-2 border-gray-300 pb-2 mb-6 uppercase">
           Sản phẩm ghế công thái học Gami

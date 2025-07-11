@@ -100,7 +100,7 @@ const CategorySection: React.FC = () => {
   ];
 
   return (
-    <section className=" relative py-12">
+    <section className="mx-10 relative py-12">
       <div className="w-full mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {categories.map((category, idx) => (

@@ -25,7 +25,7 @@ const supports = [
 
 const SupportSection: React.FC = () => {
   return (
-    <div className="pt-10">
+    <div className="mx-10 py-10">
       <h2 className="text-2xl uppercase font-bold mb-5">Bạn cần trợ giúp?</h2>
       <div className="flex gap-6 justify-center">
         {supports.map((item, idx) => (

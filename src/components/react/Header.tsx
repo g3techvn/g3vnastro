@@ -1,28 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { productAPI } from '../../lib/supabase';
 
-// Constants
-const COMPANY_INFO = {
-  name: 'Công Ty Cổ phần Công nghệ G3 Việt Nam',
-  hotline: '0979983355',
-  email: 'info@g-3.vn',
-  address: 'Tầng 7, Tòa nhà Charmvit, số 117 Trần Duy Hưng, Q. Cầu Giấy, TP. Hà Nội.',
-  website: 'https://g-3.vn',
-  workingHours: '8:00 - 17:30 (Thứ 2 - Thứ 6)',
-  zalo: 'https://zalo.me/0979983355',
-};
+const navigation = [
 
-const SOCIAL_LINKS = [
-  { name: 'Shopee', href: 'https://shopee.vn/g3tech' },
-  { name: 'Facebook', href: 'https://www.facebook.com/g3.vntech/' },
-  { name: 'Tiktok', href: 'https://www.tiktok.com/@g3tech.vn' },
-  { name: 'Youtube', href: 'https://www.youtube.com/@g3-tech' },
+  { name: 'Cửa hàng', href: '/san-pham', current: false },
+  { name: 'Hướng dẫn', href: '/faq-demo', current: false },
+  { name: 'Chính sách', href: '/noi-dung/chinh-sach-bao-hanh-g3', current: false },
+  { name: 'Liên hệ', href: '/lien-he', current: false },
+  { name: 'Giới thiệu', href: '/about', current: false },
 ];
-
-// Helper function to format phone number
-const formatPhoneNumber = (phone: string) => {
-  return phone.replace(/(\d{4})(\d{3})(\d{3})/, '$1.$2.$3');
-};
 
 interface Product {
   id: string;
@@ -33,61 +22,23 @@ interface Product {
   image_url?: string;
 }
 
-interface HeaderProps {
-  totalItems?: number;
-}
-
-const Header: React.FC<HeaderProps> = ({ totalItems = 0 }) => {
-  const [isSticky, setIsSticky] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
+const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
-
-  // Handle scroll behavior for sticky header
-  useEffect(() => {
-    const controlHeader = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > 0) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', controlHeader);
-    return () => {
-      window.removeEventListener('scroll', controlHeader);
-    };
-  }, [lastScrollY]);
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowResults(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  useEffect(() => {
-    // Fetch products on mount
     const fetchProducts = async () => {
       setLoadingProducts(true);
       try {
-        const data = await productAPI.getProducts(100, 0); // fetch 100 sản phẩm đầu tiên
-        console.log('Fetched products:', data); // DEBUG LOG
+        const data = await productAPI.getProducts(100, 0);
         setProducts(data || []);
       } catch (err) {
-        console.error('Error fetching products:', err); // DEBUG LOG
         setProducts([]);
       } finally {
         setLoadingProducts(false);
@@ -96,6 +47,24 @@ const Header: React.FC<HeaderProps> = ({ totalItems = 0 }) => {
     fetchProducts();
   }, []);
 
+  // Close modal on ESC
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleCloseSearch();
+    };
+    if (showSearchModal) {
+      document.addEventListener('keydown', handleEsc);
+      return () => document.removeEventListener('keydown', handleEsc);
+    }
+  }, [showSearchModal]);
+
+  // Focus input when modal opens
+  useEffect(() => {
+    if (showSearchModal && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showSearchModal]);
+
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     if (!query.trim()) {
@@ -103,284 +72,180 @@ const Header: React.FC<HeaderProps> = ({ totalItems = 0 }) => {
       setShowResults(false);
       return;
     }
-    try {
-      const searchTerm = query.toLowerCase();
-      const filtered = products.filter(product => 
-        product.name.toLowerCase().includes(searchTerm)
-      );
-      setSearchResults(filtered);
-      setShowResults(true);
-    } catch (err) {
-      console.error('Error in search filter:', err); // DEBUG LOG
-      setSearchResults([]);
-      setShowResults(false);
-    }
+    const searchTerm = query.toLowerCase();
+    const filtered = products.filter(product => 
+      product.name.toLowerCase().includes(searchTerm)
+    );
+    setSearchResults(filtered);
+    setShowResults(true);
   };
 
   const handleProductClick = (product: Product) => {
     setShowResults(false);
     setSearchQuery('');
+    setShowSearchModal(false);
     window.location.href = `/san-pham/${product.slug || product.id}`;
   };
 
-  const openCart = () => {
-    window.location.href = '/gio-hang';
-  };
-
-
-
-  const handleCategoriesClick = () => {
-    const event = new CustomEvent('toggleStickyNav', { detail: { open: true } });
-    document.dispatchEvent(event);
+  const handleOpenSearch = () => setShowSearchModal(true);
+  const handleCloseSearch = () => {
+    setShowSearchModal(false);
+    setSearchQuery('');
+    setSearchResults([]);
   };
 
   return (
-    <header className="bg-gray-100 py-2">
-      {/* Top Header Section */}
-      <div 
-        className={`container mx-auto bg-white px-4 py-3 rounded-lg 
-          ${isSticky ? 'fixed top-2 left-0 translate-x-16 right-16 z-50 shadow-md px-4 md:mx-auto mx-0' : ''}`}>
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <a href="/" className="flex-shrink-0">
-            <img
-              src="/images/logo-g3.svg"
-              alt="G3 Logo"
-              className="h-12 w-auto"
-            />
-          </a>
-          
-          {/* Search Bar - Desktop Only */}
-          <div className="hidden md:block flex-grow max-w-3xl mx-8">
-            <div ref={searchRef} className="relative w-full">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Nhập từ khóa tìm sản phẩm..."
-                className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500"
+    <Disclosure as="nav" className="bg-white shadow-sm">
+      <div className="mx-auto container px-2 sm:px-4 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Left: Logo */}
+          <div className="flex flex-1 items-center">
+            <a href="/">
+              <img
+                alt="G3 Logo"
+                src="/images/logo-g3.svg"
+                className="h-8 w-auto"
               />
-              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-
-              {/* Search Results Dropdown */}
-              {showResults && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg max-h-[60vh] overflow-y-auto z-50">
-                  {loadingProducts ? (
-                    <div className="p-4 text-center text-gray-500">Đang tải sản phẩm...</div>
-                  ) : searchResults.length > 0 ? (
-                    <div className="p-2">
-                      {searchResults.map((product) => (
-                        <div
-                          key={product.id}
-                          onClick={() => handleProductClick(product)}
-                          className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer"
-                        >
-                          <div className="w-12 h-12 relative flex-shrink-0">
-                            <img
-                              src={product.image_url || '/images/placeholder-product.jpg'}
-                              alt={product.name}
-                              className="object-cover rounded-md w-full h-full"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium text-gray-900 truncate">
-                              {product.name}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="text-sm text-red-600 font-semibold">
-                                {product.price.toLocaleString()}₫
-                              </div>
-                              {product.original_price && product.original_price > product.price && (
-                                <div className="text-xs text-gray-400 line-through">
-                                  {product.original_price.toLocaleString()}₫
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="p-4 text-center text-gray-500">Không tìm thấy sản phẩm nào</div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-          
-          {/* Hotline - Desktop Only */}
-          <div className="hidden md:flex items-center">
-            <a href={`tel:${COMPANY_INFO.hotline}`} className="flex items-center hover:text-red-600">
-              <div className="mr-2">
-                <div className="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                </div>
-              </div>
-              <div>
-                <div className="text-sm text-gray-600">HOTLINE:</div>
-                <div className="text-lg font-bold text-black">{formatPhoneNumber(COMPANY_INFO.hotline)}</div>
-              </div>
             </a>
           </div>
-          
-          {/* Shopping Cart */}
-          <div className="flex items-center">
-            <button onClick={openCart} className="text-gray-700 hover:text-red-600 relative">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {/* Spacer for sticky header */}
-      {isSticky && <div className="h-20"></div>}
-      
-      {/* Main Navigation Section */}
-      <div className="bg-gray-100 border-gray-200 hidden md:block">
-        <div className="container bg-white my-2 mx-auto px-4 rounded-lg">
-          <div className="flex items-center justify-between">
-            {/* Categories Menu Button */}
-            <div className="relative py-3 text-sm">
-              <button 
-                onClick={handleCategoriesClick}
-                className="flex items-center space-x-2 text-gray-800 font-medium cursor-pointer hover:text-red-600"
+          {/* Center: Menu */}
+          <div className="hidden lg:flex flex-1 justify-center">
+            {navigation.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className={`inline-flex items-center border-b-2 px-4 pt-1 text-sm font-medium ${item.current ? 'border-red-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-                <span>DANH MỤC SẢN PHẨM</span>
-              </button>
-            </div>
-            
-            {/* Main Navigation Links - Desktop Only */}
-            <nav className="hidden md:flex">
-              <ul className="flex items-center space-x-1">
-                {/* Home */}
-                <li>
-                  <a href="/" className="flex items-center px-3 py-3 text-red-600 text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    TRANG CHỦ
-                  </a>
-                </li>
-
-                {/* Store */}
-                <li>
-                  <a href="/san-pham" className="flex items-center px-3 py-3 text-gray-700 hover:text-red-600 text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                    CỬA HÀNG
-                  </a>
-                </li>
-
-                {/* Guide */}
-                <li>
-                  <a href="#" className="flex items-center px-3 py-3 text-gray-700 hover:text-red-600 text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    HƯỚNG DẪN
-                  </a>
-                </li>
-
-                {/* Policy */}
-                <li className="relative group">
-                  <button className="flex items-center px-3 py-3 text-gray-700 hover:text-red-600 text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    CHÍNH SÁCH
-                  </button>
-                  <div className="absolute left-0 top-full mt-1 w-48 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                    <a href="/noi-dung/chinh-sach-bao-hanh-g3" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Chính sách bảo hành
-                    </a>
-                    <a href="/noi-dung/chinh-sach-doi-tra-g3" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Chính sách đổi trả
-                    </a>
-                    <a href="/noi-dung/chinh-sach-bao-mat-g3" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Chính sách bảo mật
-                    </a>
-                    <a href="/noi-dung/chinh-sach-thanh-toan-g3" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Chính sách thanh toán
-                    </a>
-                    <a href="/noi-dung/chinh-sach-kiem-hang-g3" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Chính sách kiểm hàng
-                    </a>
-                    <a href="/noi-dung/chinh-sach-van-chuyen-g3" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Chính sách vận chuyển
-                    </a>
-                  </div>
-                </li>
-
-                {/* Contact */}
-                <li>
-                  <a href="/lien-he" className="flex items-center px-3 py-3 text-gray-700 hover:text-red-600 text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    LIÊN HỆ
-                  </a>
-                </li>
-
-                {/* About */}
-                <li>
-                  <a href="/about" className="flex items-center px-3 py-3 text-gray-700 hover:text-red-600 text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    GIỚI THIỆU
-                  </a>
-                </li>
-              </ul>
-            </nav>
-            
-            {/* Social Media Links - Desktop Only */}
-            <div className="hidden md:flex items-center space-x-2">
-              <a href={SOCIAL_LINKS[1].href} aria-label="Facebook" className="text-gray-600 hover:text-red-600" target="_blank" rel="noopener noreferrer">
-                <img src="/images/icon/facebook-round-color-icon.svg" alt="Facebook" className="h-5 w-5" />
+                {item.name}
               </a>
-            
-              <a href={SOCIAL_LINKS[2].href} aria-label="Tiktok" className="text-gray-600 hover:text-red-600" target="_blank" rel="noopener noreferrer">
-                <img src="/images/icon/tiktok-circle.svg" alt="Tiktok" className="h-6 w-6" />   
-              </a>
-             
-              <a href={SOCIAL_LINKS[3].href} aria-label="Youtube" className="text-gray-600 hover:text-red-600" target="_blank" rel="noopener noreferrer">
-                <img src="/images/icon/youtube-music-icon.svg" alt="Youtube" className="h-5 w-5" />   
-              </a>
-
-              <a href={SOCIAL_LINKS[0].href} aria-label="Shopee" className="text-gray-600 hover:text-red-600" target="_blank" rel="noopener noreferrer">
-                <img src="/images/icon/shopee-icon.svg" alt="Shopee" className="h-5 w-5" />
-              </a>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button className="text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
+            ))}
+          </div>
+          {/* Right: Actions */}
+          <div className="flex flex-1 items-center justify-end gap-2">
+            {/* Search Icon */}
+            <button onClick={handleOpenSearch} className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500">
+              <MagnifyingGlassIcon className="size-6 text-gray-500" />
+              <span className="sr-only">Tìm kiếm sản phẩm</span>
+            </button>
+            {/* Notification */}
+            <button
+              type="button"
+              className="relative shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-hidden"
+            >
+              <span className="absolute -inset-1.5" />
+              <span className="sr-only">View notifications</span>
+              <BellIcon aria-hidden="true" className="size-6" />
+            </button>
+            {/* Profile dropdown */}
+            <Menu as="div" className="relative ml-2 shrink-0">
+              <div>
+                <MenuButton className="relative flex rounded-full bg-white text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2">
+                  <span className="absolute -inset-1.5" />
+                  <span className="sr-only">Open user menu</span>
+                  <img
+                    alt=""
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    className="size-8 rounded-full"
+                  />
+                </MenuButton>
+              </div>
+              <MenuItems
+                transition
+                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+              >
+                <MenuItem>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                  >
+                    Your Profile
+                  </a>
+                </MenuItem>
+                <MenuItem>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                  >
+                    Settings
+                  </a>
+                </MenuItem>
+                <MenuItem>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                  >
+                    Sign out
+                  </a>
+                </MenuItem>
+              </MenuItems>
+            </Menu>
           </div>
         </div>
       </div>
-    </header>
+      {/* Search Modal */}
+      {showSearchModal && (
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center pt-24" onClick={handleCloseSearch}>
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-lg mx-auto p-4 relative" onClick={e => e.stopPropagation()}>
+            <input
+              ref={inputRef}
+              name="search"
+              type="search"
+              value={searchQuery}
+              onChange={e => handleSearch(e.target.value)}
+              placeholder="Tìm kiếm sản phẩm"
+              className="block w-full rounded-md border border-gray-300 py-2 pr-3 pl-10 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 mb-2"
+              autoFocus
+            />
+            <MagnifyingGlassIcon
+              aria-hidden="true"
+              className="absolute left-4 top-7 size-5 text-gray-400 pointer-events-none"
+            />
+            {/* Search Results Dropdown */}
+            <div className="max-h-[60vh] overflow-y-auto">
+              {loadingProducts ? (
+                <div className="p-4 text-center text-gray-500">Đang tải sản phẩm...</div>
+              ) : searchResults.length > 0 ? (
+                <div className="p-2">
+                  {searchResults.map((product) => (
+                    <div
+                      key={product.id}
+                      onClick={() => handleProductClick(product)}
+                      className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer"
+                    >
+                      <div className="w-12 h-12 relative flex-shrink-0">
+                        <img
+                          src={product.image_url || '/images/placeholder-product.jpg'}
+                          alt={product.name}
+                          className="object-cover rounded-md w-full h-full"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-gray-900 truncate">
+                          {product.name}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="text-sm text-red-600 font-semibold">
+                            {product.price.toLocaleString()}₫
+                          </div>
+                          {product.original_price && product.original_price > product.price && (
+                            <div className="text-xs text-gray-400 line-through">
+                              {product.original_price.toLocaleString()}₫
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-4 text-center text-gray-500">Không tìm thấy sản phẩm nào</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Mobile menu panel (optional, not implemented for now) */}
+    </Disclosure>
   );
 };
 
