@@ -68,7 +68,13 @@ export default function ProductGallery({
     const fetchGalleryImages = async () => {
       if (galleryArray && Array.isArray(galleryArray) && galleryArray.length > 0) {
         // Ưu tiên dùng galleryArray nếu có
-        const items: GalleryItem[] = galleryArray.map(url => ({ type: 'image', url }));
+        const items: GalleryItem[] = galleryArray.map(url => {
+          let newUrl = url;
+          if (url.startsWith('/g3tech/') && /\.(jpg|jpeg|png|webp)$/i.test(url)) {
+            newUrl = url.replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
+          }
+          return { type: 'image', url: newUrl };
+        });
         if (mainImageUrl && !galleryArray.includes(mainImageUrl)) {
           items.unshift({ type: 'image', url: mainImageUrl });
         }
