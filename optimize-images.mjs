@@ -1,4 +1,5 @@
-// Script tối ưu ảnh trong dist/g3tech, thay thế ảnh gốc bằng .avif sau khi build
+// Script tối ưu ảnh trong public/g3tech, lưu file .avif vào public/g3tech-otm, giữ nguyên ảnh gốc
+// Bỏ qua ảnh đã tối ưu (nếu file .avif đã tồn tại)
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
@@ -8,7 +9,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp'];
-const G3TECH_DIST_DIR = path.join(__dirname, 'dist', 'g3tech');
+const G3TECH_DIR = path.join(__dirname, 'public', 'g3tech');
+const G3TECH_OTM_DIR = path.join(__dirname, 'public', 'g3tech-otm');
 
 function getAllImageFiles(dir) {
   let results = [];
@@ -26,23 +28,35 @@ function getAllImageFiles(dir) {
   return results;
 }
 
-async function convertToAvifAndReplace(filePath) {
+function getOtmPath(originalPath) {
+  // Lấy path tương đối từ G3TECH_DIR
+  const relPath = path.relative(G3TECH_DIR, originalPath);
+  // Đổi đuôi sang .avif
+  const avifRelPath = relPath.replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
+  return path.join(G3TECH_OTM_DIR, avifRelPath);
+}
+
+async function convertToAvifAndSave(filePath) {
   try {
-    const avifPath = filePath.replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
+    const avifPath = getOtmPath(filePath);
+    if (fs.existsSync(avifPath)) {
+      console.log('Skip (already optimized):', avifPath);
+      return;
+    }
+    fs.mkdirSync(path.dirname(avifPath), { recursive: true });
     await sharp(filePath).avif({ quality: 50 }).toFile(avifPath);
-    fs.unlinkSync(filePath); // Xóa file gốc
-    console.log('Replaced', filePath, 'with', avifPath);
+    console.log('Optimized', filePath, '->', avifPath);
   } catch (err) {
     console.error('Error converting', filePath, err);
   }
 }
 
 async function main() {
-  const files = getAllImageFiles(G3TECH_DIST_DIR);
+  const files = getAllImageFiles(G3TECH_DIR);
   for (const file of files) {
-    await convertToAvifAndReplace(file);
+    await convertToAvifAndSave(file);
   }
-  console.log('All images in dist/g3tech have been replaced with AVIF!');
+  console.log('All images in public/g3tech have been optimized to AVIF in public/g3tech-otm!');
 }
 
 main();

@@ -71,7 +71,7 @@ export default function ProductGallery({
         const items: GalleryItem[] = galleryArray.map(url => {
           let newUrl = url;
           if (url.startsWith('/g3tech/') && /\.(jpg|jpeg|png|webp)$/i.test(url)) {
-            newUrl = url.replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
+            newUrl = url.replace(/^\/g3tech\//, '/g3tech-otm/').replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
           }
           return { type: 'image', url: newUrl };
         });
