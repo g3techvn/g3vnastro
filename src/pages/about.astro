@@ -1,46 +1,318 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero3D from '../components/Hero3D.astro';
+import AboutIntro from '../components/AboutIntro.astro';
+import MissionVision from '../components/MissionVision.astro';
+import CoreValues from '../components/CoreValues.astro';
+import ShowroomGalleryIsland from '../components/ShowroomGalleryIsland.astro';
+import Timeline from '../components/Timeline.astro';
+import TeamMembers from '../components/TeamMembers.astro';
+import CTA3D from '../components/CTA3D.astro';
 ---
-<Layout title="Giới thiệu - G3 TECH" description="G3 TECH là cửa hàng chuyên cung cấp phụ kiện điện thoại, máy ảnh và thiết bị điện tử chính hãng tại Việt Nam.">
-  <main class="min-h-screen py-12">
-    <div class="container mx-auto px-4">
-      <h1 class="text-3xl font-bold mb-6">Về G3 TECH</h1>
-      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h2 class="text-xl font-bold mb-4">Giới thiệu</h2>
-        <p class="text-gray-700 mb-4">
-          G3 TECH là cửa hàng chuyên cung cấp phụ kiện điện thoại, máy ảnh và thiết bị điện tử chính hãng tại Việt Nam.
-          Chúng tôi tự hào là đối tác chính thức của nhiều thương hiệu nổi tiếng như GoPro, Insta360, Ulanzi, và nhiều hãng khác.
-        </p>
-        <p class="text-gray-700 mb-4">
-          Với hơn 10 năm kinh nghiệm trong ngành, G3 TECH cam kết mang đến cho khách hàng những sản phẩm chất lượng cao,
-          giá cả hợp lý và dịch vụ chăm sóc khách hàng tận tâm.
-        </p>
-      </div>
-      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h2 class="text-xl font-bold mb-4">Cam kết của chúng tôi</h2>
-        <ul class="list-disc list-inside space-y-2 text-gray-700">
-          <li>Sản phẩm chính hãng 100%</li>
-          <li>Bảo hành theo tiêu chuẩn nhà sản xuất</li>
-          <li>Giao hàng toàn quốc</li>
-          <li>Đổi trả trong vòng 7 ngày</li>
-          <li>Hỗ trợ kỹ thuật 24/7</li>
-        </ul>
-      </div>
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-xl font-bold mb-4">Liên hệ</h2>
-        <p class="text-gray-700 mb-2">
-          <strong>Địa chỉ:</strong> Số 4 ngách 12, ngõ 135 Nguyễn Văn Cừ, Long Biên, Hà Nội
-        </p>
-        <p class="text-gray-700 mb-2">
-          <strong>Điện thoại:</strong> 0979 983 355
-        </p>
-        <p class="text-gray-700 mb-2">
-          <strong>Email:</strong> info@g3tech.vn
-        </p>
-        <p class="text-gray-700 mb-2">
-          <strong>Thời gian làm việc:</strong> 9:00 - 20:00
-        </p>
-      </div>
-    </div>
+
+<Layout 
+  title="Giới thiệu - G3 Technology | Công ty Cổ phần Công nghệ G3" 
+  description="G3 Technology là công ty chuyên cung cấp giải pháp nội thất công thái học cho doanh nghiệp hiện đại. Khám phá hành trình phát triển và tầm nhìn của chúng tôi."
+>
+  <main>
+    <!-- Hero Section với 3D Background -->
+    <Hero3D />
+    
+    <!-- About Introduction -->
+    <AboutIntro />
+    
+    <!-- Mission & Vision -->
+    <MissionVision />
+    
+    <!-- Core Values -->
+    <CoreValues />
+    
+    <!-- Showroom Gallery 3D Demo -->
+    <ShowroomGalleryIsland />
+    
+    <!-- Timeline phát triển -->
+    <Timeline />
+    
+    <!-- Team Members -->
+    <TeamMembers />
+    
+    <!-- CTA cuối trang -->
+    <CTA3D />
   </main>
-</Layout> 
+</Layout>
+
+<style>
+  /* Global styles for smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Enhanced animations for modern feel */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  /* Modern scroll effects */
+  @supports (scroll-behavior: smooth) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  
+  /* Enhanced backdrop blur for better visual hierarchy */
+  .backdrop-blur-glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+  }
+  
+  /* Custom gradient text effects */
+  .gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Enhanced shadow effects */
+  .shadow-neumorphism {
+    box-shadow: 
+      20px 20px 60px #bebebe,
+      -20px -20px 60px #ffffff;
+  }
+  
+  /* Modern button effects */
+  .btn-modern {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 30px;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  .btn-modern:hover::before {
+    left: 100%;
+  }
+  
+  .btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Modern card effects */
+  .card-modern {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .card-modern:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Responsive typography */
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+      line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+  }
+  
+  /* Print styles */
+  @media print {
+    .no-print {
+      display: none;
+    }
+    
+    body {
+      font-size: 12pt;
+      line-height: 1.4;
+    }
+    
+    h1, h2, h3 {
+      page-break-after: avoid;
+    }
+  }
+</style>
+
+<script>
+  // Add modern scroll effects and interactions
+  document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+    
+    // Add scroll-triggered animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fadeInUp');
+        }
+      });
+    }, observerOptions);
+    
+    // Observe all sections
+    document.querySelectorAll('section').forEach(section => {
+      observer.observe(section);
+    });
+    
+    // Add parallax effect for hero section
+    let ticking = false;
+    
+    function updateScrollEffect() {
+      const scrolled = window.pageYOffset;
+      const parallaxElements = document.querySelectorAll('.parallax-element');
+      
+      parallaxElements.forEach(element => {
+        const speed = element.dataset.speed || 0.5;
+        const yPos = -(scrolled * speed);
+        element.style.transform = `translateY(${yPos}px)`;
+      });
+      
+      ticking = false;
+    }
+    
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(updateScrollEffect);
+        ticking = true;
+      }
+    }
+    
+    window.addEventListener('scroll', requestTick);
+    
+    // Add loading state management
+    window.addEventListener('load', function() {
+      document.body.classList.add('loaded');
+    });
+    
+    // Enhanced mobile menu handling
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (mobileMenuToggle && mobileMenu) {
+      mobileMenuToggle.addEventListener('click', function() {
+        mobileMenu.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
+      });
+    }
+    
+    // Add keyboard navigation support
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        // Close any open modals or menus
+        document.querySelectorAll('.modal, .menu').forEach(element => {
+          element.classList.remove('active');
+        });
+        document.body.classList.remove('menu-open');
+      }
+    });
+    
+    // Progressive enhancement for form elements
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        // Add loading state
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+          submitButton.classList.add('loading');
+          submitButton.disabled = true;
+        }
+      });
+    });
+    
+    // Add touch gesture support for mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+    
+    document.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    });
+    
+    document.addEventListener('touchmove', function(e) {
+      if (!touchStartX || !touchStartY) return;
+      
+      const touchEndX = e.touches[0].clientX;
+      const touchEndY = e.touches[0].clientY;
+      
+      const deltaX = touchStartX - touchEndX;
+      const deltaY = touchStartY - touchEndY;
+      
+      // Add custom touch gestures here if needed
+      // For example: swipe to navigate between sections
+    });
+    
+    // Performance optimization: lazy load images
+    const imageObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.classList.remove('lazy');
+            imageObserver.unobserve(img);
+          }
+        }
+      });
+    });
+    
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      imageObserver.observe(img);
+    });
+  });
+</script> 

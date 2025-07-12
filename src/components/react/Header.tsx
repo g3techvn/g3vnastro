@@ -95,11 +95,11 @@ const Header: React.FC = () => {
   };
 
   return (
-    <Disclosure as="nav" className="bg-white shadow-sm">
+    <Disclosure as="nav" className="fixed top-0 left-0 w-full z-50 bg-white/30 backdrop-blur-xl border-b border-white/30 shadow-sm">
       <div className="mx-auto container px-2 sm:px-4 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-12 items-center justify-between">
           {/* Left: Logo */}
-          <div className="flex flex-1 items-center">
+          <div className="flex flex-[3] items-center">
             <a href="/">
               <img
                 alt="G3 Logo"
@@ -109,19 +109,26 @@ const Header: React.FC = () => {
             </a>
           </div>
           {/* Center: Menu */}
-          <div className="hidden lg:flex flex-1 justify-center">
+          <div className="hidden lg:flex flex-[6] justify-center items-stretch h-12">
             {navigation.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className={`inline-flex items-center border-b-2 px-4 pt-1 text-sm font-medium ${item.current ? 'border-red-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}
+                className={`inline-flex items-center h-full border-b-2 px-4 text-sm text-gray-900 text-shadow-md font-medium ${item.current ? 'border-red-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}
               >
                 {item.name}
               </a>
             ))}
           </div>
           {/* Right: Actions */}
-          <div className="flex flex-1 items-center justify-end gap-2">
+          <div className="flex flex-[3] items-center justify-end gap-2 ">
+            {/* Doanh nghiệp button */}
+            <a
+              href="/doanh-nghiep"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-red-500 text-white text-sm font-semibold shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition"
+            >
+              Doanh nghiệp
+            </a>
             {/* Search Icon */}
             <button onClick={handleOpenSearch} className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500">
               <MagnifyingGlassIcon className="size-6 text-gray-500" />

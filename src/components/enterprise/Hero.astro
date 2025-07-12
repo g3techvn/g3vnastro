@@ -1,0 +1,245 @@
+---
+// Hero section for enterprise landing page
+---
+
+<section class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen flex items-center">
+  <!-- Background pattern -->
+  <div class="absolute inset-0 bg-black/20"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+  
+  <!-- Parallax Background images -->
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent z-10"></div>
+    <img 
+      src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop&crop=center"
+      alt="Modern office workspace with ergonomic furniture" 
+      class="w-full h-full object-cover opacity-60 parallax-bg"
+    />
+  </div>
+  
+  <!-- Content -->
+  <div class="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Content -->
+      <div class="text-center lg:text-left fade-in-up">
+        <!-- Badge -->
+        <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/20 text-blue-300 text-sm font-medium mb-8 backdrop-blur-sm border border-blue-400/30">
+          <span class="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse"></span>
+          Giải pháp chuyên nghiệp cho doanh nghiệp
+        </div>
+        
+        <!-- Main headline -->
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          Giải pháp nội thất 
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 animate-gradient">
+            công thái học
+          </span>
+          <br class="hidden sm:block">
+          cho doanh nghiệp hiện đại
+        </h1>
+        
+        <!-- Description -->
+        <p class="text-lg sm:text-xl text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+          Tối ưu hiệu suất làm việc & sức khỏe nhân viên với không gian làm việc được thiết kế theo chuẩn công thái học quốc tế
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <a 
+            href="#quote-form" 
+            class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold text-lg shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
+          >
+            <svg class="w-5 h-5 mr-2 group-hover:animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            Nhận tư vấn thiết kế
+          </a>
+          <a 
+            href="#services" 
+            class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-lg hover:bg-white/20 transition-all duration-300"
+          >
+            <svg class="w-5 h-5 mr-2 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+            Khám phá dịch vụ
+          </a>
+        </div>
+        
+        <!-- Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/10">
+          <div class="text-center lg:text-left group hover:scale-105 transition-transform duration-300">
+            <div class="text-3xl font-bold text-white mb-1 counter" data-count="500">0</div>
+            <div class="text-sm text-gray-400">Doanh nghiệp tin tưởng</div>
+          </div>
+          <div class="text-center lg:text-left group hover:scale-105 transition-transform duration-300">
+            <div class="text-3xl font-bold text-white mb-1 counter" data-count="10000">0</div>
+            <div class="text-sm text-gray-400">Nhân viên được trang bị</div>
+          </div>
+          <div class="text-center lg:text-left col-span-2 sm:col-span-1 group hover:scale-105 transition-transform duration-300">
+            <div class="text-3xl font-bold text-white mb-1">24/7</div>
+            <div class="text-sm text-gray-400">Hỗ trợ bảo hành</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Content - Image Gallery -->
+      <div class="relative lg:block hidden fade-in-right">
+        <div class="grid grid-cols-2 gap-4 transform perspective-1000">
+          <!-- Main showcase image -->
+          <div class="col-span-2 relative overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105">
+            <img 
+              src="https://images.unsplash.com/photo-1541746972996-4e0b0f93e586?w=800&h=400&fit=crop&crop=center"
+              alt="Modern ergonomic office setup"
+              class="w-full h-64 object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <div class="text-lg font-semibold">Văn phòng hiện đại</div>
+              <div class="text-sm text-gray-300">Thiết kế công thái học</div>
+            </div>
+          </div>
+          
+          <!-- Secondary images -->
+          <div class="relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:rotate-2">
+            <img 
+              src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop&crop=center"
+              alt="Ergonomic office chair"
+              class="w-full h-32 object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            <div class="absolute bottom-2 left-2 text-white text-sm font-medium">
+              Ghế công thái học
+            </div>
+          </div>
+          
+          <div class="relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-rotate-2">
+            <img 
+              src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=400&h=300&fit=crop&crop=center"
+              alt="Height adjustable desk"
+              class="w-full h-32 object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            <div class="absolute bottom-2 left-2 text-white text-sm font-medium">
+              Bàn nâng hạ điện
+            </div>
+          </div>
+          
+          <!-- Floating elements -->
+          <div class="absolute -top-6 -right-6 w-12 h-12 bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
+          <div class="absolute -bottom-6 -left-6 w-8 h-8 bg-cyan-500/20 rounded-full blur-lg animate-pulse delay-1000"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+    </svg>
+  </div>
+</section>
+
+<style>
+  @keyframes gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+  
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  .fade-in-right {
+    opacity: 0;
+    transform: translateX(30px);
+    animation: fadeInRight 1s ease-out 0.3s forwards;
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInRight {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .parallax-bg {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .hover\:shadow-3xl:hover {
+    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.5);
+  }
+  
+  .counter {
+    transition: all 0.3s ease;
+  }
+</style>
+
+<script>
+  // Counter animation
+  document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.counter');
+    
+    const animateCounter = (counter) => {
+      const target = parseInt(counter.getAttribute('data-count') || '0');
+      const duration = 2000;
+      const start = 0;
+      const increment = target / (duration / 16);
+      let current = start;
+      
+      const updateCounter = () => {
+        current += increment;
+        if (current < target) {
+          counter.textContent = Math.floor(current).toLocaleString();
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = target.toLocaleString() + '+';
+        }
+      };
+      
+      updateCounter();
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+    
+    counters.forEach(counter => {
+      observer.observe(counter);
+    });
+  });
+  
+  // Parallax effect
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallaxBg = document.querySelector('.parallax-bg');
+    if (parallaxBg && parallaxBg.style) {
+      parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+    }
+  });
+</script> 

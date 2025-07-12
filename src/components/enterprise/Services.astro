@@ -1,0 +1,273 @@
+---
+// Services section for enterprise landing page
+import { COMPANY_INFO } from '../../constants';
+---
+
+<section id="services" class="py-20 bg-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+        Giải pháp 
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+          tổng thể
+        </span>
+        cho doanh nghiệp
+      </h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Từ thiết kế đến thi công, chúng tôi cung cấp giải pháp hoàn chỉnh cho không gian làm việc của bạn
+      </p>
+    </div>
+    
+    <!-- Services Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Service 1 -->
+      <div class="group relative bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 border border-blue-200 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="absolute top-4 right-4 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        
+        <!-- Service Image -->
+        <div class="relative mb-6 overflow-hidden rounded-xl shadow-lg">
+          <img 
+            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=200&fit=crop&crop=center"
+            alt="Ergonomic office chair"
+            class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="w-16 h-16 bg-blue-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+          Ghế công thái học cho nhân viên
+        </h3>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Bộ sưu tập ghế văn phòng đa dạng từ phân khúc phổ thông đến cao cấp, phù hợp với mọi nhu cầu và ngân sách
+        </p>
+        <ul class="text-sm text-gray-500 space-y-2">
+          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Thiết kế đa dạng</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Nhiều phân khúc giá</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Bảo hành lên đến 5 năm</li>
+        </ul>
+      </div>
+      
+      <!-- Service 2 -->
+      <div class="group relative bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 border border-green-200 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="absolute top-4 right-4 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        
+        <!-- Service Image -->
+        <div class="relative mb-6 overflow-hidden rounded-xl shadow-lg">
+          <img 
+            src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=400&h=200&fit=crop&crop=center"
+            alt="Height adjustable desk"
+            class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="w-16 h-16 bg-green-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+          Bàn nâng hạ chiều cao
+        </h3>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Bàn làm việc thông minh có thể điều chỉnh độ cao, hỗ trợ làm việc đứng và ngồi xen kẽ
+        </p>
+        <ul class="text-sm text-gray-500 space-y-2">
+          <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Điều khiển điện tử</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Khung chắc chắn</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Nhiều kích thước</li>
+        </ul>
+      </div>
+      
+      <!-- Service 3 -->
+      <div class="group relative bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 border border-purple-200 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="absolute top-4 right-4 w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        
+        <!-- Service Image -->
+        <div class="relative mb-6 overflow-hidden rounded-xl shadow-lg">
+          <img 
+            src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=200&fit=crop&crop=center"
+            alt="Complete office setup"
+            class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="w-16 h-16 bg-purple-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+          Combo phòng ban theo nhu cầu
+        </h3>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Gói giải pháp hoàn chỉnh cho từng phòng ban với thiết kế thống nhất và tối ưu công năng
+        </p>
+        <ul class="text-sm text-gray-500 space-y-2">
+          <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Thiết kế theo nhu cầu</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Giá ưu đãi combo</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Bàn giao nhanh chóng</li>
+        </ul>
+      </div>
+      
+      <!-- Service 4 -->
+      <div class="group relative bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8 border border-orange-200 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="absolute top-4 right-4 w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        
+        <!-- Service Image -->
+        <div class="relative mb-6 overflow-hidden rounded-xl shadow-lg">
+          <img 
+            src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=400&h=200&fit=crop&crop=center"
+            alt="Office design and construction"
+            class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="w-16 h-16 bg-orange-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10V9a2 2 0 012-2h2a2 2 0 012 2v8a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+          Thiết kế & thi công nội thất
+        </h3>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Dịch vụ thiết kế toàn diện từ ý tưởng đến hiện thực, tối ưu không gian làm việc
+        </p>
+        <ul class="text-sm text-gray-500 space-y-2">
+          <li class="flex items-center"><span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>Tư vấn miễn phí</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>Thiết kế 3D</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>Thi công chuyên nghiệp</li>
+        </ul>
+      </div>
+      
+      <!-- Service 5 -->
+      <div class="group relative bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-2xl p-8 border border-cyan-200 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="absolute top-4 right-4 w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        
+        <!-- Service Image -->
+        <div class="relative mb-6 overflow-hidden rounded-xl shadow-lg">
+          <img 
+            src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=200&fit=crop&crop=center"
+            alt="Office maintenance and support"
+            class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="w-16 h-16 bg-cyan-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+          Bảo hành & hỗ trợ dài hạn
+        </h3>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Cam kết chất lượng với chương trình bảo hành toàn diện và hỗ trợ kỹ thuật 24/7
+        </p>
+        <ul class="text-sm text-gray-500 space-y-2">
+          <li class="flex items-center"><span class="w-2 h-2 bg-cyan-500 rounded-full mr-2"></span>Bảo hành 3-5 năm</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-cyan-500 rounded-full mr-2"></span>Hỗ trợ 24/7</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-cyan-500 rounded-full mr-2"></span>Bảo trì định kỳ</li>
+        </ul>
+      </div>
+      
+      <!-- Service 6 -->
+      <div class="group relative bg-gradient-to-br from-rose-50 to-rose-100 rounded-2xl p-8 border border-rose-200 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="absolute top-4 right-4 w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        
+        <!-- Service Image -->
+        <div class="relative mb-6 overflow-hidden rounded-xl shadow-lg">
+          <img 
+            src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=200&fit=crop&crop=center"
+            alt="Office accessories and equipment"
+            class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="w-16 h-16 bg-rose-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+          Phụ kiện văn phòng thông minh
+        </h3>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Bộ sưu tập phụ kiện văn phòng hiện đại: đèn bàn, giá đỡ màn hình, kệ sách, hộp đựng đồ
+        </p>
+        <ul class="text-sm text-gray-500 space-y-2">
+          <li class="flex items-center"><span class="w-2 h-2 bg-rose-500 rounded-full mr-2"></span>Thiết kế tinh tế</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-rose-500 rounded-full mr-2"></span>Tích hợp công nghệ</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-rose-500 rounded-full mr-2"></span>Tăng hiệu suất làm việc</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="mt-16 text-center">
+      <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 sm:p-12">
+        <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4">
+          Sẵn sàng tối ưu không gian làm việc của bạn?
+        </h3>
+        <p class="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
+          Liên hệ ngay để được tư vấn miễn phí và nhận báo giá chi tiết cho dự án của bạn
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a 
+            href="#quote-form" 
+            class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold text-lg shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            Yêu cầu báo giá
+          </a>
+          <a 
+            href={`tel:${COMPANY_INFO.hotline}`}
+            class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-lg hover:bg-white/20 transition-all duration-300"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+            </svg>
+            Hotline: {COMPANY_INFO.hotline}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 
