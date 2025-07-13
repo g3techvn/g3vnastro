@@ -10,6 +10,7 @@ import { getRelatedProducts } from '../../utils/relatedProducts';
 import FAQ from '../../components/FAQWithAnimation.astro';
 import ProductGalleryIsland from '../../components/ProductGalleryIsland.astro';
 import FloatProductAction from '../../components/FloatProductAction.astro';
+import MobileProductDetail from '../../components/mobile/product-detail/MobileProductDetail.astro';
 
 export async function getStaticPaths() {
   try {
@@ -96,17 +97,26 @@ function processTechnicalSpecs(thongSoKyThuat: any): Array<{ title: string; valu
 // Process other product data
 function processKeyFeatures(tinhNang: any): string[] {
   if (!tinhNang) return [];
-  return Array.isArray(tinhNang) ? tinhNang : [tinhNang];
+  if (Array.isArray(tinhNang)) {
+    return tinhNang.filter(item => item && typeof item === 'string');
+  }
+  return [tinhNang.toString()];
 }
 
 function processBenefits(loiIch: any): string[] {
   if (!loiIch) return [];
-  return Array.isArray(loiIch) ? loiIch : [loiIch];
+  if (Array.isArray(loiIch)) {
+    return loiIch.filter(item => item && typeof item === 'string');
+  }
+  return [loiIch.toString()];
 }
 
 function processInstructions(huongDan: any): string[] {
   if (!huongDan) return [];
-  return Array.isArray(huongDan) ? huongDan : [huongDan];
+  if (Array.isArray(huongDan)) {
+    return huongDan.filter(item => item && typeof item === 'string');
+  }
+  return [huongDan.toString()];
 }
 
 // Get processed data
@@ -132,88 +142,104 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
 ---
 
 <Layout title={product?.name || 'Sản phẩm'}>
-  <div class="mx-10 py-8">
-    <!-- Breadcrumb -->
-    <nav class="text-sm text-gray-500 mb-8">
-      <ol class="flex items-center space-x-2">
-        <li><a href="/" class="hover:text-gray-700">Trang chủ</a></li>
-        <li>/</li>
-        <li><a href="/san-pham" class="hover:text-gray-700">Sản phẩm</a></li>
-        <li>/</li>
-        <li class="text-gray-900">{product?.name}</li>
-      </ol>
-    </nav>
+  <!-- Mobile Layout - Using dedicated Mobile Component -->
+  <div class="md:hidden">
+    <MobileProductDetail 
+      product={product}
+      technicalSpecs={technicalSpecs}
+      keyFeatures={keyFeatures}
+      benefits={benefits}
+      instructions={instructions}
+      overview={overview}
+      relatedProducts={relatedProducts}
+    />
+  </div>
 
-    <div class="mt-8" id="overview">
-      <!-- Product Content -->
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-8 relative overflow-visible">
-        <!-- Product Gallery - 3 columns -->
-        <div class="md:col-span-3">
-          <ProductGalleryIsland
-            productName={product?.name || 'Sản phẩm'}
-            galleryUrl={product?.gallery_url}
-            mainImageUrl={product?.image_url}
-            galleryArray={product?.gallery_array}
-            videoInfo={product?.video_url ? {
-              videoUrl: product.video_url,
-              thumbnail: product?.image_url || ''
-            } : undefined}
-          />
-        </div>
+  <!-- Desktop Layout - Only visible on medium screens and up -->
+  <div class="hidden md:block">
+    <div class="mx-10 py-8">
+      <!-- Breadcrumb -->
+      <nav class="text-sm text-gray-500 mb-8">
+        <ol class="flex items-center space-x-2">
+          <li><a href="/" class="hover:text-gray-700">Trang chủ</a></li>
+          <li>/</li>
+          <li><a href="/san-pham" class="hover:text-gray-700">Sản phẩm</a></li>
+          <li>/</li>
+          <li class="text-gray-900">{product?.name}</li>
+        </ol>
+      </nav>
 
-        <!-- Product Info - 2 columns -->
-        <div class="md:col-span-2">
-          <ProductInfo product={product} />
-        </div>
-      </div>
-
-      {/* Only show separator if there's content below */}
-      {(hasProductDescription || hasTechnicalSpecs) && (
-        <div class="my-8 h-px bg-gray-200"></div>
-      )}
-
-      {/* Product Description Section - Only render if there's content */}
-      {hasProductDescription && (
-        <div class="grid grid-cols-5 gap-8">
-          {/* Main Content - 3 columns */}
-          <div class="col-span-3 space-y-8">
-            <ProductDescriptionIsland
-              overview={overview}
-              content={product?.content}
-              keyFeatures={keyFeatures}
-              benefits={benefits}
-              instructions={instructions}
+      <div class="mt-8" id="overview">
+        <!-- Product Content -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8 relative overflow-visible">
+          <!-- Product Gallery - 3 columns -->
+          <div class="md:col-span-3">
+            <ProductGalleryIsland
+              productName={product?.name || 'Sản phẩm'}
+              galleryUrl={product?.gallery_url}
+              mainImageUrl={product?.image_url}
+              galleryArray={product?.gallery_array}
+              videoInfo={product?.video_url ? {
+                videoUrl: product.video_url,
+                thumbnail: product?.image_url || ''
+              } : undefined}
             />
-
-            {/* FAQ Section - Only show if there's meaningful content */}
-            <FAQ />
-
-            {/* Reviews Section - Only show if there are reviews */}
-            <ReviewsSection />
           </div>
 
-          {/* Technical Specifications - 2 columns - Only show if there are specs */}
-          {hasTechnicalSpecs && (
-            <div class="col-span-2">
-              <TechnicalSpecsIsland specifications={technicalSpecs} />
+          <!-- Product Info - 2 columns -->
+          <div class="md:col-span-2">
+            <ProductInfo product={product} />
+          </div>
+        </div>
+
+        {/* Only show separator if there's content below */}
+        {(hasProductDescription || hasTechnicalSpecs) && (
+          <div class="my-8 h-px bg-gray-200"></div>
+        )}
+
+        {/* Product Description Section - Only render if there's content */}
+        {hasProductDescription && (
+          <div class="grid grid-cols-5 gap-8">
+            {/* Main Content - 3 columns */}
+            <div class="col-span-3 space-y-8">
+              <ProductDescriptionIsland
+                overview={overview}
+                content={product?.content}
+                keyFeatures={keyFeatures}
+                benefits={benefits}
+                instructions={instructions}
+              />
+
+              {/* FAQ Section - Only show if there's meaningful content */}
+              <FAQ />
+
+              {/* Reviews Section - Only show if there are reviews */}
+              <ReviewsSection />
             </div>
-          )}
-        </div>
-      )}
 
-      {/* If no product description but has technical specs, show specs in full width */}
-      {!hasProductDescription && hasTechnicalSpecs && (
-        <div class="mt-8">
-          <TechnicalSpecsIsland specifications={technicalSpecs} />
-        </div>
-      )}
+            {/* Technical Specifications - 2 columns - Only show if there are specs */}
+            {hasTechnicalSpecs && (
+              <div class="col-span-2">
+                <TechnicalSpecsIsland specifications={technicalSpecs} />
+              </div>
+            )}
+          </div>
+        )}
 
-      {/* Related Products Section */}
-      <div class="mt-16">
-        <SimilarProductsIsland products={relatedProducts} loading={false} />
+        {/* If no product description but has technical specs, show specs in full width */}
+        {!hasProductDescription && hasTechnicalSpecs && (
+          <div class="mt-8">
+            <TechnicalSpecsIsland specifications={technicalSpecs} />
+          </div>
+        )}
+
+        {/* Related Products Section */}
+        <div class="mt-16">
+          <SimilarProductsIsland products={relatedProducts} loading={false} />
+        </div>
       </div>
     </div>
+    <FloatProductAction product={product} />
   </div>
-  <FloatProductAction product={product} />
 </Layout>
 

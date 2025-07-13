@@ -4,6 +4,10 @@ import StickyNavMenuIsland from '../components/StickyNavMenuIsland.astro';
 import Footer from '../components/Footer.astro';
 import ZaloBoxIsland from '../components/ZaloBoxIsland.astro';
 import CallBoxIsland from '../components/CallBoxIsland.astro';
+import MobileHomeHeaderIsland from '../components/mobile/MobileHomeHeaderIsland.astro';
+import MobileHomeTabsIsland from '../components/mobile/MobileHomeTabsIsland.astro';
+import MobileBestsellerProductsIsland from '../components/mobile/MobileBestsellerProductsIsland.astro';
+import MobileFeatureProductIsland from '../components/mobile/MobileFeatureProductIsland.astro';
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/contact-buttons.css';
 import '../styles/global.css';
@@ -13,9 +17,10 @@ export interface Props {
 	title: string;
 	description?: string;
 	image?: string;
+	showMobileHomeComponents?: boolean;
 }
 
-const { title, description = 'G-3.vn - Cung cấp các sản phẩm chất lượng cao', image } = Astro.props;
+const { title, description = 'G-3.vn - Cung cấp các sản phẩm chất lượng cao', image, showMobileHomeComponents = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -84,9 +89,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 	</head>
-	<body class="h-full font-sans bg-gray-100" transition:animate="fade">
+	<body class="h-full font-sans min-h-screen" transition:animate="fade">
+		<!-- Mobile Layout -->
+		<div class="md:hidden bg-white">
+			{showMobileHomeComponents && (
+				<>
+					<MobileHomeHeaderIsland />
+					<MobileHomeTabsIsland />
+					<MobileBestsellerProductsIsland />
+					<MobileFeatureProductIsland />
+				</>
+			)}
+			
+			<!-- Mobile Content -->
+			<main class="px-4 py-4">
+				<slot />
+			</main>
+		</div>
+
 		<!-- Desktop Layout -->
-		<div class="desktop-layout hidden md:block">
+		<div class="hidden md:block bg-gray-100">
 			<!-- React Header Island -->
 			<HeaderIsland />
 			<!-- React StickyNavMenu Island -->
@@ -110,7 +132,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 			<ZaloBoxIsland />
 		</div>
 
-		
 		<!-- Service Worker Registration -->
 		<script>
 			if ('serviceWorker' in navigator) {
