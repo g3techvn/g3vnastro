@@ -80,6 +80,124 @@ export interface Database {
           updated_at?: string
         }
       }
+      orders: {
+        Row: {
+          id: string
+          salutation: string
+          full_name: string
+          phone: string
+          address: string
+          order_note: string | null
+          voucher_code: string | null
+          payment_method: string
+          total_amount: number
+          shipping_fee: number
+          status: string
+          processing_status: string
+          payment_status: string
+          shipping_status: string
+          internal_note: string | null
+          processed_at: string | null
+          paid_at: string | null
+          shipped_at: string | null
+          delivered_at: string | null
+          cancelled_at: string | null
+          cancel_reason: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          salutation: string
+          full_name: string
+          phone: string
+          address: string
+          order_note?: string | null
+          voucher_code?: string | null
+          payment_method: string
+          total_amount: number
+          shipping_fee: number
+          status?: string
+          processing_status?: string
+          payment_status?: string
+          shipping_status?: string
+          internal_note?: string | null
+          processed_at?: string | null
+          paid_at?: string | null
+          shipped_at?: string | null
+          delivered_at?: string | null
+          cancelled_at?: string | null
+          cancel_reason?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          salutation?: string
+          full_name?: string
+          phone?: string
+          address?: string
+          order_note?: string | null
+          voucher_code?: string | null
+          payment_method?: string
+          total_amount?: number
+          shipping_fee?: number
+          status?: string
+          processing_status?: string
+          payment_status?: string
+          shipping_status?: string
+          internal_note?: string | null
+          processed_at?: string | null
+          paid_at?: string | null
+          shipped_at?: string | null
+          delivered_at?: string | null
+          cancelled_at?: string | null
+          cancel_reason?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      order_items: {
+        Row: {
+          id: string
+          order_id: string
+          product_id: string | number
+          product_name: string
+          variant_id: string | number | null
+          variant_name: string | null
+          variant_options: any | null
+          quantity: number
+          price: number
+          original_price: number | null
+          image_url: string | null
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          product_id: string | number
+          product_name: string
+          variant_id?: string | number | null
+          variant_name?: string | null
+          variant_options?: any | null
+          quantity: number
+          price: number
+          original_price?: number | null
+          image_url?: string | null
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          product_id?: string | number
+          product_name?: string
+          variant_id?: string | number | null
+          variant_name?: string | null
+          variant_options?: any | null
+          quantity?: number
+          price?: number
+          original_price?: number | null
+          image_url?: string | null
+        }
+      }
     }
   }
 } 

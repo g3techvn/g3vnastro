@@ -1,44 +1,33 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../lib/supabase';
+import { productAPI } from '../../lib/supabase';
 
-export const GET: APIRoute = async ({ url }) => {
-  const category = url.searchParams.get('category');
-  const brand = url.searchParams.get('brand');
-
+export const GET: APIRoute = async ({ request, url }) => {
   try {
-    let query = supabase
-      .from('products')
-      .select(`
-        *,
-        brands(title, slug),
-        product_cats(title, slug)
-      `)
-      .order('name', { ascending: true });
+    const searchParams = new URL(request.url).searchParams;
+    const limit = parseInt(searchParams.get('limit') || '50');
+    const offset = parseInt(searchParams.get('offset') || '0');
 
-    // Filter by category slug
-    if (category) {
-      query = query.eq('product_cats.slug', category);
-    }
-
-    // Filter by brand slug
-    if (brand) {
-      query = query.eq('brands.slug', brand);
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
-      return new Response(JSON.stringify({ error: error.message }), { status: 500 });
-    }
-
-    return new Response(JSON.stringify({ products: (data || []).map(product => ({
-      ...product,
-      gallery_array: product.gallery_array || []
-    })) }), {
+    const products = await productAPI.getProducts(limit, offset);
+    
+    return new Response(JSON.stringify({ 
+      success: true, 
+      products 
+    }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
+    console.error('Error fetching products:', error);
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: 'Failed to fetch products' 
+    }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
-}; 
+};

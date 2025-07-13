@@ -210,9 +210,6 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
                 instructions={instructions}
               />
 
-              {/* FAQ Section - Only show if there's meaningful content */}
-              <FAQ />
-
               {/* Reviews Section - Only show if there are reviews */}
               <ReviewsSection />
             </div>
@@ -225,6 +222,11 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
             )}
           </div>
         )}
+
+        {/* FAQ Section - Always show */}
+        <div class="mt-8">
+          <FAQ />
+        </div>
 
         {/* If no product description but has technical specs, show specs in full width */}
         {!hasProductDescription && hasTechnicalSpecs && (

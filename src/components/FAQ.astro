@@ -104,27 +104,25 @@ const {
   // FAQ functionality matching NextJS behavior
   document.addEventListener('DOMContentLoaded', function() {
     const faqTriggers = document.querySelectorAll('.faq-trigger');
-    let openItem: string | null = null;
+    let openItem = null;
     
-    faqTriggers.forEach((trigger: Element) => {
-      trigger.addEventListener('click', function(this: HTMLButtonElement) {
-        const index = this.getAttribute('data-index');
-        const content = document.querySelector(`.faq-content[data-index="${index}"]`) as HTMLElement;
-        const icon = this.querySelector('.faq-icon') as HTMLElement;
+    faqTriggers.forEach(function(trigger) {
+      trigger.addEventListener('click', function() {
+        const index = trigger.getAttribute('data-index');
+        const content = document.querySelector('.faq-content[data-index="' + index + '"]');
+        const icon = trigger.querySelector('.faq-icon');
         
         if (!content || !icon) return;
         
         const isOpen = content.classList.contains('open');
         
         // Close all other items (single accordion behavior)
-        document.querySelectorAll('.faq-content').forEach((item: Element) => {
-          const contentEl = item as HTMLElement;
-          contentEl.classList.remove('open');
+        document.querySelectorAll('.faq-content').forEach(function(item) {
+          item.classList.remove('open');
         });
         
-        document.querySelectorAll('.faq-icon').forEach((ic: Element) => {
-          const iconEl = ic as HTMLElement;
-          iconEl.classList.remove('rotate');
+        document.querySelectorAll('.faq-icon').forEach(function(ic) {
+          ic.classList.remove('rotate');
         });
         
         // Toggle current item

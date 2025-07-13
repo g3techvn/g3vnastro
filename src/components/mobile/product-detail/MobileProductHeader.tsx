@@ -40,7 +40,7 @@ export default function MobileProductHeader({
 
   return (
     <div className="sticky top-0 z-20 bg-white border-b border-gray-200 md:hidden">
-      <div className="flex items-center h-14 px-4 relative">
+      <div className="flex items-center h-14 relative">
         {/* Back Button */}
         <button
           onClick={handleGoBack}
@@ -60,20 +60,7 @@ export default function MobileProductHeader({
 
         {/* Right Actions */}
         <div className="ml-auto flex items-center gap-2">
-          {/* Cart Icon */}
-          <button 
-            onClick={() => window.location.href = '/gio-hang'}
-            className="relative flex items-center justify-center w-10 h-10 text-gray-600 hover:text-gray-900"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 2.5M7 13l2.5 2.5m6-2.5a2 2 0 100 4 2 2 0 000-4zm-6 0a2 2 0 100 4 2 2 0 000-4z" />
-            </svg>
-            {totalCartItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {totalCartItems > 99 ? '99+' : totalCartItems}
-              </span>
-            )}
-          </button>
+     
 
           {/* Menu Button */}
           <button
