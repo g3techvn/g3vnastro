@@ -174,7 +174,7 @@ export const orderAPI = {
         throw new Error('Không có sản phẩm hợp lệ trong đơn hàng');
       }
 
-      console.log('Inserting order items:', orderItems); // Debug log
+      
 
       const { error: itemsError } = await supabase
         .from('order_items')

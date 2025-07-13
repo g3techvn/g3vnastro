@@ -345,7 +345,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
               hash = ((hash << 5) - hash) + chr;
               return hash & hash; // Convert to 32bit integer
             }, 0));
-            console.warn(`Generated temporary product_id ${productId} for product: ${product.name}`);
+    
           }
 
           return {
@@ -359,9 +359,9 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
         })
       };
 
-      console.log('Sending order data:', orderData); // Debug log
+      
       const result = await orderAPI.createOrder(orderData);
-      console.log('Order result:', result); // Debug log
+      
       
       if (result.success) {
         setSubmitSuccess(true);
@@ -371,17 +371,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
         
         // Send email notification (async, don't wait for completion)
         const emailData = formatOrderDataForEmail(result.order);
-        sendOrderNotificationEmail(emailData)
-          .then((emailResult) => {
-            if (emailResult.success) {
-              console.log('Email notification sent successfully');
-            } else {
-              console.warn('Failed to send email notification:', emailResult.error);
-            }
-          })
-          .catch((error) => {
-            console.error('Email notification error:', error);
-          });
+        sendOrderNotificationEmail(emailData);
         
         // Show thank you modal (overlay on top)
         setShowThankYouModal(true);
