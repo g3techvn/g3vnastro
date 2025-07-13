@@ -34,12 +34,12 @@ export const PAYMENT_METHODS = [
 ] as const;
 
 export const QUICK_LINKS = [
-  { name: "Chính sách bảo hành", href: "/noi-dung/chinh-sach-bao-hanh-g3" },
-  { name: "Chính sách đổi trả", href: "/noi-dung/chinh-sach-doi-tra-g3" },
-  { name: "Chính sách vận chuyển", href: "/noi-dung/chinh-sach-van-chuyen-g3" },
-  { name: "Chính sách bảo mật", href: "/noi-dung/chinh-sach-bao-mat-g3" },
-  { name: "Chính sách thanh toán", href: "/noi-dung/chinh-sach-thanh-toan-g3" },
-  { name: "Chính sách kiểm hàng", href: "/noi-dung/chinh-sach-kiem-hang-g3" },
+  { name: "Chính sách G3Tech", href: "/chinh-sach" },
+  { name: "Chính sách bảo hành", href: "/chinh-sach#warranty" },
+  { name: "Chính sách đổi trả", href: "/chinh-sach#return" },
+  { name: "Chính sách vận chuyển", href: "/chinh-sach#shipping" },
+  { name: "Chính sách bảo mật", href: "/chinh-sach#privacy" },
+  { name: "Chính sách thanh toán", href: "/chinh-sach#payment" },
 ] as const;
 
 export const FEEDBACK_INFO = {

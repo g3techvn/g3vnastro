@@ -1,0 +1,228 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PolicyAccordionIsland from '../components/PolicyAccordionIsland.astro';
+import { COMPANY_INFO } from '../constants';
+
+// Helper function to format phone number
+function formatPhoneNumber(phoneNumber: string): string {
+  const cleaned = phoneNumber.replace(/\D/g, '');
+  const match = cleaned.match(/^(\d{4})(\d{3})(\d{3})$/);
+  if (match) {
+    return `${match[1]}.${match[2]}.${match[3]}`;
+  }
+  return phoneNumber;
+}
+
+const formattedPhone = formatPhoneNumber(COMPANY_INFO.hotline);
+---
+
+<Layout title="Chính sách G3Tech - Cam kết bảo vệ quyền lợi khách hàng" description="Chính sách toàn diện của G3Tech: bảo hành, đổi trả, vận chuyển, thanh toán, kiểm hàng và bảo mật. Cam kết mang đến trải nghiệm mua sắm minh bạch và dịch vụ hậu mãi tận tâm.">
+  
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+      <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(59,130,246,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="relative container mx-auto px-4 py-20 lg:py-32">
+      <div class="max-w-4xl mx-auto text-center">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Cam kết chất lượng dịch vụ
+        </div>
+        
+        <!-- Main Title -->
+        <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+          Chính sách 
+          <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            G3Tech
+          </span>
+        </h1>
+        
+        <!-- Description -->
+        <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+          Chúng tôi cam kết mang đến trải nghiệm mua sắm <strong>minh bạch</strong>, 
+          bảo vệ quyền lợi khách hàng và dịch vụ hậu mãi <strong>tận tâm</strong>.
+        </p>
+        
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-blue-600">15</div>
+            <div class="text-sm text-gray-600">Ngày bảo hành</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-green-600">24/7</div>
+            <div class="text-sm text-gray-600">Hỗ trợ</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-purple-600">1-2</div>
+            <div class="text-sm text-gray-600">Ngày giao hàng</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-orange-600">100%</div>
+            <div class="text-sm text-gray-600">Bảo mật</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-20 left-10 w-20 h-20 bg-blue-200 rounded-full opacity-30 animate-bounce" style="animation-delay: 0s; animation-duration: 3s;"></div>
+    <div class="absolute top-40 right-20 w-16 h-16 bg-purple-200 rounded-full opacity-30 animate-bounce" style="animation-delay: 1s; animation-duration: 4s;"></div>
+    <div class="absolute bottom-40 left-20 w-12 h-12 bg-green-200 rounded-full opacity-30 animate-bounce" style="animation-delay: 2s; animation-duration: 5s;"></div>
+  </section>
+
+  <!-- Policy Content Section -->
+  <section class="py-16 lg:py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <!-- Section Header -->
+      <div class="max-w-3xl mx-auto text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Tất cả chính sách của chúng tôi
+        </h2>
+        <p class="text-lg text-gray-600">
+          Khám phá chi tiết về các chính sách bảo hành, đổi trả, vận chuyển và nhiều hơn nữa
+        </p>
+      </div>
+      
+      <!-- Policy Accordion -->
+      <div class="mb-16">
+        <PolicyAccordionIsland />
+      </div>
+      
+      <!-- Trust Indicators -->
+      <div class="max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">Chính sách rõ ràng</h3>
+            <p class="text-sm text-gray-600">Tất cả điều khoản được trình bày minh bạch, dễ hiểu</p>
+          </div>
+          
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">Bảo mật thông tin</h3>
+            <p class="text-sm text-gray-600">Dữ liệu khách hàng được bảo vệ an toàn tuyệt đối</p>
+          </div>
+          
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">Chăm sóc tận tâm</h3>
+            <p class="text-sm text-gray-600">Đội ngũ hỗ trợ 24/7 luôn sẵn sàng giúp đỡ bạn</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 lg:py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 30px 30px;"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative">
+      <div class="max-w-4xl mx-auto text-center">
+        <!-- Icon -->
+        <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+          </svg>
+        </div>
+        
+        <!-- Content -->
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          Bạn cần tư vấn thêm về chính sách?
+        </h2>
+        <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+          Liên hệ đội ngũ G3Tech để được giải đáp và hỗ trợ nhanh chóng, chuyên nghiệp
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a 
+            href="/lien-he" 
+            class="inline-flex items-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 hover:scale-105 transition-all duration-300 shadow-lg"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            Liên hệ ngay
+          </a>
+          
+                     <a 
+             href={`tel:${COMPANY_INFO.hotline}`} 
+             class="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 hover:scale-105 transition-all duration-300"
+           >
+             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+             </svg>
+             Hotline: {formattedPhone}
+           </a>
+        </div>
+        
+        <!-- Contact Info -->
+        <div class="mt-8 pt-8 border-t border-white border-opacity-20">
+          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center text-blue-100">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+                             <span class="text-sm">{COMPANY_INFO.email}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+                             <span class="text-sm">{COMPANY_INFO.workingHours}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <span class="text-sm">Showroom HCM & HN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Additional Floating Animation -->
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .animate-float-delayed {
+      animation: float 6s ease-in-out infinite;
+      animation-delay: 2s;
+    }
+  </style>
+
+</Layout> 

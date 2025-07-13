@@ -5,10 +5,9 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { productAPI } from '../../lib/supabase';
 
 const navigation = [
-
   { name: 'Cửa hàng', href: '/san-pham', current: false },
-  { name: 'Hướng dẫn', href: '/faq-demo', current: false },
-  { name: 'Chính sách', href: '/noi-dung/chinh-sach-bao-hanh-g3', current: false },
+  { name: 'Hướng dẫn', href: '/huong-dan-mua-hang', current: false },
+  { name: 'Chính sách', href: '/chinh-sach', current: false },
   { name: 'Liên hệ', href: '/lien-he', current: false },
   { name: 'Giới thiệu', href: '/about', current: false },
 ];
