@@ -10,6 +10,7 @@ import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { z } from 'zod';
 import { orderAPI } from '../../lib/supabase';
 import { COMPANY_INFO } from '../../constants';
+import { sendOrderNotificationEmail, formatOrderDataForEmail } from '../../lib/emailService';
 
 interface ModalBuyNowFormProps {
   open: boolean;
@@ -367,6 +368,21 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
         setOrderData(result.order);
         // Set một cooldown nhẹ sau khi thành công
         setCooldownEnd(Date.now() + 2000);
+        
+        // Send email notification (async, don't wait for completion)
+        const emailData = formatOrderDataForEmail(result.order);
+        sendOrderNotificationEmail(emailData)
+          .then((emailResult) => {
+            if (emailResult.success) {
+              console.log('Email notification sent successfully');
+            } else {
+              console.warn('Failed to send email notification:', emailResult.error);
+            }
+          })
+          .catch((error) => {
+            console.error('Email notification error:', error);
+          });
+        
         // Show thank you modal (overlay on top)
         setShowThankYouModal(true);
       } else {
