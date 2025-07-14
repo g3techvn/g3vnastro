@@ -116,7 +116,7 @@ const ratingSummary = {
 
 <!-- Mobile Product Detail Layout -->
 {product ? (
-<div class="bg-gray-50 min-h-screen">
+<div class="bg-gray-50 min-h-screen w-screen -mx-4 -my-4 -mb-20" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
   <!-- Product Gallery - Using Island -->
   <div class="w-full bg-white mb-2">
     <MobileProductGallery 
@@ -388,10 +388,10 @@ const ratingSummary = {
   />
 
   <!-- Spacer to prevent content being hidden behind fixed actions -->
-  <div class="h-32"></div>
+  <div class="h-40"></div>
 </div>
 ) : (
-  <div class="bg-gray-50 min-h-screen flex items-center justify-center">
+  <div class="bg-gray-50 min-h-screen flex items-center justify-center w-screen -mx-4 -my-4 -mb-20" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
     <div class="text-center">
       <div class="text-gray-500 text-lg mb-2">Không tìm thấy sản phẩm</div>
       <a href="/san-pham" class="text-red-600 hover:text-red-700 font-medium">Xem tất cả sản phẩm</a>

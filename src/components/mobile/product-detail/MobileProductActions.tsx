@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Product } from '../../../types';
 import ModalBuyNowForm from '../../react/ModalBuyNowForm';
+import { COMPANY_INFO } from '../../../constants';
 
 interface MobileProductActionsProps {
   product: Product;
@@ -29,14 +30,14 @@ export default function MobileProductActions({
       onContactSeller();
     } else {
       // Redirect to Zalo chat
-      window.open('https://zalo.me/g/oqufmf063', '_blank');
+      window.open(COMPANY_INFO.zalo, '_blank');
     }
   };
 
   return (
     <>
       {/* Sticky Bottom Actions */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-30 md:hidden">
+      <div className="fixed bottom-16 left-0 right-0 bg-white border-t border-gray-200 p-4 z-[60] md:hidden shadow-lg">
         <div className="flex items-center gap-3">
           {/* Chat Zalo Button */}
           <button

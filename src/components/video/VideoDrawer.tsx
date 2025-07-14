@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import ModalBuyNowForm from '../react/ModalBuyNowForm';
+import { COMPANY_INFO } from '../../constants';
 
 interface Product {
   id: string;
@@ -130,7 +131,7 @@ export function VideoDrawer({ open, onClose, product, brandName }: VideoDrawerPr
   };
 
   const handleContactSeller = () => {
-    window.open('https://zalo.me/0775499922', '_blank');
+    window.open(COMPANY_INFO.zalo, '_blank');
   };
 
   // Gallery navigation functions
