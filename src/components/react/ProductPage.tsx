@@ -33,9 +33,9 @@ const ProductPage: React.FC = () => {
   };
 
   return (
-    <div className="md:mx-10 md:py-8 w-full md:w-auto">
+    <div className="md:mx-10 md:py-8 px-4 md:px-0 w-full md:w-auto">
               {/* Mobile Filter Button */}
-        <div className="md:hidden px-4 mb-4">
+        <div className="md:hidden mb-4">
         <button
           onClick={() => setShowMobileFilter(true)}
           className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 flex items-center justify-between shadow-sm"
@@ -62,7 +62,7 @@ const ProductPage: React.FC = () => {
             {/* Mobile Layout */}
             <div className="md:hidden">
               {/* Breadcrumb - Mobile */}
-              <div className="px-4 py-2 border-b border-gray-100">
+              <div className="py-2 border-b border-gray-100">
                 <nav className="flex items-center text-xs">
                   <a href="/" className="text-gray-500 hover:text-gray-700 truncate">Trang chủ</a>
                   <svg className="mx-1 w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@ const ProductPage: React.FC = () => {
               </div>
               
               {/* Controls - Mobile */}
-              <div className="px-4 py-3 flex items-center justify-between">
+              <div className="py-3 flex items-center justify-between">
                 <span className="text-xs text-gray-600">
                   {filteredCount} sản phẩm
                 </span>
@@ -185,7 +185,7 @@ const ProductPage: React.FC = () => {
           
           {/* Modal */}
           <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-lg max-h-[80vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+            <div className="sticky top-0 bg-white border-b border-gray-200 py-3 flex items-center justify-between">
               <h3 className="text-lg font-semibold">Bộ lọc</h3>
               <button
                 onClick={() => setShowMobileFilter(false)}
@@ -196,7 +196,7 @@ const ProductPage: React.FC = () => {
                 </svg>
               </button>
             </div>
-            <div className="p-4">
+            <div className="px-0 py-4">
               <ProductFilter 
                 onFilterChange={handleFilterChange}
                 initialFilters={filters}

@@ -126,7 +126,7 @@ export default function VoucherList() {
 
   if (isLoading) {
     return (
-      <div className="w-screen -mx-4 -my-4 -mb-20 p-4 space-y-4 bg-gray-100 min-h-screen" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
+      <div className="p-4 space-y-4 bg-gray-100 min-h-screen -mb-20">
         {[1, 2, 3].map((i) => (
           <div key={i} className="bg-white rounded-xl p-4 space-y-3 animate-pulse shadow-sm">
             <div className="h-6 bg-gray-200 rounded w-3/4"></div>
@@ -140,7 +140,7 @@ export default function VoucherList() {
 
   if (error) {
     return (
-      <div className="w-screen -mx-4 -my-4 -mb-20 p-4 bg-gray-100 min-h-screen" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
+      <div className="p-4 bg-gray-100 min-h-screen -mb-20">
         <div className="bg-red-50 text-red-600 p-4 rounded-xl border border-red-100">
           <div className="flex items-center">
             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -155,7 +155,7 @@ export default function VoucherList() {
 
   if (vouchers.length === 0) {
     return (
-      <div className="w-screen -mx-4 -my-4 -mb-20 p-4 bg-gray-100 min-h-screen" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
+      <div className="p-4 bg-gray-100 min-h-screen -mb-20">
         <div className="bg-white p-6 rounded-xl text-center border border-gray-100">
           <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,7 +170,7 @@ export default function VoucherList() {
   }
 
   return (
-    <div className="w-screen -mx-4 -my-4 -mb-20 p-4 space-y-6 bg-gray-100 min-h-screen" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
+    <div className="p-4 space-y-6 bg-gray-100 min-h-screen -mb-20">
       {vouchers.map((voucher) => (
         <div key={voucher.id} className="relative mb-6">
           {/* Voucher with radial-gradient serrated edges */}

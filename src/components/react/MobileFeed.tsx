@@ -113,7 +113,7 @@ export default function MobileFeed({
   const currentExpandedDescriptions = Object.keys(expandedDescriptions).length > 0 ? expandedDescriptions : localExpandedDescriptions;
 
   return (
-    <div className="w-screen -mx-4 -my-4 -mb-20" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
+    <div className="-mb-20">
       {currentIsLoading && <p className="text-center p-8">Đang tải feed...</p>}
       {currentError && <p className="text-red-500 text-center p-8">Lỗi: {currentError}</p>}
       {!currentIsLoading && !currentError && currentPromotions.length === 0 && <p className="text-center p-8">Không có bài viết nào.</p>}

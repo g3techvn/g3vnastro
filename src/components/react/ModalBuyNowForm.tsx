@@ -470,7 +470,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row overflow-hidden shadow-2xl flex-1 overflow-y-auto md:rounded-2xl rounded-t-2xl md:rounded-b-2xl pb-20 md:pb-0">
+        <div className="flex flex-col lg:flex-row overflow-hidden shadow-2xl flex-1 overflow-y-auto md:rounded-2xl md:rounded-b-2xl pb-20 md:pb-0">
           {/* Form nhập thông tin bên trái */}
           <section
             aria-labelledby="payment-and-shipping-heading"
