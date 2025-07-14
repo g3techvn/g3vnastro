@@ -95,7 +95,7 @@ console.log('Category data:', { category, categoryId: category?.id, slug });
 <Layout title={title} description={description}>
   <!-- Mobile Header -->
   <div class="md:hidden bg-white border-b border-gray-200">
-    <div class="flex items-center p-4">
+    <div class="flex items-center px-4 py-4">
       <a href="/categories" class="mr-3">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -217,7 +217,12 @@ console.log('Category data:', { category, categoryId: category?.id, slug });
                         <button 
                           class="p-1.5 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition-colors duration-200"
                           aria-label="Thêm vào giỏ hàng"
-                          onclick="addToCart(event, {id: {product.id}, name: '{product.name}', price: {product.price}, image_url: '{product.image_url}', slug: '{product.slug}'})"
+                          data-product-id={product.id}
+                          data-product-name={product.name}
+                          data-product-price={product.price}
+                          data-product-image={product.image_url}
+                          data-product-slug={product.slug}
+                          onclick="addToCartFromData(event, this)"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -518,8 +523,21 @@ console.log('Category data:', { category, categoryId: category?.id, slug });
       alert('Đã thêm sản phẩm vào giỏ hàng!');
     }
 
-    // Make addToCart globally available
+    // Function to add to cart from data attributes
+    function addToCartFromData(event: Event, element: HTMLElement) {
+      const product = {
+        id: element.dataset.productId,
+        name: element.dataset.productName,
+        price: Number(element.dataset.productPrice),
+        image_url: element.dataset.productImage,
+        slug: element.dataset.productSlug
+      };
+      addToCart(event, product);
+    }
+
+    // Make functions globally available
     window.addToCart = addToCart;
+    window.addToCartFromData = addToCartFromData;
   </script>
 </Layout>
 
