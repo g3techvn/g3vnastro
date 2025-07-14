@@ -6,19 +6,18 @@ export const GET: APIRoute = async ({ request }) => {
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '1');
     const limit = parseInt(url.searchParams.get('limit') || '10');
-    const videoOnly = url.searchParams.get('video_only') === 'true';
 
     const offset = (page - 1) * limit;
 
-    let products;
+    // Lấy chỉ sản phẩm có video từ database
+    const products = await productAPI.getProductsWithVideo(limit, offset);
     
-    if (videoOnly) {
-      // Lấy sản phẩm có video từ database
-      products = await productAPI.getProductsWithVideo(limit, offset);
-    } else {
-      // Lấy tất cả sản phẩm từ database
-      products = await productAPI.getProducts(limit, offset);
-    }
+    // Lấy brands để map brand_id thành tên
+    const brands = await productAPI.getBrands();
+    const brandMap = brands.reduce((acc, brand) => {
+      acc[brand.id] = brand.slug; // Dùng slug làm tên
+      return acc;
+    }, {} as Record<string, string>);
 
     // Transform data để match với format mong đợi
     const transformedProducts = products.map(product => ({
@@ -32,9 +31,8 @@ export const GET: APIRoute = async ({ request }) => {
       video_url: (product as any).video_url || null,
       rating: product.rating || null,
       brand_id: product.brand_id || null,
-      brand: (product as any).brands?.name || null,
+      brand: product.brand_id ? brandMap[product.brand_id] : null,
       sold_count: product.sold_count || 0,
-      // Thêm gallery_url để tương thích với frontend
       gallery_url: product.slug
     }));
 
@@ -52,7 +50,7 @@ export const GET: APIRoute = async ({ request }) => {
       }
     );
   } catch (error) {
-    console.error('Error in products API:', error);
+    console.error('Error in videos API:', error);
     return new Response(
       JSON.stringify({ error: 'Internal server error' }),
       { 
@@ -61,4 +59,4 @@ export const GET: APIRoute = async ({ request }) => {
       }
     );
   }
-};
+}; 

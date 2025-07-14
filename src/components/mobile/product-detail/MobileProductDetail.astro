@@ -1,5 +1,4 @@
 ---
-import MobileProductHeader from './MobileProductHeader';
 import MobileProductGallery from './MobileProductGallery';
 import MobileProductInfo from './MobileProductInfo';
 import MobileProductPrice from './MobileProductPrice';
@@ -118,13 +117,6 @@ const ratingSummary = {
 <!-- Mobile Product Detail Layout -->
 {product ? (
 <div class="bg-gray-50 min-h-screen">
-  <!-- Mobile Header - Using Island -->
-  <MobileProductHeader 
-    client:load 
-    product={product} 
-    totalCartItems={0}
-  />
-
   <!-- Product Gallery - Using Island -->
   <div class="w-full bg-white mb-2">
     <MobileProductGallery 
@@ -426,8 +418,8 @@ const ratingSummary = {
     }
   }
 
-  // Make function globally available (ignore TypeScript error in browser)
-  window.toggleFAQ = toggleFAQ;
+  // Make function globally available
+  (window as any).toggleFAQ = toggleFAQ;
 </script>
 
 <style>

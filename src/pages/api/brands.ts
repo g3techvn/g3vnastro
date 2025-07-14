@@ -1,22 +1,36 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../lib/supabase';
+import { productAPI } from '../../lib/supabase';
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ request }) => {
   try {
-    const { data, error } = await supabase
-      .from('brands')
-      .select('*')
-      .order('title', { ascending: true });
+    const brands = await productAPI.getBrands();
 
-    if (error) {
-      return new Response(JSON.stringify({ error: error.message }), { status: 500 });
-    }
+    // Transform data để match với format mong đợi
+    const transformedBrands = brands.map(brand => ({
+      id: brand.id,
+      title: brand.slug, // Dùng slug làm title tạm thời
+      slug: brand.slug,
+      image_url: null
+    }));
 
-    return new Response(JSON.stringify({ brands: data || [] }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    return new Response(
+      JSON.stringify({ 
+        brands: transformedBrands,
+        total: transformedBrands.length
+      }),
+      { 
+        status: 200, 
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
+    console.error('Error in brands API:', error);
+    return new Response(
+      JSON.stringify({ error: 'Internal server error' }),
+      { 
+        status: 500, 
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
   }
 }; 

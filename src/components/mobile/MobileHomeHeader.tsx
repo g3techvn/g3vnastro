@@ -1,20 +1,30 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { productAPI } from '../../lib/supabase';
 
 // Thay thế Image của Next.js bằng thẻ img thường
 // Nếu muốn tối ưu hơn, có thể dùng một component Image riêng cho Astro/React
 
 interface Product {
-  id: string | number;
+  id: string;
   name: string;
-  slug?: string;
-  image_url?: string;
+  slug: string;
   price: number;
   original_price?: number;
+  image_url?: string;
 }
 
-const mockProducts: Product[] = [
-  { id: 1, name: 'Ghế Công Thái Học', slug: 'ghe-cong-thai-hoc', image_url: '/images/placeholder-product.jpg', price: 2990000, original_price: 3990000 },
-  { id: 2, name: 'Bàn Nâng Hạ', slug: 'ban-nang-ha', image_url: '/images/placeholder-product.jpg', price: 4990000 },
+interface MenuItem {
+  name: string;
+  href: string;
+  current: boolean;
+}
+
+const navigation: MenuItem[] = [
+  { name: 'Cửa hàng', href: '/san-pham', current: false },
+  { name: 'Hướng dẫn', href: '/huong-dan-mua-hang', current: false },
+  { name: 'Chính sách', href: '/chinh-sach', current: false },
+  { name: 'Liên hệ', href: '/lien-he', current: false },
+  { name: 'Giới thiệu', href: '/about', current: false },
 ];
 
 const MobileHomeHeader: React.FC = () => {
@@ -24,6 +34,9 @@ const MobileHomeHeader: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [showResults, setShowResults] = useState(false);
   const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
 
   const toggleSearch = () => {
     setIsSearchVisible(!isSearchVisible);
@@ -33,6 +46,30 @@ const MobileHomeHeader: React.FC = () => {
       }, 100);
     }
   };
+
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+  };
+
+  // Fetch products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoadingProducts(true);
+      try {
+        const data = await productAPI.getProducts(100, 0);
+        setProducts(data || []);
+      } catch (err) {
+        setProducts([]);
+      } finally {
+        setLoadingProducts(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -49,6 +86,25 @@ const MobileHomeHeader: React.FC = () => {
     };
   }, [isSearchVisible]);
 
+  // Handle drawer close when clicking outside
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeDrawer();
+      }
+    };
+
+    if (isDrawerOpen) {
+      document.addEventListener('keydown', handleEscapeKey);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+      document.body.style.overflow = 'auto';
+    };
+  }, [isDrawerOpen]);
+
   const handleSearch = (query: string) => {
     setSearchText(query);
     if (!query.trim()) {
@@ -57,7 +113,7 @@ const MobileHomeHeader: React.FC = () => {
       return;
     }
     const searchTerm = query.toLowerCase();
-    const filtered = mockProducts.filter(product => 
+    const filtered = products.filter((product: Product) => 
       product.name.toLowerCase().includes(searchTerm)
     );
     setSearchResults(filtered);
@@ -113,7 +169,11 @@ const MobileHomeHeader: React.FC = () => {
           {/* Search Results Dropdown */}
           {showResults && (
             <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-lg shadow-lg max-h-[60vh] overflow-y-auto z-50">
-              {searchResults.length > 0 ? (
+              {loadingProducts ? (
+                <div className="p-4 text-center text-gray-500">
+                  Đang tải...
+                </div>
+              ) : searchResults.length > 0 ? (
                 <div className="p-2">
                   {searchResults.map((product) => (
                     <div
@@ -172,9 +232,71 @@ const MobileHomeHeader: React.FC = () => {
             <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </button>
-        <button className="text-gray-600">
-          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 7.165 6 9.388 6 12v2.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <button 
+          className="text-gray-600"
+          onClick={toggleDrawer}
+        >
+          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
         </button>
+      </div>
+
+      {/* Drawer Overlay */}
+      {isDrawerOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={closeDrawer}
+        />
+      )}
+
+      {/* Drawer */}
+      <div 
+        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
+          isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Drawer Header */}
+          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">Menu</h2>
+            <button 
+              onClick={closeDrawer}
+              className="p-2 text-gray-500 hover:text-gray-700"
+            >
+              <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Drawer Content */}
+          <div className="flex-1 overflow-y-auto p-4">
+            <nav className="space-y-2">
+              {navigation.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                  onClick={closeDrawer}
+                >
+                  {item.name}
+                </a>
+              ))}
+            </nav>
+
+            {/* Doanh nghiệp button */}
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <a
+                href="/doanh-nghiep"
+                className="block w-full px-4 py-3 text-center bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors"
+                onClick={closeDrawer}
+              >
+                Doanh nghiệp
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

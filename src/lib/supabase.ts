@@ -18,6 +18,31 @@ export const productAPI = {
     return data;
   },
 
+  async getProductsWithVideo(limit = 20, offset = 0) {
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id, 
+        name, 
+        slug, 
+        description,
+        price, 
+        original_price, 
+        image_url, 
+        video_url,
+        brand_id, 
+        rating, 
+        sold_count
+      `)
+      .not('video_url', 'is', null)
+      .neq('video_url', '')
+      .range(offset, offset + limit - 1)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data;
+  },
+
   async getProductsByCategory(categorySlug: string, limit = 20, offset = 0) {
     const { data, error } = await supabase
       .from('products')
@@ -63,8 +88,59 @@ export const productAPI = {
   async getBrands() {
     const { data, error } = await supabase
       .from('brands')
+      .select('id, slug')
+      .order('id');
+    
+    if (error) throw error;
+    return data;
+  }
+};
+
+// API functions for promotions
+export const promotionAPI = {
+  async getPromotions(limit = 20, offset = 0) {
+    const { data, error } = await supabase
+      .from('promotion')
+      .select(`
+        id,
+        title,
+        description,
+        image,
+        youtube_url,
+        slug,
+        start_date,
+        end_date,
+        discount_type,
+        discount_value,
+        created_at,
+        updated_at
+      `)
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
+    
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getActivePromotions() {
+    const now = new Date().toISOString();
+    const { data, error } = await supabase
+      .from('promotion')
       .select('*')
-      .order('name');
+      .lte('start_date', now)
+      .gte('end_date', now)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async getPromotionBySlug(slug: string) {
+    const { data, error } = await supabase
+      .from('promotion')
+      .select('*')
+      .eq('slug', slug)
+      .single();
     
     if (error) throw error;
     return data;

@@ -10,6 +10,7 @@ export interface Database {
           price: number
           original_price: number | null
           image_url: string | null
+          video_url: string | null
           rating: number | null
           sold_count: number | null
           status: string
@@ -26,6 +27,7 @@ export interface Database {
           price: number
           original_price?: number | null
           image_url?: string | null
+          video_url?: string | null
           rating?: number | null
           sold_count?: number | null
           status?: string
@@ -42,6 +44,7 @@ export interface Database {
           price?: number
           original_price?: number | null
           image_url?: string | null
+          video_url?: string | null
           rating?: number | null
           sold_count?: number | null
           status?: string
@@ -76,6 +79,35 @@ export interface Database {
           slug?: string
           description?: string | null
           logo_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      categories: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          description: string | null
+          image_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          description?: string | null
+          image_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          description?: string | null
+          image_url?: string | null
           created_at?: string
           updated_at?: string
         }

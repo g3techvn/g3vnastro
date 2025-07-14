@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import type { Product } from "../../types";
+import ModalBuyNowForm from '../react/ModalBuyNowForm';
 
 const bannerImages = [
   "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&auto=format",
@@ -25,6 +26,9 @@ function getRandomBanner(idx: number): string {
 const MobileBestsellerProductsIsland: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalProduct, setModalProduct] = useState<Product | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/new-products")
@@ -37,6 +41,38 @@ const MobileBestsellerProductsIsland: React.FC = () => {
       .catch(() => setLoading(false));
   }, []);
 
+  // Handle scroll event to update active dot
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const scrollLeft = scrollRef.current.scrollLeft;
+      const itemWidth = scrollRef.current.clientWidth;
+      const scrollWidth = scrollRef.current.scrollWidth;
+      const totalSlides = products.length;
+      
+      // Check if scrolled to the end
+      if (scrollLeft + itemWidth >= scrollWidth - 10) {
+        // If near the end, set to last slide
+        setCurrentSlide(totalSlides - 1);
+      } else {
+        // Calculate current slide based on scroll position
+        const currentIndex = Math.round(scrollLeft / itemWidth);
+        setCurrentSlide(Math.min(currentIndex, totalSlides - 1));
+      }
+    }
+  };
+
+  // Click on dot to scroll to specific slide
+  const scrollToSlide = (index: number) => {
+    if (scrollRef.current) {
+      const itemWidth = scrollRef.current.clientWidth;
+      scrollRef.current.scrollTo({
+        left: index * itemWidth,
+        behavior: 'smooth'
+      });
+      setCurrentSlide(index);
+    }
+  };
+
   if (loading) return <div>Đang tải...</div>;
 
   return (
@@ -45,18 +81,22 @@ const MobileBestsellerProductsIsland: React.FC = () => {
         <h2 className="text-lg font-semibold text-red-700">Sản phẩm bán chạy</h2>
         <div className="flex gap-1">
           {products.map((_, index) => (
-            <div
+            <button
               key={index}
-              className={
-                "w-2 h-2 rounded-full transition-all duration-300 " +
-                (index === 0 ? "bg-red-500 w-4" : "bg-gray-300")
-              }
-            ></div>
+              onClick={() => scrollToSlide(index)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                index === currentSlide ? "bg-red-500 w-4" : "bg-gray-300 w-2"
+              }`}
+            />
           ))}
         </div>
       </div>
       <div className="relative">
-        <div className="flex gap-4 overflow-x-auto flex-nowrap snap-x snap-mandatory px-4 pb-8 scrollbar-hide">
+        <div 
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto flex-nowrap snap-x snap-mandatory px-4 pb-8 scrollbar-hide"
+          onScroll={handleScroll}
+        >
           {products.map((product, idx) => (
             <div key={product.id} className="w-[95%] min-w-[320px] mx-auto space-y-3 snap-center">
               <div className="relative w-full aspect-video">
@@ -101,7 +141,10 @@ const MobileBestsellerProductsIsland: React.FC = () => {
                       <button
                         className="p-1.5 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition-colors duration-200"
                         aria-label="Thêm vào giỏ hàng"
-                        disabled
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setModalProduct(product);
+                        }}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -115,6 +158,19 @@ const MobileBestsellerProductsIsland: React.FC = () => {
           ))}
         </div>
       </div>
+      {/* Modal mua hàng nhanh */}
+      {modalProduct && (
+        <ModalBuyNowForm
+          open={!!modalProduct}
+          onClose={() => setModalProduct(null)}
+          product={{
+            name: modalProduct.name,
+            price: modalProduct.price,
+            image_url: modalProduct.image_url,
+            original_price: modalProduct.original_price,
+          }}
+        />
+      )}
     </section>
   );
 };

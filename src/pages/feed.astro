@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MobileFeedIsland from '../components/MobileFeedIsland.astro';
+
+const title = 'Feed - G3 Công Thái Học';
+const description = 'Theo dõi những tin tức, khuyến mãi và sản phẩm mới nhất từ G3 Công Thái Học. Cập nhật liên tục các thông tin về nội thất văn phòng.';
+---
+
+<Layout title={title} description={description}>
+  <div class="min-h-screen bg-gray-200">
+    <!-- Main Content - Full Width -->
+    <MobileFeedIsland />
+  </div>
+</Layout>
