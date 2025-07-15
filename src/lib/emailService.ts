@@ -168,17 +168,29 @@ export const sendOrderNotificationEmail = async (orderData: OrderEmailData): Pro
 
 
 export const formatOrderDataForEmail = (orderResult: any): OrderEmailData => {
+  // Debug: Log order data để kiểm tra
+  console.log('Formatting order data for email:', {
+    orderId: orderResult.id,
+    hasOrderItems: !!orderResult.order_items,
+    orderItemsLength: orderResult.order_items?.length || 0,
+    orderItems: orderResult.order_items
+  });
+
+  const products = orderResult.order_items?.map((item: any) => ({
+    name: item.product_name,
+    quantity: item.quantity,
+    price: item.price
+  })) || [];
+
+  console.log('Formatted products for email:', products);
+
   return {
     orderId: orderResult.id.toString(),
     customerName: orderResult.full_name,
     customerPhone: orderResult.phone,
     customerEmail: orderResult.email,
     customerAddress: orderResult.address,
-    products: orderResult.order_items?.map((item: any) => ({
-      name: item.product_name,
-      quantity: item.quantity,
-      price: item.price
-    })) || [],
+    products,
     totalAmount: orderResult.total_amount,
     paymentMethod: orderResult.payment_method,
     orderNote: orderResult.order_note,
@@ -213,6 +225,19 @@ export const sendCustomerOrderConfirmation = async (orderData: OrderEmailData): 
     // Initialize EmailJS
     initEmailJS();
 
+    // Format products list
+    const productsListText = orderData.products.length > 0 
+      ? orderData.products.map(product => 
+          `- ${product.name} x${product.quantity}: ${product.price.toLocaleString('vi-VN')}₫`
+        ).join('\n')
+      : 'Không có sản phẩm trong đơn hàng';
+
+    console.log('Products list for customer email:', {
+      productsCount: orderData.products.length,
+      products: orderData.products,
+      productsListText
+    });
+
     // Prepare customer email template parameters
     const customerTemplateParams = {
       to_email: orderData.customerEmail,
@@ -226,9 +251,7 @@ export const sendCustomerOrderConfirmation = async (orderData: OrderEmailData): 
       payment_method: orderData.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'Chuyển khoản ngân hàng',
       total_amount: orderData.totalAmount.toLocaleString('vi-VN'),
       order_date: orderData.orderDate,
-      products_list: orderData.products.map(product => 
-        `- ${product.name} x${product.quantity}: ${product.price.toLocaleString('vi-VN')}₫`
-      ).join('\n'),
+      products_list: productsListText,
       message: `Cảm ơn bạn đã đặt hàng tại G3Tech! 
       
 Đơn hàng của bạn đã được tiếp nhận và sẽ được xử lý trong thời gian sớm nhất.
@@ -240,15 +263,15 @@ Thông tin đơn hàng:
 - Tổng tiền: ${orderData.totalAmount.toLocaleString('vi-VN')}₫
 
 Danh sách sản phẩm:
-${orderData.products.map(product => 
-  `- ${product.name} x${product.quantity}: ${product.price.toLocaleString('vi-VN')}₫`
-).join('\n')}
+${productsListText}
 
 Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ hotline: 1900 xxx xxx
 
 Trân trọng,
 Đội ngũ G3Tech`
     };
+
+    console.log('Customer email template params:', customerTemplateParams);
 
     // Send customer confirmation email
     const customerResponse = await emailjs.send(

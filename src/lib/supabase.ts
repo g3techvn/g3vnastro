@@ -265,7 +265,23 @@ export const orderAPI = {
         throw new Error(`Không thể tạo chi tiết đơn hàng: ${itemsError.message}`);
       }
 
-      return { success: true, order, message: 'Đơn hàng đã được tạo thành công!' };
+      // Lấy lại order với đầy đủ thông tin order_items
+      const { data: fullOrder, error: getOrderError } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          order_items (*)
+        `)
+        .eq('id', order.id)
+        .single();
+
+      if (getOrderError) {
+        console.error('Error fetching full order:', getOrderError);
+        // Fallback to basic order if can't fetch full details
+        return { success: true, order, message: 'Đơn hàng đã được tạo thành công!' };
+      }
+      
+      return { success: true, order: fullOrder, message: 'Đơn hàng đã được tạo thành công!' };
     } catch (error) {
       console.error('Order creation failed:', error);
       return { 
