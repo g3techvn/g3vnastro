@@ -7,6 +7,13 @@
   <div class="absolute inset-0 bg-black/20"></div>
   <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
   
+  <!-- Animated geometric shapes -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-cyan-400/5 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-400/10 to-pink-400/5 rounded-full blur-3xl animate-pulse animation-delay-2"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-full blur-3xl animate-pulse animation-delay-4"></div>
+  </div>
+  
   <!-- Parallax Background images -->
   <div class="absolute inset-0 z-0">
     <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent z-10"></div>
@@ -19,17 +26,17 @@
   
   <!-- Content -->
   <div class="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
       <!-- Left Content -->
       <div class="text-center lg:text-left fade-in-up">
         <!-- Badge -->
-        <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/20 text-blue-300 text-sm font-medium mb-8 backdrop-blur-sm border border-blue-400/30">
+        <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/20 text-blue-300 text-sm font-medium mb-6 lg:mb-8 backdrop-blur-sm border border-blue-400/30 hover:bg-blue-500/30 transition-all duration-300">
           <span class="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse"></span>
           Giải pháp chuyên nghiệp cho doanh nghiệp
         </div>
         
         <!-- Main headline -->
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6 leading-tight">
           Giải pháp nội thất 
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 animate-gradient">
             công thái học
@@ -39,102 +46,112 @@
         </h1>
         
         <!-- Description -->
-        <p class="text-lg sm:text-xl text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+        <p class="text-base sm:text-lg lg:text-xl text-gray-300 mb-6 lg:mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
           Tối ưu hiệu suất làm việc & sức khỏe nhân viên với không gian làm việc được thiết kế theo chuẩn công thái học quốc tế
         </p>
         
         <!-- CTA Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
           <a 
             href="#quote-form" 
-            class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold text-lg shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
+            class="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold text-base sm:text-lg shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
           >
-            <svg class="w-5 h-5 mr-2 group-hover:animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            <span class="mr-2">Nhận báo giá miễn phí</span>
+            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
-            Nhận tư vấn thiết kế
           </a>
+          
           <a 
             href="#services" 
-            class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-lg hover:bg-white/20 transition-all duration-300"
+            class="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-white/20 text-white font-semibold text-base sm:text-lg backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-all duration-300 transform hover:scale-105"
           >
-            <svg class="w-5 h-5 mr-2 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            <span class="mr-2">Xem dịch vụ</span>
+            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
-            Khám phá dịch vụ
           </a>
         </div>
         
         <!-- Stats -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/10">
-          <div class="text-center lg:text-left group hover:scale-105 transition-transform duration-300">
-            <div class="text-3xl font-bold text-white mb-1 counter" data-count="500">0</div>
-            <div class="text-sm text-gray-400">Doanh nghiệp tin tưởng</div>
+        <div class="mt-8 lg:mt-12 grid grid-cols-2 sm:grid-cols-3 gap-4 lg:gap-8">
+          <div class="text-center lg:text-left stats-item">
+            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1">500+</div>
+            <div class="text-sm sm:text-base text-gray-300">Doanh nghiệp tin tưởng</div>
           </div>
-          <div class="text-center lg:text-left group hover:scale-105 transition-transform duration-300">
-            <div class="text-3xl font-bold text-white mb-1 counter" data-count="10000">0</div>
-            <div class="text-sm text-gray-400">Nhân viên được trang bị</div>
+          <div class="text-center lg:text-left stats-item">
+            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1">10,000+</div>
+            <div class="text-sm sm:text-base text-gray-300">Nhân viên hưởng lợi</div>
           </div>
-          <div class="text-center lg:text-left col-span-2 sm:col-span-1 group hover:scale-105 transition-transform duration-300">
-            <div class="text-3xl font-bold text-white mb-1">24/7</div>
-            <div class="text-sm text-gray-400">Hỗ trợ bảo hành</div>
+          <div class="text-center lg:text-left stats-item col-span-2 sm:col-span-1">
+            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1">99%</div>
+            <div class="text-sm sm:text-base text-gray-300">Khách hàng hài lòng</div>
           </div>
         </div>
       </div>
       
-      <!-- Right Content - Image Gallery -->
-      <div class="relative lg:block hidden fade-in-right">
-        <div class="grid grid-cols-2 gap-4 transform perspective-1000">
-          <!-- Main showcase image -->
-          <div class="col-span-2 relative overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105">
-            <img 
-              src="https://images.unsplash.com/photo-1541746972996-4e0b0f93e586?w=800&h=400&fit=crop&crop=center"
-              alt="Modern ergonomic office setup"
-              class="w-full h-64 object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-            <div class="absolute bottom-4 left-4 text-white">
-              <div class="text-lg font-semibold">Văn phòng hiện đại</div>
-              <div class="text-sm text-gray-300">Thiết kế công thái học</div>
+      <!-- Right Content - Feature showcase -->
+      <div class="relative mt-8 lg:mt-0 fade-in-up animation-delay-2">
+        <!-- Main feature card -->
+        <div class="relative">
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-3xl blur-xl"></div>
+          <div class="relative bg-white/10 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-white/20 shadow-2xl">
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-white">Tư vấn chuyên nghiệp</h3>
+                <p class="text-gray-300 text-sm">Miễn phí 24/7</p>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="flex items-center text-white">
+                <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span class="text-sm sm:text-base">Khảo sát không gian làm việc</span>
+              </div>
+              <div class="flex items-center text-white">
+                <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span class="text-sm sm:text-base">Thiết kế theo yêu cầu</span>
+              </div>
+              <div class="flex items-center text-white">
+                <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span class="text-sm sm:text-base">Bảo hành toàn diện</span>
+              </div>
             </div>
           </div>
-          
-          <!-- Secondary images -->
-          <div class="relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:rotate-2">
-            <img 
-              src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop&crop=center"
-              alt="Ergonomic office chair"
-              class="w-full h-32 object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-            <div class="absolute bottom-2 left-2 text-white text-sm font-medium">
-              Ghế công thái học
-            </div>
+        </div>
+        
+        <!-- Floating stats cards -->
+        <div class="absolute -top-4 -right-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl p-4 shadow-xl floating-card">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-white">35%</div>
+            <div class="text-xs text-green-100">Tăng năng suất</div>
           </div>
-          
-          <div class="relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-rotate-2">
-            <img 
-              src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=400&h=300&fit=crop&crop=center"
-              alt="Height adjustable desk"
-              class="w-full h-32 object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-            <div class="absolute bottom-2 left-2 text-white text-sm font-medium">
-              Bàn nâng hạ điện
-            </div>
+        </div>
+        
+        <div class="absolute -bottom-4 -left-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-4 shadow-xl floating-card animation-delay-2">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-white">50%</div>
+            <div class="text-xs text-purple-100">Giảm đau lưng</div>
           </div>
-          
-          <!-- Floating elements -->
-          <div class="absolute -top-6 -right-6 w-12 h-12 bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
-          <div class="absolute -bottom-6 -left-6 w-8 h-8 bg-cyan-500/20 rounded-full blur-lg animate-pulse delay-1000"></div>
         </div>
       </div>
     </div>
   </div>
   
   <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-    <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
     </svg>
   </div>
@@ -146,100 +163,151 @@
     50% { background-position: 100% 50%; }
   }
   
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
   .animate-gradient {
     background-size: 200% 200%;
     animation: gradient 3s ease infinite;
   }
   
   .fade-in-up {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 1s ease-out forwards;
+    animation: fadeInUp 0.6s ease-out;
   }
   
-  .fade-in-right {
-    opacity: 0;
-    transform: translateX(30px);
-    animation: fadeInRight 1s ease-out 0.3s forwards;
+  .animation-delay-2 {
+    animation-delay: 0.2s;
   }
   
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .animation-delay-4 {
+    animation-delay: 0.4s;
   }
   
-  @keyframes fadeInRight {
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+  .floating-card {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .stats-item {
+    animation: fadeInUp 0.6s ease-out 0.8s both;
   }
   
   .parallax-bg {
-    transform: translateZ(0);
-    will-change: transform;
+    transition: transform 0.1s ease-out;
   }
   
-  .perspective-1000 {
-    perspective: 1000px;
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .floating-card {
+      display: none;
+    }
+    
+    .stats-item {
+      animation-delay: 0.4s;
+    }
   }
   
-  .hover\:shadow-3xl:hover {
-    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.5);
-  }
-  
-  .counter {
-    transition: all 0.3s ease;
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
   }
 </style>
 
 <script>
-  // Counter animation
-  document.addEventListener('DOMContentLoaded', function() {
-    const counters = document.querySelectorAll('.counter');
-    
-    const animateCounter = (counter) => {
-      const target = parseInt(counter.getAttribute('data-count') || '0');
-      const duration = 2000;
-      const start = 0;
-      const increment = target / (duration / 16);
-      let current = start;
-      
-      const updateCounter = () => {
-        current += increment;
-        if (current < target) {
-          counter.textContent = Math.floor(current).toLocaleString();
-          requestAnimationFrame(updateCounter);
-        } else {
-          counter.textContent = target.toLocaleString() + '+';
-        }
-      };
-      
-      updateCounter();
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    });
-    
-    counters.forEach(counter => {
-      observer.observe(counter);
-    });
-  });
-  
-  // Parallax effect
+  // Parallax effect for background
   window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const parallaxBg = document.querySelector('.parallax-bg');
-    if (parallaxBg && parallaxBg.style) {
+    if (parallaxBg) {
       parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
     }
+  });
+  
+
+  
+  // Counter animation for stats
+  const observerOptions = {
+    threshold: 0.5,
+    rootMargin: '0px 0px -100px 0px'
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const statsItems = entry.target.querySelectorAll('.stats-item');
+        statsItems.forEach((item, index) => {
+          const number = item.querySelector('div:first-child') as HTMLElement;
+          if (number && number.textContent) {
+            const finalNumber = parseInt(number.textContent.replace(/[^\d]/g, ''));
+            let currentNumber = 0;
+            const increment = finalNumber / 50;
+            
+            const timer = setInterval(() => {
+              currentNumber += increment;
+              if (currentNumber >= finalNumber) {
+                currentNumber = finalNumber;
+                clearInterval(timer);
+              }
+              
+              if (number) {
+                if (finalNumber >= 1000) {
+                  number.textContent = Math.floor(currentNumber).toLocaleString() + '+';
+                } else {
+                  number.textContent = Math.floor(currentNumber) + '%';
+                }
+              }
+            }, 30);
+          }
+        });
+        
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+  
+  // Observe stats section
+  const statsSection = document.querySelector('.grid.grid-cols-2.sm\\:grid-cols-3.gap-4.lg\\:gap-8');
+  if (statsSection) {
+    observer.observe(statsSection);
+  }
+
+  // Smooth scroll functionality for CTA buttons
+  document.addEventListener('DOMContentLoaded', function() {
+    const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+    
+    smoothScrollLinks.forEach(link => {
+      link.addEventListener('click', function(e: Event) {
+        e.preventDefault();
+        
+        const target = e.currentTarget as HTMLAnchorElement;
+        const targetId = target.getAttribute('href')?.substring(1);
+        if (!targetId) return;
+        
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          // Calculate offset for sticky header (48px) + extra spacing
+          const headerOffset = 80;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
   });
 </script> 

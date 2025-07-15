@@ -53,7 +53,7 @@ const showroomImages: ShowroomImage[] = [
   },
   {
     id: 6,
-    src: "https://images.unsplash.com/photo-1541746972996-4e0b0f93e586?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     alt: "Collaborative workspace",
     title: "Không gian làm việc nhóm",
     description: "Khu vực collaborative workspace hiện đại",
