@@ -17,6 +17,7 @@ interface OrderEmailData {
   orderId: string;
   customerName: string;
   customerPhone: string;
+  customerEmail?: string;
   customerAddress: string;
   products: Array<{
     name: string;
@@ -171,6 +172,7 @@ export const formatOrderDataForEmail = (orderResult: any): OrderEmailData => {
     orderId: orderResult.id.toString(),
     customerName: orderResult.full_name,
     customerPhone: orderResult.phone,
+    customerEmail: orderResult.email,
     customerAddress: orderResult.address,
     products: orderResult.order_items?.map((item: any) => ({
       name: item.product_name,
@@ -189,4 +191,83 @@ export const formatOrderDataForEmail = (orderResult: any): OrderEmailData => {
       second: '2-digit'
     })
   };
+};
+
+// Send order confirmation email to customer
+export const sendCustomerOrderConfirmation = async (orderData: OrderEmailData): Promise<{
+  success: boolean;
+  error?: string;
+}> => {
+  try {
+    // Skip if no customer email provided
+    if (!orderData.customerEmail) {
+      return { success: true }; // Not an error, just no email to send
+    }
+
+    // Check configuration first
+    if (EMAILJS_SERVICE_ID === 'your_service_id') {
+      const error = 'EmailJS Service ID not configured. Please set PUBLIC_EMAILJS_SERVICE_ID environment variable.';
+      return { success: false, error };
+    }
+
+    // Initialize EmailJS
+    initEmailJS();
+
+    // Prepare customer email template parameters
+    const customerTemplateParams = {
+      to_email: orderData.customerEmail,
+      to_name: orderData.customerName,
+      subject: `Xác nhận đơn hàng #${orderData.orderId} - G3Tech`,
+      order_id: orderData.orderId,
+      customer_name: orderData.customerName,
+      customer_phone: orderData.customerPhone,
+      customer_address: orderData.customerAddress,
+      order_note: orderData.orderNote || 'Không có ghi chú',
+      payment_method: orderData.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'Chuyển khoản ngân hàng',
+      total_amount: orderData.totalAmount.toLocaleString('vi-VN'),
+      order_date: orderData.orderDate,
+      products_list: orderData.products.map(product => 
+        `- ${product.name} x${product.quantity}: ${product.price.toLocaleString('vi-VN')}₫`
+      ).join('\n'),
+      message: `Cảm ơn bạn đã đặt hàng tại G3Tech! 
+      
+Đơn hàng của bạn đã được tiếp nhận và sẽ được xử lý trong thời gian sớm nhất.
+Chúng tôi sẽ liên hệ với bạn để xác nhận thông tin giao hàng.
+
+Thông tin đơn hàng:
+- Mã đơn hàng: #${orderData.orderId}
+- Ngày đặt: ${orderData.orderDate}
+- Tổng tiền: ${orderData.totalAmount.toLocaleString('vi-VN')}₫
+
+Danh sách sản phẩm:
+${orderData.products.map(product => 
+  `- ${product.name} x${product.quantity}: ${product.price.toLocaleString('vi-VN')}₫`
+).join('\n')}
+
+Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ hotline: 1900 xxx xxx
+
+Trân trọng,
+Đội ngũ G3Tech`
+    };
+
+    // Send customer confirmation email
+    const customerResponse = await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID, // You might want to use a different template for customer confirmation
+      customerTemplateParams
+    );
+
+    if (customerResponse.status === 200) {
+      console.log('Customer confirmation email sent successfully');
+      return { success: true };
+    } else {
+      throw new Error(`EmailJS returned status: ${customerResponse.status}`);
+    }
+  } catch (error) {
+    console.error('Failed to send customer confirmation email:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error occurred' 
+    };
+  }
 }; 

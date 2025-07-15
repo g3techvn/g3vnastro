@@ -118,6 +118,7 @@ export interface Database {
           salutation: string
           full_name: string
           phone: string
+          email: string | null
           address: string
           order_note: string | null
           voucher_code: string | null
@@ -143,6 +144,7 @@ export interface Database {
           salutation: string
           full_name: string
           phone: string
+          email?: string | null
           address: string
           order_note?: string | null
           voucher_code?: string | null
@@ -168,6 +170,7 @@ export interface Database {
           salutation?: string
           full_name?: string
           phone?: string
+          email?: string | null
           address?: string
           order_note?: string | null
           voucher_code?: string | null

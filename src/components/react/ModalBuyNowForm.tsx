@@ -10,7 +10,7 @@ import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { z } from 'zod';
 import { orderAPI } from '../../lib/supabase';
 import { COMPANY_INFO } from '../../constants';
-import { sendOrderNotificationEmail, formatOrderDataForEmail } from '../../lib/emailService';
+import { sendOrderNotificationEmail, sendCustomerOrderConfirmation, formatOrderDataForEmail } from '../../lib/emailService';
 
 interface ModalBuyNowFormProps {
   open: boolean;
@@ -59,6 +59,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
     salutation: 'Anh',
     fullName: '',
     phone: '',
+    email: '',
   });
   const [shippingInfo, setShippingInfo] = useState({
     address: '',
@@ -92,11 +93,15 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
       .refine(val => !/\d/.test(val), { message: 'Họ tên không được chứa số' }),
     phone: z.string()
       .regex(/^0\d{9,10}$/, 'Số điện thoại phải gồm 10 hoặc 11 số, bắt đầu bằng 0'),
+    email: z.string()
+      .email('Vui lòng nhập email hợp lệ')
+      .optional()
+      .or(z.literal('')),
     address: z.string()
       .min(6, 'Vui lòng nhập địa chỉ chi tiết (tối thiểu 6 ký tự)'),
   });
 
-  const [errors, setErrors] = useState<{ fullName?: string; phone?: string; address?: string }>({});
+  const [errors, setErrors] = useState<{ fullName?: string; phone?: string; email?: string; address?: string }>({});
   const [isAnimating, setIsAnimating] = useState(false);
   const [touchStartY, setTouchStartY] = useState(0);
   const [touchCurrentY, setTouchCurrentY] = useState(0);
@@ -106,10 +111,11 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
       salutation: buyerInfo.salutation,
       fullName: buyerInfo.fullName,
       phone: buyerInfo.phone,
+      email: buyerInfo.email,
       address: shippingInfo.address,
     });
     if (!result.success) {
-      const fieldErrors: { fullName?: string; phone?: string; address?: string } = {};
+      const fieldErrors: { fullName?: string; phone?: string; email?: string; address?: string } = {};
       result.error.issues.forEach((err) => {
         const field = String(err.path[0]);
         if (field) fieldErrors[field as keyof typeof fieldErrors] = err.message;
@@ -323,6 +329,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
         salutation: buyerInfo.salutation,
         full_name: buyerInfo.fullName,
         phone: buyerInfo.phone,
+        email: buyerInfo.email || undefined,
         address: shippingInfo.address,
         order_note: orderNote || undefined,
         voucher_code: voucher || undefined,
@@ -369,9 +376,16 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
         // Set một cooldown nhẹ sau khi thành công
         setCooldownEnd(Date.now() + 2000);
         
-        // Send email notification (async, don't wait for completion)
+        // Send email notifications (async, don't wait for completion)
         const emailData = formatOrderDataForEmail(result.order);
+        
+        // Send notification to admin
         sendOrderNotificationEmail(emailData);
+        
+        // Send confirmation to customer if email provided
+        if (buyerInfo.email) {
+          sendCustomerOrderConfirmation(emailData);
+        }
         
         // Show thank you modal (overlay on top)
         setShowThankYouModal(true);
@@ -583,6 +597,27 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                       />
                       {errors.phone && <div className="text-red-500 text-xs mt-1">{errors.phone}</div>}
                     </div>
+                  </div>
+                  <div className="relative">
+                    <label
+                      htmlFor="email"
+                      className="absolute -top-2 left-2 inline-block rounded-lg bg-white px-1 text-xs font-medium text-gray-900"
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="example@gmail.com"
+                      className={`block w-full rounded-md bg-white px-2 md:px-3 py-2 md:py-1.5 text-sm md:text-base text-gray-900 border ${errors.email ? 'border-red-400' : 'border-gray-300'} placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600`}
+                      value={buyerInfo.email}
+                      onChange={e => {
+                        setBuyerInfo({ ...buyerInfo, email: e.target.value });
+                        debouncedValidateForm();
+                      }}
+                      onBlur={validateForm}
+                    />
+                    {errors.email && <div className="text-red-500 text-xs mt-1">{errors.email}</div>}
                   </div>
                   <div className="relative">
                     <label

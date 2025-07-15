@@ -153,6 +153,7 @@ export const orderAPI = {
     salutation: string;
     full_name: string;
     phone: string;
+    email?: string;
     address: string;
     order_note?: string;
     voucher_code?: string;
@@ -179,6 +180,7 @@ export const orderAPI = {
           salutation: orderData.salutation,
           full_name: orderData.full_name,
           phone: orderData.phone,
+          email: orderData.email || null,
           address: orderData.address,
           order_note: orderData.order_note || null,
           voucher_code: orderData.voucher_code || null,
