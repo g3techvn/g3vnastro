@@ -864,7 +864,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                     <div className="flex-1 overflow-hidden">
                       {loadingProducts && <div className="p-6 text-gray-500 text-center">Đang tải sản phẩm...</div>}
                       {errorProducts && <div className="p-6 text-red-500 text-center">{errorProducts}</div>}
-                      {!loadingProducts && !errorProducts && (
+                    {!loadingProducts && !errorProducts && (
                         <ul className="divide-y divide-gray-200 overflow-y-auto h-full">
                           {productsFromApi
                             .filter(mp => !productsInCart.some(item => item.product && 'id' in item.product && item.product.id === mp.id))
@@ -881,23 +881,23 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                                         <span className="text-xs text-gray-500 line-through">{mp.original_price.toLocaleString('vi-VN')}₫</span>
                                       )}
                                       <span className="text-sm font-semibold text-red-600">{mp.price.toLocaleString('vi-VN')}₫</span>
-                                    </div>
+                            </div>
                                   </div>
                                 </div>
                                 <button 
                                   type="button" 
                                   className="ml-3 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium text-sm flex-shrink-0"
                                   onClick={() => {
-                                    setProductsInCart(list => [...list, { product: mp, quantity: 1 }]);
-                                    setShowAddProduct(false);
+                              setProductsInCart(list => [...list, { product: mp, quantity: 1 }]);
+                              setShowAddProduct(false);
                                     setSearchProduct('');
                                   }}
                                 >
-                                  Thêm
-                                </button>
+                              Thêm
+                            </button>
                               </div>
-                            </li>
-                          ))}
+                          </li>
+                        ))}
                           {productsFromApi
                             .filter(mp => !productsInCart.some(item => item.product && 'id' in item.product && item.product.id === mp.id))
                             .filter(mp => searchProduct === '' || mp.name.toLowerCase().includes(searchProduct.toLowerCase()))
@@ -905,9 +905,9 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                             <li className="p-6 text-gray-500 text-center">
                               {searchProduct ? 'Không tìm thấy sản phẩm phù hợp' : 'Không còn sản phẩm nào để thêm'}
                             </li>
-                          )}
-                        </ul>
-                      )}
+                        )}
+                      </ul>
+                    )}
                     </div>
                     
                     {/* Footer */}
@@ -1086,8 +1086,8 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                 <div className="flex justify-between items-center text-base font-semibold pt-2 border-t border-gray-300">
                   <span className="text-gray-800">Tổng tiền:</span>
                   <span className="text-red-600">
-                    {orderData.total_amount?.toLocaleString('vi-VN')}₫
-                  </span>
+                  {orderData.total_amount?.toLocaleString('vi-VN')}₫
+                </span>
                 </div>
               </div>
             </div>

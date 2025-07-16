@@ -18,10 +18,9 @@ interface MenuItem {
 interface BottomNavProps {
   menuItems: MenuItem[];
   defaultActiveTab?: number;
-  isVisible?: boolean;
 }
 
-const BottomNav: React.FC<BottomNavProps> = ({ menuItems, defaultActiveTab = 0, isVisible = true }) => {
+const BottomNav: React.FC<BottomNavProps> = ({ menuItems, defaultActiveTab = 0 }) => {
   const [activeTab, setActiveTab] = useState(defaultActiveTab);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -74,9 +73,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ menuItems, defaultActiveTab = 0, 
   };
 
   return (
-    <div className={`navigation transition-transform duration-200 ${
-      isVisible ? 'translate-y-0' : 'translate-y-full'
-    }`}>
+    <div className="navigation">
       <div className="nav-container">
         <ul className="menu-items" role="navigation">
           {menuItems.map((item, index) => (

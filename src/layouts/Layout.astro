@@ -4,10 +4,11 @@ import StickyNavMenuIsland from '../components/StickyNavMenuIsland.astro';
 import Footer from '../components/Footer.astro';
 import ZaloBoxIsland from '../components/ZaloBoxIsland.astro';
 import CallBoxIsland from '../components/CallBoxIsland.astro';
-import MobileNavigationIsland from '../components/mobile/MobileNavigationIsland.astro';
+import MobileHomeHeaderIsland from '../components/mobile/MobileHomeHeaderIsland.astro';
 // import MobileHomeTabsIsland from '../components/mobile/MobileHomeTabsIsland.astro';
 import MobileBestsellerProductsIsland from '../components/mobile/MobileBestsellerProductsIsland.astro';
 import MobileFeatureProductIsland from '../components/mobile/MobileFeatureProductIsland.astro';
+import BottomNavIsland from '../components/mobile/BottomNavIsland.astro';
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/contact-buttons.css';
 import '../styles/global.css';
@@ -92,8 +93,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 	<body class="h-full font-sans min-h-screen" transition:animate="fade">
 		<!-- Mobile Layout -->
 		<div class="md:hidden bg-white">
-			<!-- Mobile Navigation - includes Header and BottomNav for optimized loading -->
-			<MobileNavigationIsland />
+			<!-- Mobile Header - hiển thị ở tất cả các trang -->
+			<MobileHomeHeaderIsland />
 			
 			{showMobileHomeComponents && (
 				<>
@@ -107,6 +108,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 			<main class="py-4 pb-20">
 				<slot />
 			</main>
+			
+			<!-- Bottom Navigation -->
+			<BottomNavIsland />
 		</div>
 
 		<!-- Desktop Layout -->
