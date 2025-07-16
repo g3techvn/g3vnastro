@@ -27,7 +27,11 @@ const navigation: MenuItem[] = [
   { name: 'Giới thiệu', href: '/about', current: false },
 ];
 
-const MobileHomeHeader: React.FC = () => {
+interface MobileHomeHeaderProps {
+  isVisible?: boolean;
+}
+
+const MobileHomeHeader: React.FC<MobileHomeHeaderProps> = ({ isVisible = true }) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
   const searchRef = useRef<HTMLDivElement>(null);
@@ -128,7 +132,9 @@ const MobileHomeHeader: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-between px-4 py-2 bg-white sticky top-0 z-30 transition-transform duration-200 md:hidden">
+    <div className={`flex items-center justify-between px-4 py-2 bg-white sticky top-0 z-30 transition-transform duration-200 md:hidden ${
+      isVisible ? 'translate-y-0' : '-translate-y-full'
+    }`}>
       {/* Logo */}
       <div className={`flex items-center gap-2 transition-all duration-300 ${isSearchVisible ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}>
         <button onClick={() => window.location.href = '/'} className="focus:outline-none">

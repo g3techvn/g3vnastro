@@ -70,6 +70,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [errorProducts, setErrorProducts] = useState<string | null>(null);
   const [orderNote, setOrderNote] = useState('');
+  const [searchProduct, setSearchProduct] = useState('');
   
   // States for order submission
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -552,7 +553,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                         <select
                           id="salutation"
                           className="rounded-l-md border border-gray-300 bg-white px-2 md:px-3 py-2 md:py-1.5 text-sm md:text-base text-gray-900 focus:outline-2 focus:outline-indigo-600 border-r-0"
-                          style={{ minWidth: 60 }}
+                          style={{ minWidth: 80 }}
                           value={buyerInfo.salutation}
                           onChange={e => setBuyerInfo({ ...buyerInfo, salutation: e.target.value })}
                         >
@@ -825,33 +826,103 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
               </div>
               {/* Modal chọn sản phẩm */}
               {showAddProduct && (
-                <div className="fixed inset-0 z-[10000003] bg-black/40 flex items-center justify-center">
-                  <div className="bg-white rounded-lg p-6 max-w-md w-full">
-                    <h3 className="text-lg font-bold mb-4">Chọn sản phẩm để thêm</h3>
-                    {loadingProducts && <div className="text-gray-500">Đang tải sản phẩm...</div>}
-                    {errorProducts && <div className="text-red-500">{errorProducts}</div>}
-                    {!loadingProducts && !errorProducts && (
-                      <ul className="divide-y divide-gray-200 max-h-80 overflow-y-auto">
-                        {productsFromApi.filter(mp => !productsInCart.some(item => item.product && 'id' in item.product && item.product.id === mp.id)).map(mp => (
-                          <li key={mp.id} className="py-2 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <img src={mp.image_url} alt={mp.name} className="w-10 h-10 object-cover rounded" />
-                              <span>{mp.name}</span>
-                            </div>
-                            <button type="button" className="bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700" onClick={() => {
-                              setProductsInCart(list => [...list, { product: mp, quantity: 1 }]);
-                              setShowAddProduct(false);
-                            }}>
-                              Thêm
-                            </button>
-                          </li>
-                        ))}
-                        {productsFromApi.filter(mp => !productsInCart.some(item => item.product && 'id' in item.product && item.product.id === mp.id)).length === 0 && (
-                          <li className="py-2 text-gray-500 text-center">Không còn sản phẩm nào để thêm</li>
-                        )}
-                      </ul>
-                    )}
-                    <button type="button" className="mt-4 text-gray-500 hover:text-gray-800" onClick={() => setShowAddProduct(false)}>Đóng</button>
+                <div className="fixed inset-0 z-[10000003] bg-black/40 flex items-center justify-center p-4">
+                  <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[80vh] flex flex-col">
+                    {/* Header */}
+                    <div className="p-6 border-b border-gray-200">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-bold text-gray-900">Chọn sản phẩm để thêm</h3>
+                        <button 
+                          type="button" 
+                          className="text-gray-400 hover:text-gray-600 transition-colors"
+                          onClick={() => {
+                            setShowAddProduct(false);
+                            setSearchProduct('');
+                          }}
+                        >
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                      {/* Tìm kiếm */}
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Tìm kiếm sản phẩm..."
+                          className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors"
+                          value={searchProduct}
+                          onChange={e => setSearchProduct(e.target.value)}
+                        />
+                        <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="flex-1 overflow-hidden">
+                      {loadingProducts && <div className="p-6 text-gray-500 text-center">Đang tải sản phẩm...</div>}
+                      {errorProducts && <div className="p-6 text-red-500 text-center">{errorProducts}</div>}
+                      {!loadingProducts && !errorProducts && (
+                        <ul className="divide-y divide-gray-200 overflow-y-auto h-full">
+                          {productsFromApi
+                            .filter(mp => !productsInCart.some(item => item.product && 'id' in item.product && item.product.id === mp.id))
+                            .filter(mp => searchProduct === '' || mp.name.toLowerCase().includes(searchProduct.toLowerCase()))
+                            .map(mp => (
+                            <li key={mp.id} className="p-4 hover:bg-gray-50 transition-colors">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3 flex-1 min-w-0">
+                                  <img src={mp.image_url} alt={mp.name} className="w-12 h-12 object-cover rounded-lg border border-gray-200 flex-shrink-0" />
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="text-sm font-medium text-gray-900 truncate">{mp.name}</h4>
+                                    <div className="flex items-center gap-2 mt-1">
+                                      {mp.original_price && mp.original_price > mp.price && (
+                                        <span className="text-xs text-gray-500 line-through">{mp.original_price.toLocaleString('vi-VN')}₫</span>
+                                      )}
+                                      <span className="text-sm font-semibold text-red-600">{mp.price.toLocaleString('vi-VN')}₫</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <button 
+                                  type="button" 
+                                  className="ml-3 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium text-sm flex-shrink-0"
+                                  onClick={() => {
+                                    setProductsInCart(list => [...list, { product: mp, quantity: 1 }]);
+                                    setShowAddProduct(false);
+                                    setSearchProduct('');
+                                  }}
+                                >
+                                  Thêm
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                          {productsFromApi
+                            .filter(mp => !productsInCart.some(item => item.product && 'id' in item.product && item.product.id === mp.id))
+                            .filter(mp => searchProduct === '' || mp.name.toLowerCase().includes(searchProduct.toLowerCase()))
+                            .length === 0 && (
+                            <li className="p-6 text-gray-500 text-center">
+                              {searchProduct ? 'Không tìm thấy sản phẩm phù hợp' : 'Không còn sản phẩm nào để thêm'}
+                            </li>
+                          )}
+                        </ul>
+                      )}
+                    </div>
+                    
+                    {/* Footer */}
+                    <div className="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                      <button 
+                        type="button" 
+                        className="w-full px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors font-medium"
+                        onClick={() => {
+                          setShowAddProduct(false);
+                          setSearchProduct('');
+                        }}
+                      >
+                        Đóng
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -955,20 +1026,94 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
         {/* Order Info */}
         {orderData && (
           <div className="px-8 pb-6">
-            <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-              <div className="flex justify-between items-center">
+            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
                 <span className="text-sm font-medium text-gray-600">Mã đơn hàng:</span>
                 <span className="text-sm font-semibold text-gray-900">#{orderData.id}</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-600">Tổng tiền:</span>
-                <span className="text-sm font-semibold text-red-600">
-                  {orderData.total_amount?.toLocaleString('vi-VN')}₫
-                </span>
+              
+              {/* Thông tin khách hàng */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold text-gray-800">Thông tin khách hàng</h4>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <div>📞 {orderData.phone}</div>
+                  <div>📍 {orderData.address}</div>
+                  {orderData.email && <div>✉️ {orderData.email}</div>}
+                </div>
+              </div>
+
+              {/* Sản phẩm đặt mua */}
+              {orderData.products && orderData.products.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-semibold text-gray-800">Sản phẩm đã đặt</h4>
+                  <div className="space-y-2">
+                    {orderData.products.map((item: any, index: number) => (
+                      <div key={index} className="flex justify-between items-center text-sm">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-gray-900 truncate">{item.product_name}</div>
+                          <div className="text-gray-500">Số lượng: {item.quantity}</div>
+                        </div>
+                        <div className="text-right ml-2">
+                          <div className="font-medium text-gray-900">
+                            {(item.price * item.quantity).toLocaleString('vi-VN')}₫
+                          </div>
+                          {item.original_price && item.original_price > item.price && (
+                            <div className="text-xs text-gray-500 line-through">
+                              {(item.original_price * item.quantity).toLocaleString('vi-VN')}₫
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Thanh toán */}
+              <div className="space-y-2 pt-2 border-t border-gray-200">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600">Phương thức:</span>
+                  <span className="text-gray-900">
+                    {orderData.payment_method === 'cod' ? 'Thanh toán khi nhận hàng' : 'Chuyển khoản'}
+                  </span>
+                </div>
+                {orderData.shipping_fee > 0 && (
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">Phí vận chuyển:</span>
+                    <span className="text-gray-900">{orderData.shipping_fee.toLocaleString('vi-VN')}₫</span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center text-base font-semibold pt-2 border-t border-gray-300">
+                  <span className="text-gray-800">Tổng tiền:</span>
+                  <span className="text-red-600">
+                    {orderData.total_amount?.toLocaleString('vi-VN')}₫
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         )}
+
+        {/* Email Notice */}
+        <div className="px-8 pb-6">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <svg className="w-5 h-5 text-amber-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h4 className="text-sm font-semibold text-amber-800">Lưu ý quan trọng</h4>
+                <div className="mt-1 text-sm text-amber-700 space-y-1">
+                  <p>• Vui lòng kiểm tra email để xem thông tin đơn hàng chi tiết</p>
+                  <p>• G3Tech sẽ không thể liên lạc nếu thông tin liên lạc không chính xác</p>
+                  <p>• Đảm bảo số điện thoại và địa chỉ đã nhập đúng để giao hàng thành công</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Hotline Support */}
         <div className="px-8 pb-6">

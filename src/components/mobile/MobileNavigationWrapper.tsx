@@ -1,9 +1,13 @@
 import React from 'react';
+import MobileHomeHeader from './MobileHomeHeader';
 import BottomNav from './BottomNav';
+import { useScrollDirection } from './useScrollDirection';
 
-const BottomNavWrapper: React.FC = () => {
-  // Define menu items
-  const menuItems = [
+const MobileNavigationWrapper: React.FC = () => {
+  const { isHeaderVisible, isBottomNavVisible } = useScrollDirection();
+  
+  // Define menu items for BottomNav
+  const bottomNavMenuItems = [
     {
       href: '/',
       icon: (
@@ -56,7 +60,14 @@ const BottomNavWrapper: React.FC = () => {
     }
   ];
 
-  return <BottomNav menuItems={menuItems} />;
+  return (
+    <>
+      {/* Mobile Header - renders first for priority loading */}
+      <MobileHomeHeader isVisible={isHeaderVisible} />
+      {/* Bottom Navigation - loads together with header but positioned at bottom */}
+      <BottomNav menuItems={bottomNavMenuItems} isVisible={isBottomNavVisible} />
+    </>
+  );
 };
 
-export default BottomNavWrapper; 
+export default MobileNavigationWrapper; 

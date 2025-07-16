@@ -28,6 +28,8 @@
   bottom: 0;
   left: 0;
   border-top: 1px solid rgba(200,200,200,0.25); /* subtle border for glass edge */
+  transition: transform 0.2s ease-in-out;
+  transform: translateY(0);
 }
 
 /* Hide navigation on desktop */
@@ -67,6 +69,7 @@
   z-index: 10;
   display: flex;
   justify-content: center;
+  min-width: 0; /* Cho phép flex item co lại */
 }
 
 .navigation .nav-link {
@@ -120,18 +123,23 @@
   position: relative;
   display: block;
   font-weight: 400;
-  font-size: 0.65em;
-  letter-spacing: 0.05em;
+  font-size: 0.6em;
+  letter-spacing: 0.04em;
   color: var(--clr);
   margin-top: 4px;
   text-align: center;
   transition: color 0.3s ease, font-weight 0.3s ease;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* Style cho svg icon */
 .navigation .nav-link .icon svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   position: relative;
 }
 
@@ -158,6 +166,18 @@
 
 .navigation [data-role="NavigationMenuItem"].active .nav-link .icon .badge {
   background-color: var(--active-color);
+}
+
+/* Media query cho màn hình nhỏ - tối ưu cho 5 items */
+@media (max-width: 375px) {
+  .navigation .nav-link .title {
+    font-size: 0.55em;
+  }
+  
+  .navigation .nav-link .icon svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* Media query cho màn hình vừa */
