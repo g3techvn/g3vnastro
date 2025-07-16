@@ -29,3 +29,5 @@ We recommend every repository include:
 - README.md
 - LICENSE
 - .gitignore 
+
+ghi chú
