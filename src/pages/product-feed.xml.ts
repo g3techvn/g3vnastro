@@ -42,29 +42,29 @@ export const GET: APIRoute = async () => {
     <copyright>Copyright ${new Date().getFullYear()} ${COMPANY_INFO.name}</copyright>
     
     ${products.map(product => {
-      // Get optimized image URL
+      // Get optimized image URL (JPEG for better Google compatibility)
       const imageUrl = product.image_url 
         ? (product.image_url.includes('g3tech-otm') 
-            ? `${baseUrl}/${product.image_url}`
-            : `${baseUrl}/g3tech-otm/products/${product.slug}/${product.image_url.split('/').pop()?.replace(/\.(jpg|jpeg|png|webp)$/i, '.avif') || 'image.avif'}`
+            ? `${baseUrl}/${product.image_url.replace('.avif', '.jpg')}`
+            : `${baseUrl}/g3tech-otm/products/${product.slug}/${product.image_url.split('/').pop()?.replace(/\.(jpg|jpeg|png|webp)$/i, '.jpg') || 'image.jpg'}`
           )
         : `${baseUrl}/images/no-image.jpg`;
 
-      // Get additional gallery images
+      // Get additional gallery images (JPEG for better Google compatibility)
       const additionalImages: string[] = [];
       if (product.gallery_array && Array.isArray(product.gallery_array)) {
         product.gallery_array.forEach((galleryImg: string) => {
           if (galleryImg && galleryImg !== product.image_url) {
             let optimizedUrl = galleryImg;
-            // Convert to optimized AVIF format
+            // Convert to optimized JPEG format
             if (galleryImg.startsWith('/g3tech/') && /\.(jpg|jpeg|png|webp)$/i.test(galleryImg)) {
-              optimizedUrl = galleryImg.replace(/^\/g3tech\//, '/g3tech-otm/').replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
+              optimizedUrl = galleryImg.replace(/^\/g3tech\//, '/g3tech-otm/').replace(/\.(jpg|jpeg|png|webp)$/i, '.jpg');
             }
             // Make URL absolute
             if (optimizedUrl.includes('g3tech-otm')) {
               additionalImages.push(`${baseUrl}${optimizedUrl.startsWith('/') ? optimizedUrl : '/' + optimizedUrl}`);
             } else {
-              additionalImages.push(`${baseUrl}/g3tech-otm/products/${product.slug}/${galleryImg.split('/').pop()?.replace(/\.(jpg|jpeg|png|webp)$/i, '.avif') || 'image.avif'}`);
+              additionalImages.push(`${baseUrl}/g3tech-otm/products/${product.slug}/${galleryImg.split('/').pop()?.replace(/\.(jpg|jpeg|png|webp)$/i, '.jpg') || 'image.jpg'}`);
             }
           }
         });

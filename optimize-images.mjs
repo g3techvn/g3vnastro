@@ -29,33 +29,45 @@ function getAllImageFiles(dir) {
   return results;
 }
 
-function getOtmPath(originalPath, isThumb = false) {
+function getOtmPath(originalPath, isThumb = false, format = 'avif') {
   // Lấy path tương đối từ G3TECH_DIR
   const relPath = path.relative(G3TECH_DIR, originalPath);
-  // Đổi đuôi sang .avif và thêm suffix _thumb nếu cần
+  // Đổi đuôi sang format và thêm suffix _thumb nếu cần
   const baseName = path.basename(relPath, path.extname(relPath));
   const dirName = path.dirname(relPath);
-  const fileName = isThumb ? `${baseName}_thumb.avif` : `${baseName}.avif`;
+  const extension = format === 'jpeg' ? 'jpg' : format;
+  const fileName = isThumb ? `${baseName}_thumb.${extension}` : `${baseName}.${extension}`;
   return path.join(G3TECH_OTM_DIR, dirName, fileName);
 }
 
 async function convertToAvifAndSave(filePath) {
   try {
-    const avifPath = getOtmPath(filePath);
-    const thumbPath = getOtmPath(filePath, true);
+    const avifPath = getOtmPath(filePath, false, 'avif');
+    const thumbPath = getOtmPath(filePath, true, 'avif');
+    const jpegPath = getOtmPath(filePath, false, 'jpeg');
     
     // Tạo thư mục nếu chưa tồn tại
     fs.mkdirSync(path.dirname(avifPath), { recursive: true });
     
-    // Tạo ảnh tối ưu chính nếu chưa tồn tại
+    // Tạo ảnh AVIF chính nếu chưa tồn tại
     if (!fs.existsSync(avifPath)) {
       await sharp(filePath).avif({ quality: 50 }).toFile(avifPath);
-      console.log('Optimized:', filePath, '->', avifPath);
+      console.log('Optimized AVIF:', filePath, '->', avifPath);
     } else {
-      console.log('Skip main (already optimized):', avifPath);
+      console.log('Skip AVIF main (already optimized):', avifPath);
     }
     
-    // Tạo ảnh thumb 80x80px nếu chưa tồn tại
+    // Tạo ảnh JPEG chính nếu chưa tồn tại (cho product feed)
+    if (!fs.existsSync(jpegPath)) {
+      await sharp(filePath)
+        .jpeg({ quality: 80, mozjpeg: true })
+        .toFile(jpegPath);
+      console.log('Optimized JPEG:', filePath, '->', jpegPath);
+    } else {
+      console.log('Skip JPEG main (already optimized):', jpegPath);
+    }
+    
+    // Tạo ảnh thumb AVIF 80x80px nếu chưa tồn tại
     if (!fs.existsSync(thumbPath)) {
       await sharp(filePath)
         .resize(80, 80, { 
@@ -64,9 +76,9 @@ async function convertToAvifAndSave(filePath) {
         })
         .avif({ quality: 60 })
         .toFile(thumbPath);
-      console.log('Created thumb:', filePath, '->', thumbPath);
+      console.log('Created AVIF thumb:', filePath, '->', thumbPath);
     } else {
-      console.log('Skip thumb (already exists):', thumbPath);
+      console.log('Skip AVIF thumb (already exists):', thumbPath);
     }
     
   } catch (err) {
@@ -82,7 +94,7 @@ async function main() {
     await convertToAvifAndSave(file);
   }
   
-  console.log('All images in public/g3tech have been optimized to AVIF and thumb versions in public/g3tech-otm!');
+  console.log('All images in public/g3tech have been optimized to AVIF (main + thumb) and JPEG (main) versions in public/g3tech-otm!');
 }
 
 main();
