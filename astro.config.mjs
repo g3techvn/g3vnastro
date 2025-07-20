@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import partytown from '@astrojs/partytown';
 import path from 'path';
 
 
@@ -14,6 +15,13 @@ export default defineConfig({
     react(),
     tailwind(),
     sitemap(),
+    partytown({
+      // Configure Partytown
+      config: {
+        forward: ['dataLayer.push', 'gtag'],
+        debug: false, // Set to true for debugging in development
+      },
+    }),
   ],
 
   output: 'static',

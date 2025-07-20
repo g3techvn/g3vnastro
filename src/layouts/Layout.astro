@@ -10,6 +10,8 @@ import MobileBestsellerProductsIsland from '../components/mobile/MobileBestselle
 import MobileFeatureProductIsland from '../components/mobile/MobileFeatureProductIsland.astro';
 import BottomNavIsland from '../components/mobile/BottomNavIsland.astro';
 import { ViewTransitions } from 'astro:transitions';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
+import AnalyticsTracker from '../components/AnalyticsTracker.astro';
 import '../styles/contact-buttons.css';
 import '../styles/global.css';
 import '../styles/antd.css';
@@ -89,6 +91,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+		
+		<!-- Google Analytics with Partytown (Optimized) -->
+		<GoogleAnalytics />
+		
+		<!-- Analytics Auto-Tracking -->
+		<AnalyticsTracker />
 	</head>
 	<body class="h-full font-sans min-h-screen" transition:animate="fade">
 		<!-- Mobile Layout -->

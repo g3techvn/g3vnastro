@@ -13,6 +13,7 @@
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
     "@astrojs/node": "^9.3.0",
+    "@astrojs/partytown": "^2.1.4",
     "@astrojs/react": "^4.3.0",
     "@astrojs/sitemap": "^3.4.1",
     "@astrojs/tailwind": "^5.1.0",

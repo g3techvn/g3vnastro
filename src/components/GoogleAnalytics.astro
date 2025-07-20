@@ -1,0 +1,41 @@
+---
+import { GA_MEASUREMENT_ID } from '../lib/analytics';
+---
+
+<!-- Google Analytics with Partytown - Optimized Performance -->
+<script type="text/partytown" async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+<script type="text/partytown" is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  
+  // Basic configuration
+  gtag('config', GA_MEASUREMENT_ID, {
+    // Enhanced measurement for better tracking
+    enhanced_measurement: true,
+    
+    // Performance optimization
+    send_page_view: true,
+    
+    // Privacy settings
+    anonymize_ip: true,
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+    
+    // Custom parameters
+    custom_map: {
+      'custom_parameter_1': 'page_category',
+      'custom_parameter_2': 'user_type'
+    }
+  });
+  
+  // Enhanced e-commerce tracking (if needed)
+  gtag('config', GA_MEASUREMENT_ID, {
+    currency: 'VND',
+    country: 'VN'
+  });
+</script>
+
+<!-- Preconnect for better performance -->
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+<link rel="dns-prefetch" href="https://www.google-analytics.com"> 

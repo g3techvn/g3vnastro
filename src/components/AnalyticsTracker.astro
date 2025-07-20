@@ -1,0 +1,98 @@
+---
+// Auto-track page views with Astro View Transitions
+---
+
+<script>
+  import { pageview } from '../lib/analytics';
+
+  // Function to track page view
+  function trackPageView() {
+    // Add a small delay to ensure gtag is loaded in the worker
+    setTimeout(() => {
+      const currentPath = window.location.pathname + window.location.search;
+      pageview(currentPath);
+    }, 100);
+  }
+
+  // Track initial page load
+  document.addEventListener('DOMContentLoaded', trackPageView);
+
+  // Track page changes with Astro View Transitions
+  document.addEventListener('astro:page-load', trackPageView);
+
+  // Track when leaving a page (for session duration)
+  document.addEventListener('astro:before-preparation', () => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'page_leave', {
+        page_path: window.location.pathname,
+        timestamp: Date.now()
+      });
+    }
+  });
+
+  // Track when page becomes visible/hidden
+  let startTime = Date.now();
+  
+  document.addEventListener('visibilitychange', () => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      if (document.visibilityState === 'hidden') {
+        // Track time spent on page
+        const timeSpent = Date.now() - startTime;
+        window.gtag('event', 'page_view_duration', {
+          page_path: window.location.pathname,
+          duration: Math.round(timeSpent / 1000), // in seconds
+          custom_parameter_1: 'page_timing'
+        });
+      } else {
+        // Reset timer when page becomes visible again
+        startTime = Date.now();
+      }
+    }
+  });
+
+  // Enhanced scroll tracking
+  let maxScroll = 0;
+  let scrollCheckpoints = [25, 50, 75, 90, 100];
+  let checkedCheckpoints = new Set();
+
+  function trackScroll() {
+    const scrollPercent = Math.round(
+      (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+    );
+    
+    if (scrollPercent > maxScroll) {
+      maxScroll = scrollPercent;
+    }
+
+    // Track scroll depth milestones
+    scrollCheckpoints.forEach(checkpoint => {
+      if (scrollPercent >= checkpoint && !checkedCheckpoints.has(checkpoint)) {
+        checkedCheckpoints.add(checkpoint);
+        
+        if (typeof window !== 'undefined' && window.gtag) {
+          window.gtag('event', 'scroll_depth', {
+            page_path: window.location.pathname,
+            scroll_depth: checkpoint,
+            custom_parameter_1: 'engagement'
+          });
+        }
+      }
+    });
+  }
+
+  // Throttled scroll tracking
+  let scrollTimeout = null;
+  window.addEventListener('scroll', () => {
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+    }
+    scrollTimeout = setTimeout(trackScroll, 100);
+  });
+
+  // Reset scroll tracking on page change
+  document.addEventListener('astro:page-load', () => {
+    maxScroll = 0;
+    checkedCheckpoints.clear();
+    startTime = Date.now();
+  });
+</script> 
