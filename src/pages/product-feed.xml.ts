@@ -50,6 +50,26 @@ export const GET: APIRoute = async () => {
           )
         : `${baseUrl}/images/no-image.jpg`;
 
+      // Get additional gallery images
+      const additionalImages: string[] = [];
+      if (product.gallery_array && Array.isArray(product.gallery_array)) {
+        product.gallery_array.forEach((galleryImg: string) => {
+          if (galleryImg && galleryImg !== product.image_url) {
+            let optimizedUrl = galleryImg;
+            // Convert to optimized AVIF format
+            if (galleryImg.startsWith('/g3tech/') && /\.(jpg|jpeg|png|webp)$/i.test(galleryImg)) {
+              optimizedUrl = galleryImg.replace(/^\/g3tech\//, '/g3tech-otm/').replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
+            }
+            // Make URL absolute
+            if (optimizedUrl.includes('g3tech-otm')) {
+              additionalImages.push(`${baseUrl}${optimizedUrl.startsWith('/') ? optimizedUrl : '/' + optimizedUrl}`);
+            } else {
+              additionalImages.push(`${baseUrl}/g3tech-otm/products/${product.slug}/${galleryImg.split('/').pop()?.replace(/\.(jpg|jpeg|png|webp)$/i, '.avif') || 'image.avif'}`);
+            }
+          }
+        });
+      }
+
       // Clean and format description
       const description = product.description 
         ? product.description.replace(/<[^>]*>/g, '').trim().substring(0, 5000)
@@ -83,6 +103,7 @@ export const GET: APIRoute = async () => {
       <g:description><![CDATA[${description}]]></g:description>
       <g:link>${baseUrl}/san-pham/${product.slug}</g:link>
       <g:image_link>${imageUrl}</g:image_link>
+      ${additionalImages.slice(0, 10).map(imgUrl => `<g:additional_image_link>${imgUrl}</g:additional_image_link>`).join('\n      ')}
       <g:availability>in stock</g:availability>
       <g:price>${price}</g:price>
       ${salePrice ? `<g:sale_price>${salePrice}</g:sale_price>` : ''}
