@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { supabase } from '../../lib/supabase';
+import CategoryBuyNowModal from '../../components/react/CategoryBuyNowModal';
 
 export async function getStaticPaths() {
   // Fetch all brands to generate static paths
@@ -32,6 +33,7 @@ let products: Array<{
   id: number;
   name: string;
   price: number;
+  original_price?: number;
   image_url?: string;
   image_square_url?: string;
   slug: string;
@@ -39,6 +41,10 @@ let products: Array<{
   pd_cat_id?: number;
   category_name?: string;
   video_url?: string;
+  rating?: number;
+  sold_count?: number;
+  brands?: { title: string; slug: string };
+  product_cats?: { title: string; slug: string };
 }> = [];
 
 let brandInfo: {
@@ -59,18 +65,24 @@ let categories: Array<{
 
 try {
   // Lấy sản phẩm theo thương hiệu
-  const { data: productsData, error: productsError } = await supabase
-    .from('products')
-    .select(`
-      *,
-      brands(title, slug),
-      product_cats(title, slug)
-    `)
-    .eq('brand_id', brand?.id)
-    .order('name', { ascending: true });
+  if (brand?.id) {
+    const { data: productsData, error: productsError } = await supabase
+      .from('products')
+      .select(`
+        *,
+        brands(title, slug),
+        product_cats(title, slug)
+      `)
+      .eq('brand_id', brand.id)
+      .order('name', { ascending: true });
 
-  if (!productsError && productsData) {
-    products = productsData;
+    if (!productsError && productsData) {
+      products = productsData;
+    } else if (productsError) {
+      console.error('Error fetching products:', productsError);
+    }
+  } else {
+    console.warn('No brand found for slug:', slug);
   }
 
   // Lấy danh sách danh mục cho filter
@@ -89,7 +101,7 @@ try {
 const title = `${brandInfo.title} | G3 - Công Thái Học`;
 const description = brandInfo.description || `Khám phá các sản phẩm của thương hiệu ${brandInfo.title} tại G3.vn. Nội thất công thái học, bảo hành 12 tháng, giao hàng toàn quốc.`;
 
-console.log('Brand data:', { brand, brandId: brand?.id, slug });
+
 ---
 
 <Layout title={title} description={description}>
@@ -107,19 +119,24 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
         )}
         <div>
           <h1 class="text-lg font-semibold text-gray-900">{brandInfo.title}</h1>
-          <p class="text-sm text-gray-600">{products.length} sản phẩm</p>
+          <p class="text-sm text-gray-600"><span id="mobile-product-count">{products.length}</span> sản phẩm</p>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Desktop Content -->
-  <div class="hidden md:block py-8 mx-10">
+  <div class="hidden md:block mx-10 py-8">
     <div class="grid grid-cols-1 gap-8 md:grid-cols-6">
       <!-- Sidebar Filter -->
       <div class="md:col-span-1">
         <div class="bg-white rounded-lg border border-gray-200 p-4 sticky top-4">
-          <h3 class="font-semibold text-gray-900 mb-4">Bộ lọc</h3>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-gray-900">Bộ lọc</h3>
+            <button id="clear-filters" class="text-sm text-red-600 hover:text-red-700 hidden">
+              Xóa tất cả
+            </button>
+          </div>
           
           <!-- Category Filter -->
           <div class="mb-6">
@@ -144,12 +161,57 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
         <!-- Combined Breadcrumb and Controls -->
         <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <nav class="flex text-sm">
-              <a href="/" class="text-gray-500 hover:text-gray-700">Trang chủ</a>
-              <span class="mx-2 text-gray-400">/</span>
-              <a href="/brands" class="text-gray-500 hover:text-gray-700">Thương hiệu</a>
-              <span class="mx-2 text-gray-400">/</span>
-              <span class="text-gray-900">{brandInfo.title}</span>
+            <nav aria-label="Breadcrumb" class="flex">
+              <ol role="list" class="flex items-center space-x-3 h-12">
+                <li class="flex">
+                  <div class="flex items-center">
+                    <a href="/" class="text-gray-400 hover:text-gray-500">
+                      <svg class="size-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
+                      </svg>
+                      <span class="sr-only">Trang chủ</span>
+                    </a>
+                  </div>
+                </li>
+                <li class="flex">
+                  <div class="flex items-center">
+                    <svg
+                      fill="currentColor"
+                      viewBox="0 0 24 44"
+                      preserveAspectRatio="none"
+                      aria-hidden="true"
+                      class="h-full w-5 shrink-0 text-gray-200"
+                    >
+                      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                    </svg>
+                    <a
+                      href="/brands"
+                      class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                    >
+                      Thương hiệu
+                    </a>
+                  </div>
+                </li>
+                <li class="flex">
+                  <div class="flex items-center">
+                    <svg
+                      fill="currentColor"
+                      viewBox="0 0 24 44"
+                      preserveAspectRatio="none"
+                      aria-hidden="true"
+                      class="h-full w-5 shrink-0 text-gray-200"
+                    >
+                      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                    </svg>
+                    <span
+                      aria-current="page"
+                      class="ml-4 text-sm font-medium text-gray-900"
+                    >
+                      {brandInfo.title}
+                    </span>
+                  </div>
+                </li>
+              </ol>
             </nav>
             
             <div class="flex items-center gap-4">
@@ -183,15 +245,21 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
 
         <!-- Products -->
         <div id="products-container">
-          {products.length > 0 ? (
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5" id="products-grid">
-              {products.map((product: any) => (
-                <a href={`/san-pham/${product.slug}`} class="block product-item" data-price={product.price} data-category={product.pd_cat_id}>
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5" id="products-grid">
+            <!-- Initial products rendered by server -->
+            {products.length > 0 ? (
+              products.map((product: any) => (
+                <a href={`/san-pham/${product.slug}`} class="block">
                   <div class="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden">
-                    <div class="aspect-square w-full">
-                      <img
-                        src={product.image_square_url || product.image_url || '/images/placeholder-product.jpg'}
-                        alt={product.name}
+                    <div class="aspect-square w-full relative group">
+                      {product.original_price && product.original_price > product.price && (
+                        <div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg z-10">
+                          -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
+                        </div>
+                      )}
+                      <img 
+                        src={product.image_square_url || product.image_url || '/images/placeholder-product.jpg'} 
+                        alt={product.name} 
                         class="object-contain w-full h-full"
                       />
                     </div>
@@ -207,7 +275,7 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
                         <div class="flex items-center gap-2">
                           <span class="flex items-center gap-0.5">
                             <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                              <polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6 " />
+                              <polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6"/>
                             </svg>
                             {(product.rating || 4.9).toFixed(1)}
                           </span>
@@ -216,43 +284,113 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
                         </div>
                         <button 
                           class="p-1.5 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition-colors duration-200"
-                          aria-label="Thêm vào giỏ hàng"
-                          onclick={`addToCart(event, {id: ${product.id}, name: '${product.name}', price: ${product.price}, image_url: '${product.image_url}', slug: '${product.slug}'})`}
+                          data-product={JSON.stringify(product)}
+                          onclick="handleBuyNowClick(this)"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                           </svg>
                         </button>
                       </div>
                     </div>
                   </div>
                 </a>
-              ))}
-            </div>
-          ) : (
-            <div class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-              <p class="text-lg text-gray-600">Không tìm thấy sản phẩm nào của thương hiệu này.</p>
-            </div>
-          )}
+              ))
+            ) : (
+              <div class="col-span-full bg-white rounded-lg border border-gray-200 p-8 text-center">
+                <p class="text-lg text-gray-600">Không tìm thấy sản phẩm nào của thương hiệu này.</p>
+                <p class="mt-2 text-sm text-gray-500">Vui lòng kiểm tra lại thương hiệu hoặc thử thương hiệu khác.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <script define:vars={{ brand, products, categories }}>
+  <!-- Mobile Filter Button -->
+  <div class="md:hidden fixed bottom-20 left-4 right-4 z-10">
+    <button id="mobile-filter-btn" class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 flex items-center justify-center shadow-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+      </svg>
+      <span class="text-gray-700">Bộ lọc sản phẩm</span>
+    </button>
+  </div>
+
+  <!-- Mobile Filter Modal -->
+  <div id="mobile-filter-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-50" id="mobile-filter-backdrop"></div>
+    <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-lg max-h-[80vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+        <h3 class="text-lg font-semibold">Bộ lọc</h3>
+        <button id="close-mobile-filter" class="text-gray-400 hover:text-gray-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="p-4">
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-900 mb-3">Danh mục</h4>
+          <div class="space-y-2" id="mobile-category-filter">
+            <!-- Mobile categories will be populated by JavaScript -->
+          </div>
+        </div>
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-900 mb-3">Khoảng giá</h4>
+          <div class="space-y-2" id="mobile-price-filter">
+            <!-- Mobile price ranges will be populated by JavaScript -->
+          </div>
+        </div>
+        <div class="flex gap-3 pt-4 border-t border-gray-200">
+          <button id="mobile-clear-filters" class="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+            Xóa bộ lọc
+          </button>
+          <button id="mobile-apply-filters" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-md">
+            Áp dụng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview popup placeholder -->
+  <div id="preview-popup" class="fixed pointer-events-none z-[9999] hidden">
+    <div class="bg-white rounded-xl border border-gray-200 shadow-2xl p-2">
+      <img id="preview-image" class="w-96 h-96 object-contain rounded-xl" alt="Preview" />
+    </div>
+  </div>
+
+  <!-- Brand Buy Now Modal -->
+  <CategoryBuyNowModal client:load />
+
+  <script define:vars={{ brand, products: products || [], categories: categories || [] }}>
     // Initialize page data
     let allProducts = products || [];
     let filteredProducts = [...allProducts];
     let currentViewMode = 'grid';
     let currentSort = 'name';
+    let modalProduct = null;
+
+    // Filter state - giống như React useState
+    let filterState = {
+      priceRange: [],
+      categories: []
+    };
+
+    // Preview functionality
+    let preview = null;
 
     // Add price ranges to filter with product count
     function populatePriceFilter() {
       const priceFilter = document.getElementById('price-filter');
+      const mobilePriceFilter = document.getElementById('mobile-price-filter');
       if (!priceFilter) return;
       
       // Clear existing content first
       priceFilter.innerHTML = '';
+      if (mobilePriceFilter) mobilePriceFilter.innerHTML = '';
       
       // Define price ranges
       const priceRanges = [
@@ -274,16 +412,19 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
         }).length;
         
         if (count > 0) {
-          const label = document.createElement('label');
-          label.className = 'flex items-center justify-between';
-          label.innerHTML = `
-            <div class="flex items-center">
-              <input type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500" value="${range.value}">
-              <span class="ml-2 text-sm text-gray-600">${range.label}</span>
-            </div>
-            <span class="text-xs text-gray-500">(${count})</span>
+          const labelHTML = `
+            <label class="flex items-center justify-between cursor-pointer">
+              <div class="flex items-center">
+                <input type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500 price-filter" value="${range.value}" onchange="handlePriceRangeChange('${range.value}')">
+                <span class="ml-2 text-sm text-gray-600">${range.label}</span>
+              </div>
+              <span class="text-xs text-gray-500">(${count})</span>
+            </label>
           `;
-          priceFilter.appendChild(label);
+          priceFilter.insertAdjacentHTML('beforeend', labelHTML);
+          if (mobilePriceFilter) {
+            mobilePriceFilter.insertAdjacentHTML('beforeend', labelHTML);
+          }
         }
       });
     }
@@ -291,10 +432,12 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
     // Add categories to filter
     function populateCategoryFilter() {
       const categoryFilter = document.getElementById('category-filter');
+      const mobileCategoryFilter = document.getElementById('mobile-category-filter');
       if (!categoryFilter) return;
       
       // Clear existing content first
       categoryFilter.innerHTML = '';
+      if (mobileCategoryFilter) mobileCategoryFilter.innerHTML = '';
       
       // Get unique categories from products with count
       const categoriesMap = new Map();
@@ -318,51 +461,128 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
         .sort((a, b) => a.name.localeCompare(b.name));
       
       productCategories.forEach(category => {
-        const label = document.createElement('label');
-        label.className = 'flex items-center justify-between';
-        label.innerHTML = `
-          <div class="flex items-center">
-            <input type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500 category-filter" value="${category.id}">
-            <span class="ml-2 text-sm text-gray-600">${category.name}</span>
-          </div>
-          <span class="text-xs text-gray-500">(${category.count})</span>
+        const labelHTML = `
+          <label class="flex items-center justify-between cursor-pointer">
+            <div class="flex items-center">
+              <input type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500 category-filter-input" value="${category.id}" onchange="handleCategoryChange('${category.id}')">
+              <span class="ml-2 text-sm text-gray-600">${category.name}</span>
+            </div>
+            <span class="text-xs text-gray-500">(${category.count})</span>
+          </label>
         `;
-        categoryFilter.appendChild(label);
+        categoryFilter.insertAdjacentHTML('beforeend', labelHTML);
+        if (mobileCategoryFilter) {
+          mobileCategoryFilter.insertAdjacentHTML('beforeend', labelHTML);
+        }
       });
     }
 
-    // Filter products
-    function filterProducts() {
-      const priceFilters = Array.from(document.querySelectorAll('input[type="checkbox"]:not(.category-filter):checked')).map(cb => cb.value);
-      const categoryFilters = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => parseInt(cb.value));
-      
-      filteredProducts = allProducts.filter(product => {
-        // Price filter
-        if (priceFilters.length > 0) {
-          const price = product.price;
-          const matchesPrice = priceFilters.some(filter => {
-            switch (filter) {
-              case 'under_500k': return price < 500000;
-              case '500k_1m': return price >= 500000 && price <= 1000000;
-              case '1m_2m': return price >= 1000000 && price <= 2000000;
-              case 'over_2m': return price > 2000000;
-              default: return true;
+    // Apply filters - giống ProductList.applyFilters
+    function applyFilters() {
+      let filtered = [...allProducts];
+
+      // Apply price range filters
+      if (filterState.priceRange.length > 0) {
+        filtered = filtered.filter(product => {
+          return filterState.priceRange.some(range => {
+            switch (range) {
+              case 'under_500k':
+                return product.price < 500000;
+              case '500k_1m':
+                return product.price >= 500000 && product.price < 1000000;
+              case '1m_2m':
+                return product.price >= 1000000 && product.price < 2000000;
+              case 'over_2m':
+                return product.price >= 2000000;
+              default:
+                return true;
             }
           });
-          if (!matchesPrice) return false;
-        }
-        
-        // Category filter
-        if (categoryFilters.length > 0) {
-          if (!categoryFilters.includes(product.pd_cat_id)) return false;
-        }
-        
-        return true;
-      });
+        });
+      }
+
+      // Apply category filters - convert both to string for comparison
+      if (filterState.categories.length > 0) {
+        filtered = filtered.filter(product => {
+          if (!product.pd_cat_id) return false;
+          return filterState.categories.includes(product.pd_cat_id.toString());
+        });
+      }
+
+      filteredProducts = filtered;
       
+      // Apply sorting
       sortProducts();
       renderProducts();
       updateProductCount();
+      updateClearButton();
+      
+      console.log('Filtered products:', filteredProducts.length, 'out of', allProducts.length);
+    }
+
+    // Handle price filter change - giống React component
+    function handlePriceRangeChange(value) {
+      if (filterState.priceRange.includes(value)) {
+        filterState.priceRange = filterState.priceRange.filter(v => v !== value);
+      } else {
+        filterState.priceRange.push(value);
+      }
+      updateCheckboxStates();
+      applyFilters();
+    }
+
+    // Handle category filter change - giống React component  
+    function handleCategoryChange(categoryId) {
+      const categoryIdStr = categoryId.toString();
+      if (filterState.categories.includes(categoryIdStr)) {
+        filterState.categories = filterState.categories.filter(id => id !== categoryIdStr);
+      } else {
+        filterState.categories.push(categoryIdStr);
+      }
+      updateCheckboxStates();
+      applyFilters();
+    }
+
+    // Update checkbox states to match filter state
+    function updateCheckboxStates() {
+      // Update price checkboxes
+      document.querySelectorAll('.price-filter').forEach(checkbox => {
+        checkbox.checked = filterState.priceRange.includes(checkbox.value);
+      });
+      
+      // Update category checkboxes
+      document.querySelectorAll('.category-filter-input').forEach(checkbox => {
+        checkbox.checked = filterState.categories.includes(checkbox.value);
+      });
+    }
+
+    // Update clear button visibility
+    function updateClearButton() {
+      const clearBtn = document.getElementById('clear-filters');
+      
+      if (clearBtn) {
+        const hasFilters = filterState.priceRange.length > 0 || filterState.categories.length > 0;
+        if (hasFilters) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+      }
+    }
+
+    // Clear all filters
+    function clearAllFilters() {
+      // Reset filter state
+      filterState = {
+        priceRange: [],
+        categories: []
+      };
+      
+      // Update checkboxes to match empty state
+      updateCheckboxStates();
+      
+      // Apply empty filters
+      applyFilters();
     }
 
     // Sort products
@@ -377,62 +597,149 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
       });
     }
 
+    // Show preview
+    function showPreview(x, y, imageUrl) {
+      const popup = document.getElementById('preview-popup');
+      const image = document.getElementById('preview-image');
+      if (popup && image) {
+        image.src = imageUrl;
+        popup.style.left = Math.min(x + 24, window.innerWidth - 400) + 'px';
+        popup.style.top = Math.max(y - 200, 16) + 'px';
+        popup.classList.remove('hidden');
+      }
+    }
+
+    // Hide preview
+    function hidePreview() {
+      const popup = document.getElementById('preview-popup');
+      if (popup) {
+        popup.classList.add('hidden');
+      }
+    }
+
     // Render products
     function renderProducts() {
       const container = document.getElementById('products-grid');
-      if (!container) return;
+      if (!container) {
+        console.error('Products container not found');
+        return;
+      }
+      
+      if (filteredProducts.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full bg-white rounded-lg border border-gray-200 p-8 text-center">
+            <p class="text-lg text-gray-600">Không tìm thấy sản phẩm nào của thương hiệu này.</p>
+            <p class="mt-2 text-sm text-gray-500">Vui lòng thử lại với bộ lọc khác.</p>
+          </div>
+        `;
+        return;
+      }
       
       container.className = currentViewMode === 'grid' 
         ? 'grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'
         : 'space-y-4';
       
-      container.innerHTML = filteredProducts.map(product => `
-        <a href="/san-pham/${product.slug}" class="block">
-          <div class="${currentViewMode === 'grid' 
-            ? 'bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden'
-            : 'bg-white rounded-lg border border-gray-200 shadow-sm flex p-4'
-          }">
-            <div class="${currentViewMode === 'grid' ? 'aspect-square w-full' : 'w-24 h-24 flex-shrink-0'}">
-              <img src="${product.image_square_url || product.image_url || '/images/placeholder-product.jpg'}" alt="${product.name}" class="object-contain w-full h-full">
-            </div>
+      container.innerHTML = filteredProducts.map(product => {
+        const discountBadge = product.original_price && product.original_price > product.price ? 
+          `<div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg z-10">
+            -${Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
+          </div>` : '';
+
+        return `
+          <a href="/san-pham/${product.slug}" class="block">
             <div class="${currentViewMode === 'grid' 
-              ? 'flex-1 flex flex-col px-2 pt-2 pb-1'
-              : 'flex-1 ml-4 flex flex-col justify-between'
+              ? 'bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden'
+              : 'bg-white rounded-lg border border-gray-200 shadow-sm flex p-4'
             }">
-              <div class="${currentViewMode === 'grid' ? 'h-10 font-medium text-sm text-gray-900 line-clamp-2 mb-1' : 'font-medium text-gray-900 mb-2'}">${product.name}</div>
-              <div class="${currentViewMode === 'grid' ? 'flex items-end gap-2 mb-1 mt-auto' : 'flex items-end gap-2 mb-2'}">
-                <span class="text-red-600 font-bold text-base">${product.price.toLocaleString('vi-VN')}₫</span>
-                ${product.original_price ? `<span class="text-xs text-gray-400 line-through">${product.original_price.toLocaleString('vi-VN')}₫</span>` : ''}
-              </div>
-              <div class="flex items-center justify-between gap-2 text-xs text-gray-500 mb-1">
-                <div class="flex items-center gap-2">
-                  <span class="flex items-center gap-0.5">
-                    <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6 "/>
+              <div class="${currentViewMode === 'grid' ? 'aspect-square w-full relative group' : 'w-24 h-24 flex-shrink-0 relative group'}">
+                ${discountBadge}
+                <img 
+                  src="${product.image_square_url || product.image_url || '/images/placeholder-product.jpg'}" 
+                  alt="${product.name}" 
+                  class="object-contain w-full h-full"
+                />
+                <button
+                  type="button"
+                  class="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/10 rounded transition-all duration-200 opacity-0 group-hover:opacity-100 z-10"
+                  onmouseenter="showPreview(event.clientX, event.clientY, '${product.image_url || '/images/placeholder-product.jpg'}')"
+                  onmousemove="showPreview(event.clientX, event.clientY, '${product.image_url || '/images/placeholder-product.jpg'}')"
+                  onmouseleave="hidePreview()"
+                  onclick="event.preventDefault()"
+                >
+                  <span class="bg-white/90 text-gray-700 rounded-full p-2 shadow hover:bg-red-600 hover:text-white transition-colors duration-200">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
-                    ${(product.rating || 4.9).toFixed(1)}
                   </span>
-                  <span>•</span>
-                  <span>Đã bán ${product.sold_count || 0}</span>
-                </div>
-                <button class="p-1.5 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition-colors duration-200" onclick="addToCart(event, {id: ${product.id}, name: '${product.name}', price: ${product.price}, image_url: '${product.image_url}', slug: '${product.slug}'})">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                  </svg>
                 </button>
               </div>
+              <div class="${currentViewMode === 'grid' 
+                ? 'flex-1 flex flex-col px-2 pt-2 pb-1'
+                : 'flex-1 ml-4 flex flex-col justify-between'
+              }">
+                <div class="${currentViewMode === 'grid' ? 'h-10 font-medium text-sm text-gray-900 line-clamp-2 mb-1' : 'font-medium text-gray-900 mb-2'}">
+                  ${product.name}
+                </div>
+                <div class="${currentViewMode === 'grid' ? 'flex items-end gap-2 mb-1 mt-auto' : 'flex items-end gap-2 mb-2'}">
+                  <span class="text-red-600 font-bold text-base">${product.price.toLocaleString('vi-VN')}₫</span>
+                  ${product.original_price ? `<span class="text-xs text-gray-400 line-through">${product.original_price.toLocaleString('vi-VN')}₫</span>` : ''}
+                </div>
+                <div class="flex items-center justify-between gap-2 text-xs text-gray-500 mb-1">
+                  <div class="flex items-center gap-2">
+                    <span class="flex items-center gap-0.5">
+                      <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6"/>
+                      </svg>
+                      ${(product.rating || 4.9).toFixed(1)}
+                    </span>
+                    <span>•</span>
+                    <span>Đã bán ${product.sold_count || 0}</span>
+                  </div>
+                  <button 
+                    class="p-1.5 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition-colors duration-200 buy-now-btn"
+                    data-product='${JSON.stringify(product)}'
+                    onclick="handleBuyNowClick(this)"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </a>
-      `).join('');
+          </a>
+        `;
+      }).join('');
     }
 
     // Update product count
     function updateProductCount() {
       const countElement = document.getElementById('product-count');
+      const mobileCountElement = document.getElementById('mobile-product-count');
       if (countElement) {
         countElement.textContent = `Hiển thị ${filteredProducts.length} sản phẩm`;
       }
+      if (mobileCountElement) {
+        mobileCountElement.textContent = filteredProducts.length;
+      }
+    }
+
+    // Handle buy now click from server-rendered buttons
+    function handleBuyNowClick(button) {
+      const product = JSON.parse(button.dataset.product);
+      openBuyNowModal(event, product);
+    }
+
+    // Open buy now modal
+    function openBuyNowModal(event, product) {
+      event.preventDefault();
+      
+      // Dispatch custom event to React component
+      const modalEvent = new CustomEvent('openCategoryBuyNowModal', {
+        detail: product
+      });
+      window.dispatchEvent(modalEvent);
     }
 
     // Initialize once when page loads
@@ -442,31 +749,24 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
       if (initialized) return;
       initialized = true;
       
+      // Clear server-rendered products and render with JavaScript
+      const container = document.getElementById('products-grid');
+      if (container) {
+        container.innerHTML = '';
+      }
+      
       populatePriceFilter();
       populateCategoryFilter();
+      applyFilters(); // Thay vì renderProducts để ensure filters are applied
       setupEventListeners();
     }
     
     function setupEventListeners() {
-      // Remove existing listeners first
-      const existingCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-      existingCheckboxes.forEach(cb => {
-        cb.removeEventListener('change', handleFilterChange);
-      });
-      
-      // Add event listeners for filters
-      function handleFilterChange(e) {
-        if (e.target.type === 'checkbox') {
-          filterProducts();
-        }
-      }
-      
-      document.addEventListener('change', handleFilterChange);
+      // Note: Filter changes are now handled by inline onchange handlers
       
       // Sort dropdown
       const sortSelect = document.getElementById('sort-select');
-      if (sortSelect && !sortSelect.hasAttribute('data-initialized')) {
-        sortSelect.setAttribute('data-initialized', 'true');
+      if (sortSelect) {
         sortSelect.addEventListener('change', function() {
           currentSort = this.value;
           sortProducts();
@@ -478,8 +778,7 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
       const gridView = document.getElementById('grid-view');
       const listView = document.getElementById('list-view');
       
-      if (gridView && !gridView.hasAttribute('data-initialized')) {
-        gridView.setAttribute('data-initialized', 'true');
+      if (gridView) {
         gridView.addEventListener('click', function() {
           currentViewMode = 'grid';
           this.className = 'p-2 bg-red-600 text-white';
@@ -488,8 +787,7 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
         });
       }
       
-      if (listView && !listView.hasAttribute('data-initialized')) {
-        listView.setAttribute('data-initialized', 'true');
+      if (listView) {
         listView.addEventListener('click', function() {
           currentViewMode = 'list';
           this.className = 'p-2 bg-red-600 text-white';
@@ -497,29 +795,69 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
           renderProducts();
         });
       }
-    }
 
-    // Initialize immediately
-    init();
-
-    // Add to cart function
-    function addToCart(event, product) {
-      event.preventDefault();
-      const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-      const existingItemIndex = existingCart.findIndex(item => item.id === product.id);
-      
-      if (existingItemIndex > -1) {
-        existingCart[existingItemIndex].quantity += 1;
-      } else {
-        existingCart.push({ ...product, quantity: 1, image: product.image_url || '' });
+      // Clear filters
+      const clearBtn = document.getElementById('clear-filters');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', clearAllFilters);
       }
-      
-      localStorage.setItem('cart', JSON.stringify(existingCart));
-      alert('Đã thêm sản phẩm vào giỏ hàng!');
+
+      // Mobile filter modal
+      const mobileFilterBtn = document.getElementById('mobile-filter-btn');
+      const mobileFilterModal = document.getElementById('mobile-filter-modal');
+      const closeMobileFilter = document.getElementById('close-mobile-filter');
+      const mobileFilterBackdrop = document.getElementById('mobile-filter-backdrop');
+      const mobileClearFilters = document.getElementById('mobile-clear-filters');
+      const mobileApplyFilters = document.getElementById('mobile-apply-filters');
+
+      if (mobileFilterBtn && mobileFilterModal) {
+        mobileFilterBtn.addEventListener('click', () => {
+          mobileFilterModal.classList.remove('hidden');
+        });
+      }
+
+      if (closeMobileFilter && mobileFilterModal) {
+        closeMobileFilter.addEventListener('click', () => {
+          mobileFilterModal.classList.add('hidden');
+        });
+      }
+
+      if (mobileFilterBackdrop && mobileFilterModal) {
+        mobileFilterBackdrop.addEventListener('click', () => {
+          mobileFilterModal.classList.add('hidden');
+        });
+      }
+
+      if (mobileClearFilters) {
+        mobileClearFilters.addEventListener('click', () => {
+          clearAllFilters();
+          mobileFilterModal.classList.add('hidden');
+        });
+      }
+
+      if (mobileApplyFilters && mobileFilterModal) {
+        mobileApplyFilters.addEventListener('click', () => {
+          mobileFilterModal.classList.add('hidden');
+        });
+      }
     }
 
-    // Make addToCart globally available
-    window.addToCart = addToCart;
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    // Make functions globally available
+    window.handleBuyNowClick = handleBuyNowClick;
+    window.openBuyNowModal = openBuyNowModal;
+    window.handlePriceRangeChange = handlePriceRangeChange;
+    window.handleCategoryChange = handleCategoryChange;
+    window.clearAllFilters = clearAllFilters;
+    window.updateCheckboxStates = updateCheckboxStates;
+    window.showPreview = showPreview;
+    window.hidePreview = hidePreview;
   </script>
 </Layout>
 
@@ -533,35 +871,11 @@ console.log('Brand data:', { brand, brandId: brand?.id, slug });
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-</style>
-
-<script>
-  // Function to add to cart
-  function addToCart(event: Event, product: any) {
-    event.preventDefault();
-    
-    // Get existing cart from localStorage
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    
-    // Check if product already exists in cart
-    const existingItemIndex = existingCart.findIndex((item: any) => item.id === product.id);
-    
-    if (existingItemIndex > -1) {
-      // Increment quantity if product already exists
-      existingCart[existingItemIndex].quantity += 1;
-    } else {
-      // Add new product to cart
-      existingCart.push({
-        ...product,
-        quantity: 1,
-        image: product.image_url || ''
-      });
-    }
-    
-    // Save back to localStorage
-    localStorage.setItem('cart', JSON.stringify(existingCart));
-    
-    // Show success message
-    alert('Đã thêm sản phẩm vào giỏ hàng!');
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-in-out;
   }
-</script> 
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+</style> 

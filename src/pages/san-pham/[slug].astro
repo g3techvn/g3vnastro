@@ -159,13 +159,57 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
   <div class="hidden md:block">
     <div class="mx-10 py-8">
       <!-- Breadcrumb -->
-      <nav class="text-sm text-gray-500 mb-8">
-        <ol class="flex items-center space-x-2">
-          <li><a href="/" class="hover:text-gray-700">Trang chủ</a></li>
-          <li>/</li>
-          <li><a href="/san-pham" class="hover:text-gray-700">Sản phẩm</a></li>
-          <li>/</li>
-          <li class="text-gray-900">{product?.name}</li>
+      <nav aria-label="Breadcrumb" class="flex mb-6">
+        <ol role="list" class="flex items-center space-x-3 rounded-md bg-white px-4 h-16 shadow-sm border border-gray-200">
+          <li class="flex">
+            <div class="flex items-center">
+              <a href="/" class="text-gray-400 hover:text-gray-500">
+                                 <svg class="size-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
+                </svg>
+                <span class="sr-only">Trang chủ</span>
+              </a>
+            </div>
+          </li>
+          <li class="flex">
+                         <div class="flex items-center">
+               <svg
+                 fill="currentColor"
+                 viewBox="0 0 24 44"
+                 preserveAspectRatio="none"
+                 aria-hidden="true"
+                 class="h-full w-5 shrink-0 text-gray-200"
+               >
+                 <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+               </svg>
+               <a
+                 href="/san-pham"
+                 class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+               >
+                 Sản phẩm
+               </a>
+             </div>
+          </li>
+          <li class="flex">
+                         <div class="flex items-center">
+               <svg
+                 fill="currentColor"
+                 viewBox="0 0 24 44"
+                 preserveAspectRatio="none"
+                 aria-hidden="true"
+                 class="h-full w-5 shrink-0 text-gray-200"
+               >
+                 <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+               </svg>
+               <span
+                 aria-current="page"
+                 class="ml-4 text-sm font-medium text-gray-900 truncate max-w-[300px]"
+                 title={product?.name}
+               >
+                 {product?.name}
+               </span>
+             </div>
+          </li>
         </ol>
       </nav>
 

@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Disallow API endpoints
+Disallow: /api/
+
+# Disallow checkout pages
+Disallow: /checkout/
+Disallow: /admin/
+
+# Allow access to public assets
+Allow: /images/
+Allow: /g3tech/
+Allow: /g3tech-otm/
+
+# Sitemap location
+Sitemap: https://g-3.vn/sitemap-index.xml
+Sitemap: https://g-3.vn/sitemap-0.xml 
