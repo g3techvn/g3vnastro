@@ -91,11 +91,12 @@ export const GET: APIRoute = async () => {
         googleProductCategory = 'Office Supplies';
       }
 
-      // Format price (Google expects price without thousand separators)
-      const price = `${product.price} VND`;
-      const salePrice = product.original_price && product.original_price > product.price 
-        ? `${product.price} VND`
-        : null;
+      // Format price according to Google Merchant Center standards
+      // g:price should be the regular price (original_price)
+      // g:sale_price should be the discounted price (price) when there's a discount
+      const hasDiscount = product.original_price && product.original_price > product.price;
+      const regularPrice = hasDiscount ? `${product.original_price} VND` : `${product.price} VND`;
+      const salePrice = hasDiscount ? `${product.price} VND` : null;
 
       return `<item>
       <g:id>${product.id}</g:id>
@@ -105,7 +106,7 @@ export const GET: APIRoute = async () => {
       <g:image_link>${imageUrl}</g:image_link>
       ${additionalImages.slice(0, 10).map(imgUrl => `<g:additional_image_link>${imgUrl}</g:additional_image_link>`).join('\n      ')}
       <g:availability>in stock</g:availability>
-      <g:price>${price}</g:price>
+      <g:price>${regularPrice}</g:price>
       ${salePrice ? `<g:sale_price>${salePrice}</g:sale_price>` : ''}
       <g:brand><![CDATA[${brand?.title || 'G3Tech'}]]></g:brand>
       <g:condition>new</g:condition>
