@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getThumbPath, getOptimizedPath } from '../utils/imageUtils';
 
 interface GalleryItem {
   type: 'image' | 'video';
@@ -78,13 +79,19 @@ export default function ProductGallery({
         if (mainImageUrl && !galleryArray.includes(mainImageUrl)) {
           items.unshift({ type: 'image', url: mainImageUrl });
         }
+        // Chèn video vào vị trí thứ 2 (index 1) sau ảnh chính
         if (videoInfo?.videoUrl) {
-          items.push({ 
-            type: 'video', 
+          const videoItem = { 
+            type: 'video' as const, 
             url: '', 
             videoUrl: getYouTubeEmbedUrl(videoInfo.videoUrl), 
             thumbnail: videoInfo.thumbnail || getYouTubeThumbnailUrl(videoInfo.videoUrl)
-          });
+          };
+          if (items.length > 1) {
+            items.splice(1, 0, videoItem); // Chèn vào vị trí 1
+          } else {
+            items.push(videoItem); // Nếu chỉ có ảnh chính thì push vào cuối
+          }
         }
         setGalleryItems(items);
         setIsLoadingGallery(false);
@@ -99,13 +106,19 @@ export default function ProductGallery({
           items.push({ type: 'image', url: mainImageUrl });
         }
         
+        // Chèn video vào vị trí thứ 2 nếu có ảnh chính, nếu không thì vị trí đầu
         if (videoInfo?.videoUrl) {
-          items.push({ 
-            type: 'video', 
+          const videoItem = { 
+            type: 'video' as const, 
             url: '', 
             videoUrl: getYouTubeEmbedUrl(videoInfo.videoUrl), 
             thumbnail: videoInfo.thumbnail || getYouTubeThumbnailUrl(videoInfo.videoUrl)
-          });
+          };
+          if (mainImageUrl) {
+            items.push(videoItem); // Video ở vị trí 2 sau main image
+          } else {
+            items.unshift(videoItem); // Video ở vị trí đầu nếu không có main image
+          }
         }
         
         setGalleryItems(items);
@@ -130,10 +143,10 @@ export default function ProductGallery({
             items.push({ type: 'image', url: mainImageUrl });
           }
           
-          // Add video if exists
+          // Add video at position 2 (after main image) if exists
           if (videoInfo?.videoUrl) {
             items.push({ 
-              type: 'video', 
+              type: 'video' as const, 
               url: '', 
               videoUrl: getYouTubeEmbedUrl(videoInfo.videoUrl), 
               thumbnail: videoInfo.thumbnail || getYouTubeThumbnailUrl(videoInfo.videoUrl)
@@ -172,13 +185,19 @@ export default function ProductGallery({
         if (mainImageUrl) {
           items.push({ type: 'image', url: mainImageUrl });
         }
+        // Chèn video vào vị trí thứ 2 nếu có ảnh chính, nếu không thì vị trí đầu
         if (videoInfo?.videoUrl) {
-          items.push({ 
-            type: 'video', 
+          const videoItem = { 
+            type: 'video' as const, 
             url: '', 
             videoUrl: getYouTubeEmbedUrl(videoInfo.videoUrl), 
             thumbnail: videoInfo.thumbnail || getYouTubeThumbnailUrl(videoInfo.videoUrl)
-          });
+          };
+          if (mainImageUrl) {
+            items.push(videoItem); // Video ở vị trí 2 sau main image
+          } else {
+            items.unshift(videoItem); // Video ở vị trí đầu nếu không có main image
+          }
         }
         setGalleryItems(items);
       } finally {
@@ -271,7 +290,7 @@ export default function ProductGallery({
           </div>
         ) : galleryItems[selectedIndex]?.type === 'video' ? (
           <iframe
-            src={`${galleryItems[selectedIndex].videoUrl}?autoplay=0&mute=0&enablejsapi=1&rel=0&modestbranding=1`}
+            src={`${galleryItems[selectedIndex].videoUrl}?autoplay=1&mute=0&enablejsapi=1&rel=0&modestbranding=1`}
             title={galleryItems[selectedIndex].title || 'Product video'}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -343,7 +362,7 @@ export default function ProductGallery({
                 </>
               ) : (
                 <img
-                  src={item.url}
+                  src={getThumbPath(item.url)}
                   alt={`${productName} - ${index + 1}`}
                   className="w-full h-full object-cover"
                 />
@@ -510,7 +529,7 @@ export default function ProductGallery({
                    </>
                  ) : (
                    <img
-                     src={item.url}
+                     src={getThumbPath(item.url)}
                      alt={`Thumbnail ${index + 1}`}
                      className="w-full h-full object-cover"
                    />

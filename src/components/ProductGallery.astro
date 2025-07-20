@@ -91,7 +91,7 @@ const { productName, galleryItems, isLoadingGallery } = Astro.props;
           />
         ) : (
           <img
-            src={item.url}
+            src={item.url && item.url.includes('/g3tech-otm/') && item.url.endsWith('.avif') ? item.url.replace('.avif', '_thumb.avif') : item.url && item.url.includes('/g3tech/') && /\.(jpg|jpeg|png|webp)$/i.test(item.url) ? item.url.replace(/^\/g3tech\//, '/g3tech-otm/').replace(/\.(jpg|jpeg|png|webp)$/i, '_thumb.avif') : item.url}
             alt={`${productName} - ${index + 1}`}
             class="w-full h-full object-cover"
             loading="lazy"

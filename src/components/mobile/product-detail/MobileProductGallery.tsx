@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import type { Product } from '../../../types/Product';
+import type { Product } from '../../../types';
+import { getThumbPath } from '../../../utils/imageUtils';
 
 // Gallery item types
 type GalleryVideo = {
@@ -52,7 +53,7 @@ export default function MobileProductGallery({ product, isLoading = false }: Mob
       });
     }
 
-    // Add video if available
+    // Add video at position 2 (after main image) if available
     if (product.video_url) {
       // Extract video ID from YouTube URL
       const videoId = product.video_url.split('v=')[1]?.split('&')[0] || 
@@ -60,13 +61,20 @@ export default function MobileProductGallery({ product, isLoading = false }: Mob
                      product.video_url.split('youtu.be/')[1]?.split('?')[0];
       
       if (videoId) {
-        items.push({
-          type: 'video',
+        const videoItem = {
+          type: 'video' as const,
           url: product.video_url,
           embed: `https://www.youtube.com/embed/${videoId}`,
           thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
           title: `Video: ${product.name}`
-        });
+        };
+        
+        // Chèn video vào vị trí thứ 2 (index 1) sau ảnh chính
+        if (items.length > 1) {
+          items.splice(1, 0, videoItem); // Chèn vào vị trí 1
+        } else {
+          items.push(videoItem); // Nếu chỉ có ảnh chính thì push vào cuối
+        }
       }
     }
 
@@ -117,7 +125,7 @@ export default function MobileProductGallery({ product, isLoading = false }: Mob
       <div className="relative w-full aspect-square overflow-hidden bg-gray-50">
         {currentItem.type === 'video' ? (
           <iframe
-            src={`${currentItem.embed}?autoplay=0&mute=1&enablejsapi=1`}
+            src={`${currentItem.embed}?autoplay=1&mute=0&enablejsapi=1`}
             title={currentItem.title}
             allow="autoplay"
             allowFullScreen
@@ -203,7 +211,7 @@ export default function MobileProductGallery({ product, isLoading = false }: Mob
                 </>
               ) : (
                 <img
-                  src={item.src}
+                  src={getThumbPath(item.src)}
                   alt={item.alt}
                   className="w-full h-full object-cover"
                 />
