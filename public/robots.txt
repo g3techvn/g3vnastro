@@ -1,18 +1,40 @@
 User-agent: *
 Allow: /
 
+# Allow important pages
+Allow: /san-pham/
+Allow: /categories/
+Allow: /brands/
+
 # Disallow API endpoints
 Disallow: /api/
 
 # Disallow checkout pages
 Disallow: /checkout/
 Disallow: /admin/
+Disallow: /_astro/
+Disallow: /node_modules/
+
+# Block sensitive data
+Disallow: /*.json$
+Disallow: /404
 
 # Allow access to public assets
 Allow: /images/
 Allow: /g3tech/
 Allow: /g3tech-otm/
 
+# Crawl delay (be respectful)
+Crawl-delay: 1
+
 # Sitemap location
 Sitemap: https://g-3.vn/sitemap-index.xml
-Sitemap: https://g-3.vn/sitemap-0.xml 
+Sitemap: https://g-3.vn/sitemap-0.xml
+Sitemap: https://g-3.vn/product-feed.xml
+
+# For Vietnamese search engines
+User-agent: VietSpider
+Allow: /
+
+User-agent: coccoc
+Allow: / 

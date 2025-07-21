@@ -31,6 +31,7 @@
     "antd": "^5.26.4",
     "astro": "5.12.0",
     "astro-loading-indicator": "^0.7.0",
+    "astro-seo": "^0.8.4",
     "framer-motion": "^12.23.0",
     "jspdf": "^3.0.1",
     "react": "^19.1.0",

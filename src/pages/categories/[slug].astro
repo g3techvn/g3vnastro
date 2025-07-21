@@ -103,7 +103,15 @@ const description = categoryInfo.description || `Khám phá các sản phẩm th
 
 ---
 
-<Layout title={title} description={description}>
+<Layout 
+  title={title}
+  description={description}
+  image={categoryInfo.image_url ? `https://g-3.vn${categoryInfo.image_url.replace(/^\/g3tech\//, '/g3tech-otm/').replace(/\.(jpg|jpeg|png|webp)$/i, '.avif')}` : 'https://g-3.vn/images/og-default.jpg'}
+  imageAlt={`${categoryInfo.title} - G-3.vn`}
+  type="website"
+  keywords={[categoryInfo.title, 'G-3.vn', 'ghế công thái học', 'bàn làm việc', 'nội thất văn phòng', 'chất lượng cao']}
+  canonical={`https://g-3.vn/categories/${category?.slug || slug}`}
+>
   <!-- Mobile Header -->
   <div class="md:hidden bg-white border-b border-gray-200">
     <div class="flex items-center px-4 py-4">

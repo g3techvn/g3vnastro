@@ -38,6 +38,46 @@ const { product } = Astro.props;
 // Get related products
 const relatedProducts = await getRelatedProducts(product, 6);
 
+// SEO configuration for product pages
+const brandName = typeof product.brand === 'string' 
+  ? product.brand 
+  : product.brand?.title || 'G3Tech';
+
+const categoryName = typeof product.categories === 'string'
+  ? product.categories
+  : product.categories?.title || 'Sản phẩm văn phòng';
+
+const productImageUrl = product.image_url 
+  ? (product.image_url.startsWith('http') 
+      ? product.image_url 
+      : `https://g-3.vn${product.image_url.replace(/^\/g3tech\//, '/g3tech-otm/').replace(/\.(jpg|jpeg|png|webp)$/i, '.avif')}`
+    )
+  : 'https://g-3.vn/images/og-default.jpg';
+
+const seoTitle = `${product.name} - ${brandName} | G-3.vn`;
+const seoDescription = product.description 
+  ? product.description.substring(0, 160) + (product.description.length > 160 ? '...' : '')
+  : `${product.name} chất lượng cao từ ${brandName}. Bảo hành chính hãng, giao hàng toàn quốc, tư vấn miễn phí tại G-3.vn`;
+
+const breadcrumbs = [
+  { name: 'Trang chủ', url: 'https://g-3.vn' },
+  { name: 'Sản phẩm', url: 'https://g-3.vn/san-pham' },
+  { name: categoryName, url: `https://g-3.vn/categories/${product.categories?.slug || ''}` },
+  { name: product.name, url: `https://g-3.vn/san-pham/${product.slug}` }
+];
+
+const productKeywords = [
+  product.name,
+  brandName,
+  categoryName,
+  'ghế công thái học',
+  'bàn làm việc',
+  'nội thất văn phòng',
+  'G-3.vn',
+  'chất lượng cao',
+  'bảo hành chính hãng'
+];
+
 // Process technical specifications from Supabase
 function processTechnicalSpecs(thongSoKyThuat: any): Array<{ title: string; value: string }> {
   if (!thongSoKyThuat) {
@@ -141,7 +181,19 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
 
 ---
 
-<Layout title={product?.name || 'Sản phẩm'}>
+<Layout 
+  title={seoTitle}
+  description={seoDescription}
+  image={productImageUrl}
+  imageAlt={`${product.name} - ${brandName}`}
+  type="product"
+  price={product.price}
+  originalPrice={product.original_price}
+  brand={brandName}
+  category={categoryName}
+  keywords={productKeywords}
+  canonical={`https://g-3.vn/san-pham/${product.slug}`}
+>
   <!-- Mobile Layout - Using dedicated Mobile Component -->
   <div class="md:hidden">
     <MobileProductDetail 

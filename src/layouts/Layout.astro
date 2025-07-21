@@ -12,6 +12,7 @@ import BottomNavIsland from '../components/mobile/BottomNavIsland.astro';
 import { ViewTransitions } from 'astro:transitions';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import AnalyticsTracker from '../components/AnalyticsTracker.astro';
+import { SEO } from 'astro-seo';
 import '../styles/contact-buttons.css';
 import '../styles/global.css';
 import '../styles/antd.css';
@@ -20,11 +21,38 @@ export interface Props {
 	title: string;
 	description?: string;
 	image?: string;
+	imageAlt?: string;
+	canonical?: string;
+	type?: 'website' | 'article' | 'product';
+	keywords?: string[];
+	noIndex?: boolean;
+	noFollow?: boolean;
 	showMobileHomeComponents?: boolean;
+	// SEO specific props
+	price?: number;
+	originalPrice?: number;
+	brand?: string;
+	category?: string;
 }
 
-const { title, description = 'G-3.vn - Cung cấp các sản phẩm chất lượng cao', image, showMobileHomeComponents = false } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const { 
+	title, 
+	description = 'G-3.vn - Cửa hàng chuyên cung cấp ghế công thái học, bàn nâng hạ điều chỉnh chiều cao chất lượng cao. Bảo hành chính hãng, giao hàng toàn quốc, tư vấn miễn phí.', 
+	image, 
+	imageAlt,
+	canonical,
+	type = 'website',
+	keywords = [],
+	noIndex = false,
+	noFollow = false,
+	showMobileHomeComponents = false,
+	price,
+	originalPrice,
+	brand,
+	category
+} = Astro.props;
+
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -57,35 +85,87 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<meta name="apple-mobile-web-app-title" content="G3 Store" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		
-		<!-- SEO Meta Tags -->
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<link rel="canonical" href={canonicalURL} />
-		
-		<!-- Open Graph -->
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:url" content={canonicalURL} />
-		<meta property="og:type" content="website" />
-		<meta property="og:locale" content="vi_VN" />
-		{image && <meta property="og:image" content={image} />}
-		
-		<!-- Twitter Card -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		{image && <meta name="twitter:image" content={image} />}
-		
-		<!-- Structured Data -->
-		<script type="application/ld+json">
-			{
-				"@context": "https://schema.org",
-				"@type": "WebSite",
-				"name": "G-3.vn",
-				"description": description,
-				"url": canonicalURL
-			}
-		</script>
+		<!-- SEO with astro-seo -->
+		<SEO
+			title={title}
+			description={description}
+			canonical={canonicalURL}
+			noindex={noIndex}
+			nofollow={noFollow}
+			openGraph={{
+				basic: {
+					title: title,
+					type: type,
+					image: image || 'https://g-3.vn/images/og-default.jpg',
+					url: canonicalURL,
+				},
+				optional: {
+					description: description,
+					locale: 'vi_VN',
+					siteName: 'G-3.vn',
+				},
+				...(type === 'product' && price && {
+					product: {
+						price: {
+							amount: price,
+							currency: 'VND'
+						},
+						availability: 'in_stock',
+						brand: brand,
+						category: category,
+						...(originalPrice && originalPrice > price && {
+							originalPrice: originalPrice
+						})
+					}
+				})
+			}}
+			twitter={{
+				card: 'summary_large_image',
+				site: '@g3techvn',
+				creator: '@g3techvn',
+				title: title,
+				description: description,
+				image: image || 'https://g-3.vn/images/og-default.jpg',
+			}}
+			extend={{
+				link: [
+					{ rel: 'sitemap', href: '/sitemap-index.xml' },
+				],
+				meta: [
+					// Vietnamese social media (Zalo)
+					{ name: 'zalo-platform-site-verification', content: 'zalo_verification_code' },
+					{ property: 'zalo:title', content: title },
+					{ property: 'zalo:description', content: description },
+					{ property: 'zalo:image', content: image || 'https://g-3.vn/images/og-default.jpg' },
+					{ property: 'zalo:url', content: canonicalURL },
+					
+					// Vietnamese local SEO
+					{ name: 'geo.region', content: 'VN' },
+					{ name: 'geo.placename', content: 'Hồ Chí Minh' },
+					{ name: 'geo.position', content: '10.7769;106.7009' },
+					{ name: 'ICBM', content: '10.7769, 106.7009' },
+					
+					// Business info
+					{ name: 'author', content: 'G3Tech Vietnam' },
+					{ name: 'publisher', content: 'G3Tech Vietnam' },
+					{ name: 'copyright', content: `© ${new Date().getFullYear()} G3Tech Vietnam` },
+					
+					// Keywords (Vietnamese focused)
+					...(keywords.length > 0 ? [{ name: 'keywords', content: keywords.join(', ') }] : [
+						{ name: 'keywords', content: `${title}, ${brand || 'G3Tech'}, ghế công thái học, bàn làm việc, nội thất văn phòng, Việt Nam, G-3.vn` }
+					]),
+					
+					// Additional structured data for products
+					...(type === 'product' && price ? [
+						{ name: 'product:price:amount', content: price.toString() },
+						{ name: 'product:price:currency', content: 'VND' },
+						{ name: 'product:availability', content: 'in_stock' },
+						...(brand ? [{ name: 'product:brand', content: brand }] : []),
+						...(category ? [{ name: 'product:category', content: category }] : []),
+					] : [])
+				]
+			}}
+		/>
 
 		<!-- Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
