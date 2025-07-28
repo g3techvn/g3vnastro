@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import DualRangeSlider from './DualRangeSlider';
 
 interface Brand {
   id: string;
@@ -15,21 +16,16 @@ interface Category {
   product_count: number;
 }
 
-interface PriceRange {
-  value: string;
-  label: string;
-  min: number;
-  max: number | null;
-  count: number;
-}
-
 interface ProductFilterProps {
   onFilterChange: (filters: FilterState) => void;
   initialFilters?: FilterState;
 }
 
 export interface FilterState {
-  priceRange: string[];
+  priceRange: {
+    min: number;
+    max: number;
+  };
   brands: string[];
   categories: string[];
 }
@@ -38,14 +34,10 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onFilterChange, initialFi
   const [brands, setBrands] = useState<Brand[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [priceRanges, setPriceRanges] = useState<PriceRange[]>([
-    { value: 'under_500k', label: 'Dưới 500k', min: 0, max: 500000, count: 0 },
-    { value: '500k_1m', label: '500k - 1M', min: 500000, max: 1000000, count: 0 },
-    { value: '1m_2m', label: '1M - 2M', min: 1000000, max: 2000000, count: 0 },
-    { value: 'over_2m', label: 'Trên 2M', min: 2000000, max: null, count: 0 }
-  ]);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(5000000);
   const [filters, setFilters] = useState<FilterState>({
-    priceRange: initialFilters?.priceRange || [],
+    priceRange: initialFilters?.priceRange || { min: 0, max: 5000000 },
     brands: initialFilters?.brands || [],
     categories: initialFilters?.categories || []
   });
@@ -66,7 +58,7 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onFilterChange, initialFi
         import.meta.env.PUBLIC_SUPABASE_ANON_KEY
       );
 
-      // Fetch all products to calculate price range counts
+      // Fetch all products to calculate min and max prices
       const { data: products, error: productsError } = await supabase
         .from('products')
         .select('price');
@@ -74,18 +66,22 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onFilterChange, initialFi
       if (productsError) {
         console.error('Error fetching products:', productsError);
       } else {
-        // Calculate price range counts
-        const updatedPriceRanges = priceRanges.map(range => ({
-          ...range,
-          count: products.filter(product => {
-            const price = product.price;
-            if (range.max === null) {
-              return price >= range.min;
-            }
-            return price >= range.min && price < range.max;
-          }).length
-        }));
-        setPriceRanges(updatedPriceRanges);
+        // Calculate min and max prices from all products
+        const prices = products.map(p => p.price).filter(Boolean);
+        if (prices.length > 0) {
+          const minProductPrice = Math.min(...prices);
+          const maxProductPrice = Math.max(...prices);
+          setMinPrice(minProductPrice);
+          setMaxPrice(maxProductPrice);
+          
+          // Update filters if they're at default values
+          if (filters.priceRange.min === 0 && filters.priceRange.max === 5000000) {
+            setFilters(prev => ({
+              ...prev,
+              priceRange: { min: minProductPrice, max: maxProductPrice }
+            }));
+          }
+        }
       }
 
       // Fetch brands with product count
@@ -148,12 +144,10 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onFilterChange, initialFi
     }
   };
 
-  const handlePriceRangeChange = (value: string) => {
+  const handlePriceRangeChange = (min: number, max: number) => {
     setFilters(prev => ({
       ...prev,
-      priceRange: prev.priceRange.includes(value)
-        ? prev.priceRange.filter(v => v !== value)
-        : [...prev.priceRange, value]
+      priceRange: { min, max }
     }));
   };
 
@@ -177,7 +171,7 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onFilterChange, initialFi
 
   const clearAllFilters = () => {
     setFilters({
-      priceRange: [],
+      priceRange: { min: minPrice, max: maxPrice },
       brands: [],
       categories: []
     });
@@ -205,7 +199,7 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onFilterChange, initialFi
     <div className="bg-white rounded-lg p-4 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">Bộ lọc</h3>
-        {(filters.priceRange.length > 0 || filters.brands.length > 0 || filters.categories.length > 0) && (
+        {((filters.priceRange.min !== minPrice || filters.priceRange.max !== maxPrice) || filters.brands.length > 0 || filters.categories.length > 0) && (
           <button
             onClick={clearAllFilters}
             className="text-sm text-red-600 hover:text-red-700"
@@ -264,23 +258,14 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onFilterChange, initialFi
 
         {/* Price Range Filter */}
         <div>
-          <h4 className="font-medium text-gray-900 mb-2">Khoảng giá</h4>
-          <div className="space-y-2">
-            {priceRanges.map((range) => (
-              <label key={range.value} className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={filters.priceRange.includes(range.value)}
-                    onChange={() => handlePriceRangeChange(range.value)}
-                    className="rounded border-gray-300 text-red-600 focus:ring-red-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-600">{range.label}</span>
-                </div>
-                <span className="text-xs text-gray-500">({range.count})</span>
-              </label>
-            ))}
-          </div>
+          <h4 className="font-medium text-gray-900 mb-3">Khoảng giá</h4>
+          <DualRangeSlider
+            min={minPrice}
+            max={maxPrice}
+            value={filters.priceRange}
+            step={500000}
+            onChange={(newRange) => handlePriceRangeChange(newRange.min, newRange.max)}
+          />
         </div>
       </div>
     </div>

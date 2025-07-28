@@ -88,24 +88,9 @@ const CategoryProductList: React.FC<CategoryProductListProps> = ({
     let filtered = [...products];
 
     // Apply price range filters
-    if (filters.priceRange.length > 0) {
-      filtered = filtered.filter(product => {
-        return filters.priceRange.some(range => {
-          switch (range) {
-            case 'under_500k':
-              return product.price < 500000;
-            case '500k_1m':
-              return product.price >= 500000 && product.price < 1000000;
-            case '1m_2m':
-              return product.price >= 1000000 && product.price < 2000000;
-            case 'over_2m':
-              return product.price >= 2000000;
-            default:
-              return true;
-          }
-        });
-      });
-    }
+    filtered = filtered.filter(product => {
+      return product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
+    });
 
     // Apply brand filters
     if (filters.brands.length > 0) {

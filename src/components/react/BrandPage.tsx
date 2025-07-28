@@ -16,7 +16,7 @@ interface BrandPageProps {
 
 const BrandPage: React.FC<BrandPageProps> = ({ brandSlug, brandData }) => {
   const [filters, setFilters] = useState<FilterState>({
-    priceRange: [],
+    priceRange: { min: 0, max: 5000000 },
     categories: []
   });
   const [filteredCount, setFilteredCount] = useState(0);
@@ -235,7 +235,7 @@ const BrandPage: React.FC<BrandPageProps> = ({ brandSlug, brandData }) => {
               <div className="flex gap-3 pt-4 border-t border-gray-200 mt-4">
                 <button 
                   onClick={() => {
-                    setFilters({ priceRange: [], categories: [] });
+                    setFilters({ priceRange: { min: 0, max: 5000000 }, categories: [] });
                     setShowMobileFilter(false);
                   }}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700"

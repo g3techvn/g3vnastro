@@ -5,7 +5,7 @@ import ProductList from './ProductList';
 
 const ProductPage: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({
-    priceRange: [],
+    priceRange: { min: 0, max: 5000000 },
     brands: [],
     categories: []
   });

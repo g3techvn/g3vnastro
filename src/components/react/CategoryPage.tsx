@@ -16,7 +16,7 @@ interface CategoryPageProps {
 
 const CategoryPage: React.FC<CategoryPageProps> = ({ categorySlug, categoryData }) => {
   const [filters, setFilters] = useState<FilterState>({
-    priceRange: [],
+    priceRange: { min: 0, max: 5000000 },
     brands: []
   });
   const [filteredCount, setFilteredCount] = useState(0);
@@ -235,7 +235,7 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ categorySlug, categoryData 
               <div className="flex gap-3 pt-4 border-t border-gray-200 mt-4">
                 <button 
                   onClick={() => {
-                    setFilters({ priceRange: [], brands: [] });
+                    setFilters({ priceRange: { min: 0, max: 5000000 }, brands: [] });
                     setShowMobileFilter(false);
                   }}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700"
