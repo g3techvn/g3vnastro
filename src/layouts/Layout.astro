@@ -28,6 +28,7 @@ export interface Props {
 	noIndex?: boolean;
 	noFollow?: boolean;
 	showMobileHomeComponents?: boolean;
+	hideMobileHeader?: boolean;
 	// SEO specific props
 	price?: number;
 	originalPrice?: number;
@@ -46,6 +47,7 @@ const {
 	noIndex = false,
 	noFollow = false,
 	showMobileHomeComponents = false,
+	hideMobileHeader = false,
 	price,
 	originalPrice,
 	brand,
@@ -193,7 +195,7 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 			)}
 			
 			<!-- Mobile Content -->
-			<main class="py-4 pb-20">
+			<main class=" pb-20">
 				<slot />
 			</main>
 			

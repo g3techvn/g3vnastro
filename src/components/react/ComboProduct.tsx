@@ -19,7 +19,7 @@ interface ComboProductProps {
 }
 
 const ProductCard: React.FC<{ product: Product; onBuyNow: (product: Product) => void }> = ({ product, onBuyNow }) => {
-  const discountPercentage = product.original_price && product.original_price > product.price 
+  const discountPercentage = product.original_price && product.original_price > product.price
     ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
     : 0;
 
@@ -59,7 +59,7 @@ const ProductCard: React.FC<{ product: Product; onBuyNow: (product: Product) => 
               <span>•</span>
               <span>Đã bán {product.sold_count || 0}</span>
             </div>
-            <button 
+            <button
               className="p-1.5 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition-colors duration-200"
               aria-label="Thêm vào giỏ hàng"
               onClick={e => {
@@ -95,7 +95,7 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
       setLoading(true);
       const response = await fetch('/api/combo-products');
       const data = await response.json();
-      
+
       if (response.ok) {
         setProducts(data.products || []);
       } else {
@@ -142,7 +142,7 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
           </h2>
           <div className="text-center py-8">
             <p className="text-gray-500">Không thể tải sản phẩm. Vui lòng thử lại sau.</p>
-            <button 
+            <button
               onClick={fetchComboProducts}
               className="mt-4 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
             >
@@ -169,7 +169,7 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
         <div className="grid grid-cols-6 gap-4 mb-4">
           {/* Banner - takes 4 columns */}
           <div className="col-span-6 lg:col-span-4 relative h-[250px] lg:h-[400px] rounded-lg overflow-hidden">
-            <img 
+            <img
               src="/images/header-img.jpg"
               alt="Combo Sản Phẩm"
               className="object-cover w-full h-full"

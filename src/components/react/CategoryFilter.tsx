@@ -66,7 +66,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
           const maxProductPrice = Math.max(...prices);
           setMinPrice(minProductPrice);
           setMaxPrice(maxProductPrice);
-          
+
           // Update filters if they're at default values
           if (filters.priceRange.min === 0 && filters.priceRange.max === 5000000) {
             setFilters(prev => ({
@@ -78,7 +78,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
 
         // Get unique brand IDs from products in this category
         const brandIds = [...new Set(products.map(p => p.brand_id).filter(Boolean))];
-        
+
         if (brandIds.length > 0) {
           // Fetch brands that have products in this category
           const { data: brandsData, error: brandsError } = await supabase
@@ -99,7 +99,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
                 product_count: products.filter(p => p.brand_id === brand.id).length
               }))
               .filter(brand => brand.product_count > 0);
-            
+
             setBrands(brandsWithCount);
           }
         }
@@ -169,7 +169,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
           </button>
         )}
       </div>
-      
+
       <div className="space-y-6">
         {/* Brand Filter */}
         {brands.length > 0 && (

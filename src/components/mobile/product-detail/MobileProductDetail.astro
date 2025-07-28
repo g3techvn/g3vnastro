@@ -5,6 +5,7 @@ import MobileProductPrice from './MobileProductPrice';
 import MobileProductDescription from './MobileProductDescription';
 import MobileTechnicalSpecs from './MobileTechnicalSpecs';
 import MobileProductActions from './MobileProductActions';
+import MobileHeader from '../MobileHeader';
 
 interface Props {
   product: any;
@@ -18,10 +19,19 @@ interface Props {
 
 const { product, technicalSpecs, keyFeatures, benefits, instructions, overview, relatedProducts = [] } = Astro.props;
 
+// Get brand name from product - brand is an object from brands table
+const brandName = product.brand?.title || 'Chi tiết sản phẩm';
+
 // Debug log để kiểm tra dữ liệu
 if (typeof window === 'undefined') {
   console.log('Mobile Product Detail Data:', {
     product: product?.name || 'No product name',
+    brandName: brandName,
+    brandData: product?.brand,
+    brandType: typeof product?.brand,
+    brandId: product?.brand?.id,
+    brandNameField: product?.brand?.name,
+    brandTitleField: product?.brand?.title,
     hasProduct: !!product,
     productId: product?.id,
     productSlug: product?.slug,
@@ -117,8 +127,18 @@ const ratingSummary = {
 <!-- Mobile Product Detail Layout -->
 {product ? (
 <div class="bg-gray-50 min-h-screen -mb-20">
-  <!-- Product Gallery - Using Island -->
-  <div class="w-full bg-white mb-2">
+  <!-- Mobile Header -->
+  <MobileHeader 
+    client:load 
+    title={brandName}
+    showBack={true}
+    showShare={true}
+  />
+  
+  <!-- Content without padding - gallery directly under header -->
+  <div class="pt-0">
+    <!-- Product Gallery - Using Island -->
+    <div class="w-full bg-white">
     <MobileProductGallery 
       client:load 
       product={product}
@@ -126,7 +146,7 @@ const ratingSummary = {
   </div>
 
   <!-- Product Info - Using Island -->
-  <div class="bg-white mb-2">
+  <div class="bg-white mt-2 mb-2">
     <MobileProductInfo 
       client:load 
       product={product}
@@ -387,14 +407,25 @@ const ratingSummary = {
     product={product}
   />
 
-  <!-- Spacer to prevent content being hidden behind fixed actions -->
-  <div class="h-40"></div>
+    <!-- Spacer to prevent content being hidden behind fixed actions -->
+    <div class="h-40"></div>
+  </div>
 </div>
 ) : (
-  <div class="bg-gray-50 min-h-screen flex items-center justify-center -mb-20">
-    <div class="text-center">
-      <div class="text-gray-500 text-lg mb-2">Không tìm thấy sản phẩm</div>
-      <a href="/san-pham" class="text-red-600 hover:text-red-700 font-medium">Xem tất cả sản phẩm</a>
+  <div class="bg-gray-50 min-h-screen -mb-20">
+    <!-- Mobile Header for error state -->
+    <MobileHeader 
+      client:load 
+      title="Sản phẩm không tồn tại"
+      showBack={true}
+      showShare={false}
+    />
+    
+    <div class="pt-14 flex items-center justify-center min-h-screen">
+      <div class="text-center">
+        <div class="text-gray-500 text-lg mb-2">Không tìm thấy sản phẩm</div>
+        <a href="/san-pham" class="text-red-600 hover:text-red-700 font-medium">Xem tất cả sản phẩm</a>
+      </div>
     </div>
   </div>
 )}

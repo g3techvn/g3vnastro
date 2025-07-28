@@ -32,6 +32,10 @@ const ProductPage: React.FC = () => {
     setGridView(newGridView);
   };
 
+  const handleCountChange = (count: number) => {
+    setFilteredCount(count);
+  };
+
   return (
     <div className="md:mx-10 md:py-8 px-4 md:px-0 w-full md:w-auto">
               {/* Mobile Filter Button */}
@@ -170,6 +174,7 @@ const ProductPage: React.FC = () => {
             filters={filters}
             sortBy={sortBy}
             gridView={gridView}
+            onCountChange={handleCountChange}
           />
         </div>
       </div>

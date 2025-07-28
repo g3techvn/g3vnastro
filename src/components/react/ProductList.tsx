@@ -23,9 +23,10 @@ interface ProductListProps {
   filters: FilterState;
   sortBy?: string;
   gridView?: string;
+  onCountChange?: (count: number) => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ filters, sortBy = 'price_desc', gridView = 'grid' }) => {
+const ProductList: React.FC<ProductListProps> = ({ filters, sortBy = 'price_desc', gridView = 'grid', onCountChange }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
