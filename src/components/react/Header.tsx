@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { productAPI } from '../../lib/supabase';
 
 const navigation = [
@@ -132,15 +132,6 @@ const Header: React.FC = () => {
             <button onClick={handleOpenSearch} className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500">
               <MagnifyingGlassIcon className="size-6 text-gray-500" />
               <span className="sr-only">Tìm kiếm sản phẩm</span>
-            </button>
-            {/* Notification */}
-            <button
-              type="button"
-              className="relative shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-hidden"
-            >
-              <span className="absolute -inset-1.5" />
-              <span className="sr-only">View notifications</span>
-              <BellIcon aria-hidden="true" className="size-6" />
             </button>
             {/* Profile dropdown */}
             

@@ -18,8 +18,6 @@ interface NewProductsProps {
   products?: Product[];
 }
 
-const VISIBLE_ITEMS = 6;
-
 export default function NewProducts({ products: initialProducts = [] }: NewProductsProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [loading, setLoading] = useState(!initialProducts.length);
@@ -63,24 +61,6 @@ export default function NewProducts({ products: initialProducts = [] }: NewProdu
     
     fetchProducts();
   }, [initialProducts.length]);
-  const [startIndex, setStartIndex] = useState(0);
-
-  const nextItem = () => {
-    setStartIndex((prev) => (prev + 1) % products.length);
-  };
-
-  const prevItem = () => {
-    setStartIndex((prev) => (prev - 1 + products.length) % products.length);
-  };
-
-  const getVisibleProducts = () => {
-    const visibleProducts = [];
-    for (let i = 0; i < VISIBLE_ITEMS; i++) {
-      const index = (startIndex + i) % products.length;
-      visibleProducts.push(products[index]);
-    }
-    return visibleProducts;
-  };
 
   const addToCart = (event: React.MouseEvent, product: Product) => {
     event.preventDefault();
@@ -156,42 +136,15 @@ export default function NewProducts({ products: initialProducts = [] }: NewProdu
 
   return (
     <section className="mx-10 py-8 bg-gray-100">
-      <div className="relative">
-        <div className="flex items-center justify-between mb-6">
+      <div className="">
+        <div className="mb-6">
           <h2 className="text-xl font-bold border-b-2 border-gray-300 pb-2 uppercase">
             Mới lên kệ
           </h2>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <span>{startIndex + 1}</span>
-            <span>/</span>
-            <span>{products.length}</span>
-          </div>
         </div>
 
-        <div className="relative">
-          {/* Navigation buttons */}
-          <button
-            onClick={prevItem}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200 -translate-x-1/2"
-            aria-label="Previous item"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          
-          <button
-            onClick={nextItem}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200 translate-x-1/2"
-            aria-label="Next item"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {getVisibleProducts().map((product, index) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {products.map((product) => (
               <a key={product.id} href={`/san-pham/${product.slug}`} className="block">
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden">
                   <div className="aspect-square w-full relative">
@@ -240,8 +193,8 @@ export default function NewProducts({ products: initialProducts = [] }: NewProdu
                 </div>
               </a>
             ))}
-          </div>
         </div>
+        
         {/* Modal mua hàng nhanh */}
         {modalProduct && (
           <ModalBuyNowForm

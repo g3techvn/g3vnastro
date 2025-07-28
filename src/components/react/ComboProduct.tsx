@@ -162,7 +162,7 @@ const ComboProduct: React.FC<ComboProductProps> = ({ products: initialProducts =
     <section className="mx-10 py-8 bg-gray-100">
       <div className="">
         <h2 className="text-xl font-bold border-b-2 border-gray-300 pb-2 mb-6 uppercase">
-          Sản phẩm ghế công thái học Gami
+          Sản phẩm ghế công thái học
         </h2>
 
         {/* Layout with banner (4 cols) left and 2 products right */}

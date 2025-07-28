@@ -83,59 +83,70 @@ const BrandPage: React.FC<BrandPageProps> = ({ brandSlug, brandData }) => {
           {/* Products Grid */}
           <div className="md:col-span-5">
             {/* Combined Breadcrumb and Controls */}
-            <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <nav aria-label="Breadcrumb" className="flex">
-                  <ol role="list" className="flex items-center space-x-3 h-12">
-                    <li className="flex">
-                      <div className="flex items-center">
-                        <a href="/" className="text-gray-400 hover:text-gray-500">
-                          <svg className="size-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fillRule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clipRule="evenodd" />
-                          </svg>
-                          <span className="sr-only">Trang chủ</span>
-                        </a>
-                      </div>
-                    </li>
-                    <li className="flex">
-                      <div className="flex items-center">
-                        <svg
-                          fill="currentColor"
-                          viewBox="0 0 24 44"
-                          preserveAspectRatio="none"
-                          aria-hidden="true"
-                          className="h-full w-5 shrink-0 text-gray-200"
-                        >
-                          <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            <div className="bg-white rounded-lg mb-6">
+              {/* Mobile Layout */}
+              <div className="md:hidden">
+                {/* Breadcrumb - Mobile */}
+                <div className="py-2 border-b border-gray-100">
+                  <nav className="flex items-center text-xs">
+                    <a href="/" className="text-gray-500 hover:text-gray-700 truncate">Trang chủ</a>
+                    <svg className="mx-1 w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                    <span className="text-gray-900 font-medium truncate">{brandData.title}</span>
+                  </nav>
+                </div>
+                
+                {/* Controls - Mobile */}
+                <div className="py-3 flex items-center justify-between">
+                  <span className="text-xs text-gray-600">
+                    {filteredCount} sản phẩm
+                  </span>
+                  
+                  <div className="flex items-center gap-3">
+                    {/* Sort dropdown - Mobile */}
+                    <select 
+                      value={sortBy}
+                      onChange={(e) => handleSortChange(e.target.value)}
+                      className="px-2 py-1 border border-gray-300 rounded text-xs bg-white"
+                    >
+                      {orderOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* View mode toggle - Mobile */}
+                    <div className="flex rounded border border-gray-300 overflow-hidden">
+                      <button 
+                        onClick={() => handleGridViewChange('grid')}
+                        className={`p-1.5 ${gridView === 'grid' ? 'bg-red-600 text-white' : 'bg-white text-gray-600'}`}
+                      >
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                         </svg>
-                        <a
-                          href="/brands"
-                          className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                        >
-                          Thương hiệu
-                        </a>
-                      </div>
-                    </li>
-                    <li className="flex">
-                      <div className="flex items-center">
-                        <svg
-                          fill="currentColor"
-                          viewBox="0 0 24 44"
-                          preserveAspectRatio="none"
-                          aria-hidden="true"
-                          className="h-full w-5 shrink-0 text-gray-200"
-                        >
-                          <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                      </button>
+                      <button 
+                        onClick={() => handleGridViewChange('list')}
+                        className={`p-1.5 ${gridView === 'list' ? 'bg-red-600 text-white' : 'bg-white text-gray-600'}`}
+                      >
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 8a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 12a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 16a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
                         </svg>
-                        <span
-                          aria-current="page"
-                          className="ml-4 text-sm font-medium text-gray-900"
-                        >
-                          {brandData.title}
-                        </span>
-                      </div>
-                    </li>
-                  </ol>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop Layout */}
+              <div className="hidden md:flex items-center justify-between h-[56px] px-2">
+                {/* Breadcrumb - Desktop */}
+                <nav className="flex text-sm">
+                  <a href="/" className="text-gray-500 hover:text-gray-700">Trang chủ</a>
+                  <span className="mx-2 text-gray-400">/</span>
+                  <span className="text-gray-900">{brandData.title}</span>
                 </nav>
                 
                 <div className="flex items-center gap-4">

@@ -11,12 +11,13 @@ export const GET: APIRoute = async () => {
   try {
     console.log('Fetching combo products from Supabase...');
     
-    // Lấy 6 sản phẩm ngẫu nhiên cho combo
+    // Danh sách ID sản phẩm cụ thể cho phần "Sản phẩm ghế công thái học Gami"
+    const featuredProductIds = [6, 7, 3, 49, 43, 29, 26, 33];
+    
     const { data: products, error } = await supabase
       .from('products')
       .select('*')
-      .limit(8)
-      .order('created_at', { ascending: false });
+      .in('id', featuredProductIds);
 
     console.log('Supabase response:', { products, error });
 
@@ -30,7 +31,12 @@ export const GET: APIRoute = async () => {
       });
     }
 
-    return new Response(JSON.stringify({ products: products || [] }), {
+    // Sắp xếp sản phẩm theo thứ tự ID đã chỉ định
+    const orderedProducts = featuredProductIds
+      .map(id => products?.find(product => product.id === id))
+      .filter(product => product !== undefined);
+
+    return new Response(JSON.stringify({ products: orderedProducts || [] }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json'

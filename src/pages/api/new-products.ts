@@ -3,9 +3,8 @@ import { supabase } from '../../lib/supabase';
 
 export const GET: APIRoute = async () => {
   try {
-    // Lấy sản phẩm mới từ Supabase (sản phẩm được tạo trong 30 ngày gần đây)
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    // Danh sách ID sản phẩm cụ thể cho phần "mới lên kệ"
+    const featuredProductIds = [17, 1, 5, 30, 28, 16];
     
     const { data: products, error } = await supabase
       .from('products')
@@ -20,9 +19,7 @@ export const GET: APIRoute = async () => {
         sold_count,
         brands(title)
       `)
-      .gte('created_at', thirtyDaysAgo.toISOString()) // Sản phẩm tạo trong 30 ngày gần đây
-      .order('created_at', { ascending: false })
-      .limit(12); // Giới hạn 12 sản phẩm
+      .in('id', featuredProductIds);
 
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), {
@@ -33,36 +30,12 @@ export const GET: APIRoute = async () => {
       });
     }
 
-    // Nếu không có sản phẩm mới trong 30 ngày, lấy 12 sản phẩm mới nhất
-    let finalProducts = products;
-    if (!products || products.length === 0) {
-      const { data: latestProducts, error: latestError } = await supabase
-        .from('products')
-        .select(`
-          id,
-          name,
-          slug,
-          price,
-          original_price,
-          image_url,
-          rating,
-          sold_count,
-          brands(title)
-        `)
-        .order('created_at', { ascending: false })
-        .limit(12);
+    // Sắp xếp sản phẩm theo thứ tự ID đã chỉ định
+    const orderedProducts = featuredProductIds
+      .map(id => products?.find(product => product.id === id))
+      .filter(product => product !== undefined);
 
-      if (latestError) {
-        return new Response(JSON.stringify({ error: latestError.message }), {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-      }
-
-      finalProducts = latestProducts;
-    }
+    let finalProducts = orderedProducts;
 
     // Transform data để match với frontend expectations
     const transformedProducts = (finalProducts || []).map(product => ({
@@ -75,7 +48,7 @@ export const GET: APIRoute = async () => {
       image_square_url: product.image_url, // Sử dụng image_url thay thế
       rating: product.rating,
       sold_count: product.sold_count,
-      brand: ''
+      brand: product.brands?.title || ''
     }));
 
     return new Response(JSON.stringify({ products: transformedProducts }), {
