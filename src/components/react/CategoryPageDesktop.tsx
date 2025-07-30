@@ -3,6 +3,28 @@ import CategoryFilter from './CategoryFilter';
 import type { FilterState } from './CategoryFilter';
 import CategoryProductList from './CategoryProductList';
 
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  original_price?: number;
+  image_url?: string;
+  image_square_url?: string;
+  rating?: number;
+  sold_count?: number;
+  brand_id?: string;
+  pd_cat_id?: string;
+  brands?: { title: string; slug: string };
+  product_cats?: { title: string; slug: string };
+}
+
+interface Brand {
+  id: string;
+  title: string;
+  slug: string;
+}
+
 interface CategoryPageDesktopProps {
   categoryData: {
     id: string;
@@ -19,6 +41,8 @@ interface CategoryPageDesktopProps {
   onSortChange: (sortBy: string) => void;
   onGridViewChange: (gridView: string) => void;
   onFilteredCountChange: (count: number) => void;
+  initialProducts?: Product[];
+  availableBrands?: Brand[];
 }
 
 const CategoryPageDesktop: React.FC<CategoryPageDesktopProps> = ({
@@ -31,6 +55,8 @@ const CategoryPageDesktop: React.FC<CategoryPageDesktopProps> = ({
   onSortChange,
   onGridViewChange,
   onFilteredCountChange,
+  initialProducts = [],
+  availableBrands = [],
 }) => {
   const orderOptions = [
     { value: 'name', label: 'Tên A-Z' },
@@ -47,6 +73,7 @@ const CategoryPageDesktop: React.FC<CategoryPageDesktopProps> = ({
             onFilterChange={onFilterChange}
             initialFilters={filters}
             categoryId={categoryData.id}
+            availableBrands={availableBrands}
           />
         </div>
 
@@ -110,6 +137,7 @@ const CategoryPageDesktop: React.FC<CategoryPageDesktopProps> = ({
             gridView={gridView}
             categoryId={categoryData.id}
             onFilteredCountChange={onFilteredCountChange}
+            initialProducts={initialProducts}
           />
         </div>
       </div>

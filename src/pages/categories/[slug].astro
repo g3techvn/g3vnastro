@@ -35,6 +35,46 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const { category } = Astro.props;
 
+// Pre-fetch products data at build time for better performance
+let initialProducts: any[] = [];
+let brands: Array<{ id: string; title: string; slug: string }> = [];
+
+try {
+  // Fetch products for this category
+  const { data: productsData, error: productsError } = await supabase
+    .from('products')
+    .select(`
+      *,
+      brands(title, slug),
+      product_cats(title, slug)
+    `)
+    .eq('pd_cat_id', category.id)
+    .order('name', { ascending: true });
+
+  if (!productsError && productsData) {
+    initialProducts = productsData;
+  }
+
+  // Fetch brands for filter - only if we have products
+  if (productsData && productsData.length > 0) {
+    const brandIds = [...new Set(productsData.map(p => p.brand_id).filter(Boolean))];
+    
+    if (brandIds.length > 0) {
+      const { data: brandsData, error: brandsError } = await supabase
+        .from('brands')
+        .select('id, title, slug')
+        .in('id', brandIds)
+        .order('title', { ascending: true });
+
+      if (!brandsError && brandsData) {
+        brands = brandsData;
+      }
+    }
+  }
+} catch (error) {
+  console.error("Error pre-fetching category data:", error);
+}
+
 const categoryInfo = {
   title: category?.title || slug || "Danh mục sản phẩm",
   description: category?.description,
@@ -68,6 +108,8 @@ const description =
   <CategoryPageWrapper
     categorySlug={slug}
     categoryData={category}
-    client:load
+    initialProducts={initialProducts}
+    availableBrands={brands}
+    client:idle
   />
 </Layout>

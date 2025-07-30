@@ -3,6 +3,28 @@ import type { FilterState } from './CategoryFilter';
 import CategoryPageMobile from './CategoryPageMobile';
 import CategoryPageDesktop from './CategoryPageDesktop';
 
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  original_price?: number;
+  image_url?: string;
+  image_square_url?: string;
+  rating?: number;
+  sold_count?: number;
+  brand_id?: string;
+  pd_cat_id?: string;
+  brands?: { title: string; slug: string };
+  product_cats?: { title: string; slug: string };
+}
+
+interface Brand {
+  id: string;
+  title: string;
+  slug: string;
+}
+
 interface CategoryPageProps {
   categorySlug: string;
   categoryData: {
@@ -12,9 +34,16 @@ interface CategoryPageProps {
     image_url?: string;
     slug: string;
   };
+  initialProducts?: Product[];
+  availableBrands?: Brand[];
 }
 
-const CategoryPage: React.FC<CategoryPageProps> = ({ categorySlug, categoryData }) => {
+const CategoryPage: React.FC<CategoryPageProps> = ({ 
+  categorySlug, 
+  categoryData, 
+  initialProducts = [],
+  availableBrands = []
+}) => {
   const [filters, setFilters] = useState<FilterState>({
     priceRange: { min: 0, max: 5000000 },
     brands: []
@@ -53,6 +82,8 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ categorySlug, categoryData 
           onSortChange={handleSortChange}
           onGridViewChange={handleGridViewChange}
           onFilteredCountChange={handleFilteredCountChange}
+          initialProducts={initialProducts}
+          availableBrands={availableBrands}
         />
       </div>
 
@@ -68,6 +99,8 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ categorySlug, categoryData 
           onSortChange={handleSortChange}
           onGridViewChange={handleGridViewChange}
           onFilteredCountChange={handleFilteredCountChange}
+          initialProducts={initialProducts}
+          availableBrands={availableBrands}
         />
       </div>
     </>

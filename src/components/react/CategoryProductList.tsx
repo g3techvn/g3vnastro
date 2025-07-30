@@ -26,25 +26,34 @@ interface CategoryProductListProps {
   gridView?: string;
   categoryId: string;
   onFilteredCountChange: (count: number) => void;
+  initialProducts?: Product[];
 }
+
+// Simple in-memory cache for products
+const productCache = new Map<string, { data: Product[]; timestamp: number }>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 const CategoryProductList: React.FC<CategoryProductListProps> = ({ 
   filters, 
   sortBy = 'name', 
   gridView = 'grid', 
   categoryId,
-  onFilteredCountChange 
+  onFilteredCountChange,
+  initialProducts = []
 }) => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(initialProducts.length === 0);
   const [error, setError] = useState<string | null>(null);
   const [preview, setPreview] = useState<{ x: number; y: number; image: string } | null>(null);
   const [modalProduct, setModalProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    fetchProducts();
-  }, [categoryId]);
+    // Only fetch if we don't have initial products
+    if (initialProducts.length === 0) {
+      fetchProducts();
+    }
+  }, [categoryId, initialProducts.length]);
 
   useEffect(() => {
     applyFilters();
@@ -57,6 +66,15 @@ const CategoryProductList: React.FC<CategoryProductListProps> = ({
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      
+      // Check cache first
+      const cached = productCache.get(categoryId);
+      if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+        setProducts(cached.data);
+        setLoading(false);
+        return;
+      }
+
       const supabase = createClient(
         import.meta.env.PUBLIC_SUPABASE_URL,
         import.meta.env.PUBLIC_SUPABASE_ANON_KEY
@@ -75,7 +93,14 @@ const CategoryProductList: React.FC<CategoryProductListProps> = ({
       if (error) {
         setError(error.message);
       } else {
-        setProducts(data || []);
+        const products = data || [];
+        setProducts(products);
+        
+        // Cache the results
+        productCache.set(categoryId, {
+          data: products,
+          timestamp: Date.now()
+        });
       }
     } catch (err) {
       setError('Có lỗi xảy ra khi tải sản phẩm');

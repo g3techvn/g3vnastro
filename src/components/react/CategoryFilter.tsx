@@ -13,6 +13,11 @@ interface CategoryFilterProps {
   onFilterChange: (filters: FilterState) => void;
   initialFilters?: FilterState;
   categoryId: string;
+  availableBrands?: Array<{
+    id: string;
+    title: string;
+    slug: string;
+  }>;
 }
 
 export interface FilterState {
@@ -23,9 +28,14 @@ export interface FilterState {
   brands: string[];
 }
 
-const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initialFilters, categoryId }) => {
+const CategoryFilter: React.FC<CategoryFilterProps> = ({ 
+  onFilterChange, 
+  initialFilters, 
+  categoryId, 
+  availableBrands = [] 
+}) => {
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(availableBrands.length === 0);
 
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(5000000);
@@ -35,13 +45,71 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
   });
 
   useEffect(() => {
-    fetchFilterData();
-  }, [categoryId]);
+    if (availableBrands.length === 0) {
+      fetchFilterData();
+    } else {
+      // Use pre-fetched brands and fetch only price data
+      fetchPriceData();
+    }
+  }, [categoryId, availableBrands.length]);
 
   useEffect(() => {
     console.log('CategoryFilter: Filters changed:', filters);
     onFilterChange(filters);
   }, [filters, onFilterChange]);
+
+  const fetchPriceData = async () => {
+    try {
+      setLoading(true);
+      const supabase = createClient(
+        import.meta.env.PUBLIC_SUPABASE_URL,
+        import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+      );
+
+      // Fetch products in this category to calculate price range and brand counts
+      const { data: products, error: productsError } = await supabase
+        .from('products')
+        .select('price, brand_id')
+        .eq('pd_cat_id', categoryId);
+
+      if (productsError) {
+        console.error('Error fetching products:', productsError);
+      } else {
+        // Calculate min and max prices from products
+        const prices = products.map(p => p.price).filter(Boolean);
+        if (prices.length > 0) {
+          const minProductPrice = Math.min(...prices);
+          const maxProductPrice = Math.max(...prices);
+          setMinPrice(minProductPrice);
+          setMaxPrice(maxProductPrice);
+
+          // Update filters if they're at default values
+          if (filters.priceRange.min === 0 && filters.priceRange.max === 5000000) {
+            setFilters(prev => ({
+              ...prev,
+              priceRange: { min: minProductPrice, max: maxProductPrice }
+            }));
+          }
+        }
+
+        // Use pre-fetched brands and add product counts
+        const brandsWithCount = availableBrands
+          .map(brand => ({
+            id: brand.id,
+            title: brand.title,
+            slug: brand.slug,
+            product_count: products.filter(p => p.brand_id === brand.id).length
+          }))
+          .filter(brand => brand.product_count > 0);
+
+        setBrands(brandsWithCount);
+      }
+    } catch (error) {
+      console.error('Error fetching price data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchFilterData = async () => {
     try {
@@ -105,8 +173,6 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
           }
         }
       }
-
-
     } catch (error) {
       console.error('Error fetching filter data:', error);
     } finally {

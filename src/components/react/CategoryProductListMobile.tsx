@@ -141,11 +141,28 @@ const BrandSection: React.FC<{
 
 
 
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  original_price?: number;
+  image_url?: string;
+  image_square_url?: string;
+  rating?: number;
+  sold_count?: number;
+  brand_id?: string;
+  pd_cat_id?: string;
+  brands?: { title: string; slug: string };
+  product_cats?: { title: string; slug: string };
+}
+
 interface CategoryProductListMobileProps {
   filters: FilterState;
   sortBy: string;
   categoryId: string;
   onFilteredCountChange: (count: number) => void;
+  initialProducts?: Product[];
 }
 
 const CategoryProductListMobile: React.FC<CategoryProductListMobileProps> = ({
@@ -153,14 +170,34 @@ const CategoryProductListMobile: React.FC<CategoryProductListMobileProps> = ({
   sortBy,
   categoryId,
   onFilteredCountChange,
+  initialProducts = [],
 }) => {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
   const [brands, setBrands] = useState<Array<{ id: string; title: string; slug: string }>>([]);
-  const [loading, setLoading] = useState(true);
-  const [modalProduct, setModalProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(initialProducts.length === 0);
+  const [modalProduct, setModalProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      // Only fetch if we don't have initial products
+      if (initialProducts.length > 0) {
+        // Extract brands from initial products
+        const uniqueBrands = Array.from(
+          new Map(
+            initialProducts
+              .filter(p => p.brands)
+              .map(p => [p.brands!.slug, { 
+                id: p.brand_id!, 
+                title: p.brands!.title, 
+                slug: p.brands!.slug 
+              }])
+          ).values()
+        );
+        setBrands(uniqueBrands);
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       try {
         const supabase = createClient(

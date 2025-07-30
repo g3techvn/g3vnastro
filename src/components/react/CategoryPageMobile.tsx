@@ -4,6 +4,28 @@ import MobileSortModal from '../mobile/MobileSortModal';
 import type { FilterState } from '../mobile/MobileCategoryFilter';
 import CategoryProductListMobile from './CategoryProductListMobile';
 
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  original_price?: number;
+  image_url?: string;
+  image_square_url?: string;
+  rating?: number;
+  sold_count?: number;
+  brand_id?: string;
+  pd_cat_id?: string;
+  brands?: { title: string; slug: string };
+  product_cats?: { title: string; slug: string };
+}
+
+interface Brand {
+  id: string;
+  title: string;
+  slug: string;
+}
+
 interface CategoryPageMobileProps {
   categoryData: {
     id: string;
@@ -20,6 +42,8 @@ interface CategoryPageMobileProps {
   onSortChange: (sortBy: string) => void;
   onGridViewChange: (gridView: string) => void;
   onFilteredCountChange: (count: number) => void;
+  initialProducts?: Product[];
+  availableBrands?: Brand[];
 }
 
 const CategoryPageMobile: React.FC<CategoryPageMobileProps> = ({
@@ -32,6 +56,8 @@ const CategoryPageMobile: React.FC<CategoryPageMobileProps> = ({
   onSortChange,
   onGridViewChange,
   onFilteredCountChange,
+  initialProducts = [],
+  availableBrands = [],
 }) => {
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   const [showMobileSort, setShowMobileSort] = useState(false);
@@ -159,6 +185,7 @@ const CategoryPageMobile: React.FC<CategoryPageMobileProps> = ({
           sortBy={sortBy}
           categoryId={categoryData.id}
           onFilteredCountChange={onFilteredCountChange}
+          initialProducts={initialProducts}
         />
       </div>
 
@@ -169,6 +196,7 @@ const CategoryPageMobile: React.FC<CategoryPageMobileProps> = ({
         onFilterChange={onFilterChange}
         initialFilters={filters}
         categoryId={categoryData.id}
+        availableBrands={availableBrands}
       />
 
       {/* Mobile Sort Modal */}
