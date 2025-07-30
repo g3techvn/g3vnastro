@@ -35,6 +35,46 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const { brand } = Astro.props;
 
+// Pre-fetch products data at build time for better performance
+let initialProducts: any[] = [];
+let categories: Array<{ id: string; title: string; slug: string }> = [];
+
+try {
+  // Fetch products for this brand
+  const { data: productsData, error: productsError } = await supabase
+    .from('products')
+    .select(`
+      *,
+      brands(title, slug),
+      product_cats(title, slug)
+    `)
+    .eq('brand_id', brand.id)
+    .order('name', { ascending: true });
+
+  if (!productsError && productsData) {
+    initialProducts = productsData;
+  }
+
+  // Fetch categories for filter - only if we have products
+  if (productsData && productsData.length > 0) {
+    const categoryIds = [...new Set(productsData.map(p => p.pd_cat_id).filter(Boolean))];
+    
+    if (categoryIds.length > 0) {
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('product_cats')
+        .select('id, title, slug')
+        .in('id', categoryIds)
+        .order('title', { ascending: true });
+
+      if (!categoriesError && categoriesData) {
+        categories = categoriesData;
+      }
+    }
+  }
+} catch (error) {
+  console.error("Error pre-fetching brand data:", error);
+}
+
 const brandInfo = {
   title: brand?.title || slug || "Thương hiệu",
   description: brand?.description,
@@ -47,7 +87,30 @@ const description =
   `Khám phá các sản phẩm của thương hiệu ${brandInfo.title} tại G3.vn. Nội thất công thái học, bảo hành 12 tháng, giao hàng toàn quốc.`;
 ---
 
-<Layout title={title} description={description}>
-  <BrandPageWrapper brandSlug={slug} brandData={brand} client:load />
+<Layout
+  title={title}
+  description={description}
+  image={brandInfo.image_url
+    ? `https://g-3.vn${brandInfo.image_url.replace(/^\/g3tech\//, "/g3tech-otm/").replace(/\.(jpg|jpeg|png|webp)$/i, ".avif")}`
+    : "https://g-3.vn/images/og-default.jpg"}
+  imageAlt={`${brandInfo.title} - G-3.vn`}
+  type="website"
+  keywords={[
+    brandInfo.title,
+    "G-3.vn",
+    "ghế công thái học",
+    "bàn làm việc",
+    "nội thất văn phòng",
+    "chất lượng cao",
+  ]}
+  canonical={`https://g-3.vn/brands/${brand?.slug || slug}`}
+>
+  <BrandPageWrapper
+    brandSlug={slug}
+    brandData={brand}
+    initialProducts={initialProducts}
+    availableCategories={categories}
+    client:idle
+  />
 </Layout>
 

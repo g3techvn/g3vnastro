@@ -23,7 +23,7 @@ const BrandSection: React.FC<{
       const scrollLeft = scrollRef.current.scrollLeft;
       const itemWidth = scrollRef.current.clientWidth;
       const scrollWidth = scrollRef.current.scrollWidth;
-      
+
       // Check if scrolled to the end
       if (scrollLeft + itemWidth >= scrollWidth - 10) {
         // If near the end, set to last slide
@@ -62,15 +62,14 @@ const BrandSection: React.FC<{
               <button
                 key={index}
                 onClick={() => scrollToSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? 'bg-red-500 w-4' : 'bg-gray-300 w-2'
-                }`}
+                className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? 'bg-red-500 w-4' : 'bg-gray-300 w-2'
+                  }`}
               />
             ))}
           </div>
         )}
       </div>
-      <div 
+      <div
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto flex-nowrap snap-x snap-mandatory px-4 pb-4 scrollbar-hide"
         onScroll={handleScroll}
@@ -110,7 +109,7 @@ const BrandSection: React.FC<{
                     <div className="flex items-center justify-between text-xs text-gray-500 mt-1">
                       <div className="flex items-center gap-2">
                         <span className="flex items-center gap-0.5">
-                          <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6 "/></svg>
+                          <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6 " /></svg>
                           {(product.rating || 4.9).toFixed(1)}
                         </span>
                         <span>•</span>
@@ -194,7 +193,7 @@ const MobileFeatureProduct: React.FC = () => {
         {sortedBrandEntries.map(([brandId, brandProducts]) => {
           const brandTitle = brandsMap[brandId]?.title || 'Không xác định';
           const brandSlug = brandsMap[brandId]?.slug;
-          
+
           return (
             <BrandSection
               key={brandId}

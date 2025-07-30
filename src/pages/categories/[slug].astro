@@ -42,14 +42,16 @@ let brands: Array<{ id: string; title: string; slug: string }> = [];
 try {
   // Fetch products for this category
   const { data: productsData, error: productsError } = await supabase
-    .from('products')
-    .select(`
+    .from("products")
+    .select(
+      `
       *,
       brands(title, slug),
       product_cats(title, slug)
-    `)
-    .eq('pd_cat_id', category.id)
-    .order('name', { ascending: true });
+    `,
+    )
+    .eq("pd_cat_id", category.id)
+    .order("name", { ascending: true });
 
   if (!productsError && productsData) {
     initialProducts = productsData;
@@ -57,14 +59,16 @@ try {
 
   // Fetch brands for filter - only if we have products
   if (productsData && productsData.length > 0) {
-    const brandIds = [...new Set(productsData.map(p => p.brand_id).filter(Boolean))];
-    
+    const brandIds = [
+      ...new Set(productsData.map((p) => p.brand_id).filter(Boolean)),
+    ];
+
     if (brandIds.length > 0) {
       const { data: brandsData, error: brandsError } = await supabase
-        .from('brands')
-        .select('id, title, slug')
-        .in('id', brandIds)
-        .order('title', { ascending: true });
+        .from("brands")
+        .select("id, title, slug")
+        .in("id", brandIds)
+        .order("title", { ascending: true });
 
       if (!brandsError && brandsData) {
         brands = brandsData;
