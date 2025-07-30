@@ -179,7 +179,7 @@ const CategoryPageMobile: React.FC<CategoryPageMobileProps> = ({
       </div>
 
       {/* Mobile Products */}
-      <div className="pt-4 pb-4 px-4">
+      <div className="pt-4 pb-4">
         <CategoryProductListMobile 
           filters={filters}
           sortBy={sortBy}
