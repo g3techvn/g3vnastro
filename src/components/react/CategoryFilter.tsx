@@ -39,6 +39,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
   }, [categoryId]);
 
   useEffect(() => {
+    console.log('CategoryFilter: Filters changed:', filters);
     onFilterChange(filters);
   }, [filters, onFilterChange]);
 
@@ -114,6 +115,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
   };
 
   const handlePriceRangeChange = (min: number, max: number) => {
+    console.log('CategoryFilter: Price range changed:', { min, max });
     setFilters(prev => ({
       ...prev,
       priceRange: { min, max }
@@ -121,12 +123,17 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
   };
 
   const handleBrandChange = (brandId: string) => {
-    setFilters(prev => ({
-      ...prev,
-      brands: prev.brands.includes(brandId)
+    console.log('CategoryFilter: Brand changed:', brandId);
+    setFilters(prev => {
+      const newBrands = prev.brands.includes(brandId)
         ? prev.brands.filter(id => id !== brandId)
-        : [...prev.brands, brandId]
-    }));
+        : [...prev.brands, brandId];
+      console.log('CategoryFilter: New brands:', newBrands);
+      return {
+        ...prev,
+        brands: newBrands
+      };
+    });
   };
 
 
@@ -163,7 +170,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
         {((filters.priceRange.min !== minPrice || filters.priceRange.max !== maxPrice) || filters.brands.length > 0) && (
           <button
             onClick={clearAllFilters}
-            className="text-sm text-red-600 hover:text-red-700"
+            className="text-sm text-red-600 hover:text-red-700 px-2 py-1 rounded hover:bg-red-50 transition-colors"
           >
             Xóa tất cả
           </button>
@@ -175,19 +182,19 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
         {brands.length > 0 && (
           <div>
             <h4 className="font-medium text-gray-900 mb-3">Thương hiệu</h4>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {brands.map((brand) => (
-                <label key={brand.id} className="flex items-center justify-between cursor-pointer">
-                  <div className="flex items-center">
+                <label key={brand.id} className="flex items-center justify-between cursor-pointer p-2 rounded hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center min-w-0 flex-1">
                     <input
                       type="checkbox"
                       checked={filters.brands.includes(brand.id)}
                       onChange={() => handleBrandChange(brand.id)}
-                      className="rounded border-gray-300 text-red-600 focus:ring-red-500"
+                      className="rounded border-gray-300 text-red-600 focus:ring-red-500 w-4 h-4 flex-shrink-0"
                     />
-                    <span className="ml-2 text-sm text-gray-600">{brand.title}</span>
+                    <span className="ml-3 text-sm text-gray-700 truncate">{brand.title}</span>
                   </div>
-                  <span className="text-xs text-gray-500">({brand.product_count})</span>
+                  <span className="text-xs text-gray-500 ml-2 flex-shrink-0">({brand.product_count})</span>
                 </label>
               ))}
             </div>
@@ -196,7 +203,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
 
         {/* Price Range Filter */}
         <div>
-          <h4 className="font-medium text-gray-900 mb-3">Khoảng giá</h4>
+          <h4 className="font-medium text-gray-900 mb-4">Khoảng giá</h4>
           <DualRangeSlider
             min={minPrice}
             max={maxPrice}
@@ -205,8 +212,6 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onFilterChange, initial
             onChange={(newRange) => handlePriceRangeChange(newRange.min, newRange.max)}
           />
         </div>
-
-
       </div>
     </div>
   );

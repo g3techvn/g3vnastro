@@ -24,16 +24,24 @@ const DualRangeSlider: React.FC<DualRangeSliderProps> = ({
     return Math.max(min, Math.min(max, stepped));
   };
 
-  const handleMouseDown = (type: 'min' | 'max') => (e: React.MouseEvent) => {
+  const handleStart = (type: 'min' | 'max') => (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     setIsDragging(type);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const getClientX = (e: MouseEvent | TouchEvent): number => {
+    if ('touches' in e) {
+      return e.touches[0]?.clientX || 0;
+    }
+    return e.clientX;
+  };
+
+  const handleMove = (e: MouseEvent | TouchEvent) => {
     if (!isDragging || !sliderRef.current) return;
 
     const rect = sliderRef.current.getBoundingClientRect();
-    const percentage = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const clientX = getClientX(e);
+    const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     const newValue = normalizeValue(min + percentage * (max - min));
 
     if (isDragging === 'min' && newValue <= value.max) {
@@ -43,17 +51,24 @@ const DualRangeSlider: React.FC<DualRangeSliderProps> = ({
     }
   };
 
-  const handleMouseUp = () => {
+  const handleEnd = () => {
     setIsDragging(null);
   };
 
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      // Mouse events
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('mouseup', handleEnd);
+      // Touch events
+      document.addEventListener('touchmove', handleMove, { passive: false });
+      document.addEventListener('touchend', handleEnd);
+      
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('mousemove', handleMove);
+        document.removeEventListener('mouseup', handleEnd);
+        document.removeEventListener('touchmove', handleMove);
+        document.removeEventListener('touchend', handleEnd);
       };
     }
   }, [isDragging, value, min, max]);
@@ -88,16 +103,18 @@ const DualRangeSlider: React.FC<DualRangeSliderProps> = ({
 
           {/* Min thumb */}
           <div
-            className="absolute w-5 h-5 bg-red-600 border-2 border-white rounded-full shadow-md cursor-pointer transform -translate-y-1.5 hover:scale-110 transition-transform"
-            style={{ left: `${minPercent}%`, marginLeft: '-10px' }}
-            onMouseDown={handleMouseDown('min')}
+            className="absolute w-6 h-6 bg-red-600 border-2 border-white rounded-full shadow-md cursor-pointer transform -translate-y-2 hover:scale-110 transition-transform touch-none"
+            style={{ left: `${minPercent}%`, marginLeft: '-12px' }}
+            onMouseDown={handleStart('min')}
+            onTouchStart={handleStart('min')}
           />
 
           {/* Max thumb */}
           <div
-            className="absolute w-5 h-5 bg-red-600 border-2 border-white rounded-full shadow-md cursor-pointer transform -translate-y-1.5 hover:scale-110 transition-transform"
-            style={{ left: `${maxPercent}%`, marginLeft: '-10px' }}
-            onMouseDown={handleMouseDown('max')}
+            className="absolute w-6 h-6 bg-red-600 border-2 border-white rounded-full shadow-md cursor-pointer transform -translate-y-2 hover:scale-110 transition-transform touch-none"
+            style={{ left: `${maxPercent}%`, marginLeft: '-12px' }}
+            onMouseDown={handleStart('max')}
+            onTouchStart={handleStart('max')}
           />
         </div>
       </div>
