@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MobileBrandFilter from '../mobile/MobileBrandFilter';
 import MobileSortModal from '../mobile/MobileSortModal';
-import type { FilterState } from '../mobile/MobileBrandFilter';
+import type { FilterState } from './BrandFilter';
 import BrandProductListMobile from './BrandProductListMobile';
 
 interface Product {
@@ -144,41 +144,38 @@ const BrandPageMobile: React.FC<BrandPageMobileProps> = ({
           </button>
         </div>
       </div>     
- {/* Mobile Controls */}
+      {/* Mobile Controls */}
       <div className="bg-white border-b border-gray-100 px-4 py-3">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">
-            {filteredCount} sản phẩm
-          </span>
+          <button
+            onClick={() => setShowMobileSort(true)}
+            className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 transition-colors"
+          >
+            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+            </svg>
+            <span className="text-sm text-gray-700">{getSortLabel(sortBy)}</span>
+            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
           
           <div className="flex items-center gap-3">
-            {/* Sort button */}
-            <button
-              onClick={() => setShowMobileSort(true)}
-              className="flex items-center px-3 py-1.5 border border-gray-300 rounded-md text-sm bg-white"
-            >
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
-              </svg>
-              {getSortLabel(sortBy)}
-            </button>
-
-            {/* Filter button */}
-            <button
+            <span className="text-sm text-gray-500">{filteredCount} sản phẩm</span>
+            <button 
               onClick={() => setShowMobileFilter(true)}
-              className="flex items-center px-3 py-1.5 border border-gray-300 rounded-md text-sm bg-white"
+              className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center justify-center"
             >
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
               </svg>
-              Lọc
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile Products */}
-      <div className="px-4 pb-20">
+      <div className="pt-4 pb-4">
         <BrandProductListMobile 
           filters={filters}
           sortBy={sortBy}
@@ -202,13 +199,8 @@ const BrandPageMobile: React.FC<BrandPageMobileProps> = ({
       <MobileSortModal
         isOpen={showMobileSort}
         onClose={() => setShowMobileSort(false)}
-        sortBy={sortBy}
+        currentSort={sortBy}
         onSortChange={onSortChange}
-        options={[
-          { value: 'name', label: 'Tên A-Z' },
-          { value: 'price_asc', label: 'Giá thấp đến cao' },
-          { value: 'price_desc', label: 'Giá cao đến thấp' }
-        ]}
       />
     </div>
   );

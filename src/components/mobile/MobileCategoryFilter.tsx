@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import DualRangeSlider from '../react/DualRangeSlider';
+import type { FilterState } from '../react/CategoryFilter';
 
 interface Brand {
   id: string;
@@ -22,13 +23,7 @@ interface MobileCategoryFilterProps {
   }>;
 }
 
-export interface FilterState {
-  priceRange: {
-    min: number;
-    max: number;
-  };
-  brands: string[];
-}
+
 
 const MobileCategoryFilter: React.FC<MobileCategoryFilterProps> = ({ 
   onFilterChange, 

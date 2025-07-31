@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import type { FilterState } from '../mobile/MobileBrandFilter';
+import type { FilterState } from './BrandFilter';
 import ModalBuyNowForm from './ModalBuyNowForm';
 
 // Component riêng cho mỗi category section
@@ -48,100 +48,93 @@ const CategorySection: React.FC<{
 
   return (
     <div className="space-y-3">
-      {/* Category Header */}
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900">{categoryTitle}</h3>
-        <span className="text-sm text-gray-500">{categoryProducts.length} sản phẩm</span>
+      <div className="flex items-center justify-between px-4">
+        <a href={categorySlug ? `/categories/${categorySlug}` : '#'} className="group">
+          <h2 className="text-lg font-semibold text-red-700 group-hover:underline">
+            Danh mục {categoryTitle}
+          </h2>
+        </a>
+        {categoryProducts.length > 3 && (
+          <div className="flex gap-1">
+            {Array.from({ length: columns }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollToSlide(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === currentSlide ? 'bg-red-500 w-4' : 'bg-gray-300 w-2'
+                }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
-
-      {/* Products Grid */}
       <div 
         ref={scrollRef}
-        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-4 pb-2"
+        className="flex gap-4 overflow-x-auto flex-nowrap snap-x snap-mandatory px-4 pb-4 scrollbar-hide"
         onScroll={handleScroll}
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {Array.from({ length: columns }).map((_, columnIndex) => (
-          <div key={columnIndex} className="flex-none w-full snap-start">
-            <div className="grid grid-cols-2 gap-3">
-              {categoryProducts
-                .slice(columnIndex * 3, (columnIndex + 1) * 3)
-                .map((product) => (
-                  <a key={product.id} href={`/san-pham/${product.slug}`} className="block">
-                    <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden">
-                      <div className="aspect-square w-full relative group">
-                        {/* Badge giảm giá */}
+        {Array.from({ length: columns }).map((_, colIdx) => (
+          <div className="w-[95%] min-w-[320px] mx-auto space-y-3 snap-center" key={colIdx}>
+            {categoryProducts.slice(colIdx * 3, colIdx * 3 + 3).map((product) => (
+              <a
+                href={`/san-pham/${product.slug || product.id}`}
+                className="bg-white rounded-lg shadow overflow-hidden block"
+                key={product.id}
+              >
+                <div className="flex items-center p-2">
+                  <div className="relative w-20 h-20">
+                    <img
+                      src={product.image_square_url || product.image_url || '/images/placeholder-product.jpg'}
+                      alt={product.name}
+                      className="rounded-lg object-contain w-full h-full"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0 ml-2">
+                    <div className="font-medium text-sm line-clamp-2">
+                      {product.name}
+                    </div>
+                    <div className="flex items-center justify-between mt-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-red-500 font-semibold">
+                          {product.price.toLocaleString('vi-VN')}₫
+                        </span>
                         {product.original_price && product.original_price > product.price && (
-                          <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg z-10">
-                            -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
-                          </div>
-                        )}
-                        <img 
-                          src={product.image_square_url || product.image_url || '/images/placeholder-product.jpg'} 
-                          alt={product.name} 
-                          className="object-contain w-full h-full"
-                        />
-                      </div>
-                      <div className="flex-1 flex flex-col px-2 pt-2 pb-1">
-                        <div className="h-10 font-medium text-sm text-gray-900 line-clamp-2 mb-1">
-                          {product.name}
-                        </div>
-                        <div className="flex items-end gap-2 mb-1 mt-auto">
-                          <span className="text-red-600 font-bold text-base">
-                            {product.price.toLocaleString('vi-VN')}₫
+                          <span className="text-xs text-gray-500 line-through">
+                            {product.original_price.toLocaleString('vi-VN')}₫
                           </span>
-                          {product.original_price && (
-                            <span className="text-xs text-gray-400 line-through">
-                              {product.original_price.toLocaleString('vi-VN')}₫
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center justify-between gap-2 text-xs text-gray-500 mb-1">
-                          <div className="flex items-center gap-2">
-                            <span className="flex items-center gap-0.5">
-                              <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6"/>
-                              </svg>
-                              {(product.rating || 4.9).toFixed(1)}
-                            </span>
-                            <span>•</span>
-                            <span>Đã bán {product.sold_count || 0}</span>
-                          </div>
-                          <button 
-                            className="p-1.5 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition-colors duration-200"
-                            onClick={e => {
-                              e.preventDefault();
-                              onProductClick(product);
-                            }}
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                            </svg>
-                          </button>
-                        </div>
+                        )}
                       </div>
                     </div>
-                  </a>
-                ))}
-            </div>
+                    <div className="flex items-center justify-between text-xs text-gray-500 mt-1">
+                      <div className="flex items-center gap-2">
+                        <span className="flex items-center gap-0.5">
+                          <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6 "/></svg>
+                          {(product.rating || 4.9).toFixed(1)}
+                        </span>
+                        <span>•</span>
+                        <span>Đã bán {product.sold_count || 0}</span>
+                      </div>
+                      <button
+                        className="p-1.5 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition-colors duration-200"
+                        aria-label={`Thêm vào giỏ hàng`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onProductClick(product);
+                        }}
+                        type="button"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
           </div>
         ))}
       </div>
-
-      {/* Dots indicator */}
-      {columns > 1 && (
-        <div className="flex justify-center space-x-2 pt-2">
-          {Array.from({ length: columns }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => scrollToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentSlide ? 'bg-red-600' : 'bg-gray-300'
-              }`}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 };
@@ -221,7 +214,6 @@ const BrandProductListMobile: React.FC<BrandProductListMobileProps> = ({
             `)
             .eq('brand_id', brandId)
             .order('name', { ascending: true }),
-          
           supabase
             .from('product_cats')
             .select('id, title, slug')
@@ -230,119 +222,113 @@ const BrandProductListMobile: React.FC<BrandProductListMobileProps> = ({
 
         if (productsResult.error) {
           console.error('Error fetching products:', productsResult.error);
+          setProducts([]);
         } else {
-          setProducts(productsResult.data || []);
+          console.log('Raw products data:', productsResult.data);
+          console.log('Brand ID:', brandId);
+          
+          // Apply filters and sorting
+          let filtered = productsResult.data || [];
+          
+          // Apply price range filters
+          filtered = filtered.filter(product => {
+            return product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
+          });
+
+          // Apply category filters
+          if (filters.categories.length > 0) {
+            filtered = filtered.filter(product => 
+              product.pd_cat_id && filters.categories.includes(product.pd_cat_id)
+            );
+          }
+
+          // Apply sorting
+          filtered.sort((a, b) => {
+            switch (sortBy) {
+              case 'price_asc':
+                return a.price - b.price;
+              case 'price_desc':
+                return b.price - a.price;
+              case 'name':
+              default:
+                return a.name.localeCompare(b.name);
+            }
+          });
+
+          console.log('Filtered products:', filtered);
+          setProducts(filtered);
+          onFilteredCountChange(filtered.length);
         }
 
         if (categoriesResult.error) {
           console.error('Error fetching categories:', categoriesResult.error);
+          setCategories([]);
         } else {
           setCategories(categoriesResult.data || []);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error:', error);
+        setProducts([]);
+        onFilteredCountChange(0);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [brandId, initialProducts.length]);
+  }, [filters, sortBy, brandId, onFilteredCountChange]);
 
-  // Apply filters and sorting
-  const filteredAndSortedProducts = React.useMemo(() => {
-    let filtered = [...products];
-
-    // Apply price range filters
-    filtered = filtered.filter(product => {
-      return product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
-    });
-
-    // Apply category filters
-    if (filters.categories.length > 0) {
-      filtered = filtered.filter(product => 
-        product.pd_cat_id && filters.categories.includes(product.pd_cat_id)
-      );
-    }
-
-    // Apply sorting
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'price_asc':
-          return a.price - b.price;
-        case 'price_desc':
-          return b.price - a.price;
-        case 'name':
-        default:
-          return a.name.localeCompare(b.name);
-      }
-    });
-
-    return filtered;
-  }, [products, filters, sortBy]);
-
-  // Group products by category
-  const productsByCategory = React.useMemo(() => {
-    const grouped: { [key: string]: Product[] } = {};
-    
-    filteredAndSortedProducts.forEach(product => {
-      const categoryId = product.pd_cat_id || 'uncategorized';
-      if (!grouped[categoryId]) {
-        grouped[categoryId] = [];
-      }
-      grouped[categoryId].push(product);
-    });
-
-    return grouped;
-  }, [filteredAndSortedProducts]);
-
-  useEffect(() => {
-    onFilteredCountChange(filteredAndSortedProducts.length);
-  }, [filteredAndSortedProducts.length, onFilteredCountChange]);
-
-  if (loading) {
-    return (
-      <div className="space-y-6">
-        {[1, 2, 3].map(i => (
-          <div key={i} className="space-y-3">
-            <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
-            <div className="grid grid-cols-2 gap-3">
-              {[1, 2, 3, 4].map(j => (
-                <div key={j} className="bg-white rounded-xl border border-gray-200 shadow-sm animate-pulse">
-                  <div className="aspect-square w-full bg-gray-200 rounded-t-xl"></div>
-                  <div className="p-2">
-                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                    <div className="h-6 bg-gray-200 rounded"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+  // Group products by category_id
+  const productsByCategory: Record<string, typeof products> = {};
+  for (const product of products) {
+    const categoryId = product.pd_cat_id || 'unknown';
+    if (!productsByCategory[categoryId]) productsByCategory[categoryId] = [];
+    productsByCategory[categoryId].push(product);
+  }
+  // Sort products by price within each category
+  for (const categoryId in productsByCategory) {
+    productsByCategory[categoryId].sort((a, b) => a.price - b.price);
   }
 
-  if (filteredAndSortedProducts.length === 0) {
+  // Map for category info
+  const categoriesMap: Record<string, { id: string; title: string; slug: string }> = {};
+  for (const category of categories) {
+    categoriesMap[category.id] = category;
+  }
+
+  // Sort category entries alphabetically
+  const sortedCategoryEntries: [string, typeof products][] = Object.entries(productsByCategory).sort(([categoryIdA], [categoryIdB]) => {
+    const categoryA = categoriesMap[categoryIdA]?.title || '';
+    const categoryB = categoriesMap[categoryIdB]?.title || '';
+    return categoryA.toLowerCase().localeCompare(categoryB.toLowerCase());
+  });
+
+  if (loading) {
+    return <div className="p-4 text-center text-gray-500">Đang tải sản phẩm và danh mục...</div>;
+  }
+
+  if (products.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-        <p className="text-lg text-gray-600">Không tìm thấy sản phẩm nào.</p>
-        <p className="mt-2 text-sm text-gray-500">Vui lòng thử lại với bộ lọc khác.</p>
+      <div className="text-center py-12">
+        <div className="text-gray-500 mb-2">Không tìm thấy sản phẩm nào</div>
+        <div className="text-sm text-gray-400">Thử điều chỉnh bộ lọc để xem thêm sản phẩm</div>
       </div>
     );
   }
 
   return (
     <>
-      <div className="space-y-8">
-        {Object.entries(productsByCategory).map(([categoryId, categoryProducts]) => {
-          const category = categories.find(c => c.id === categoryId);
+      <div className="space-y-6">
+        {sortedCategoryEntries.map(([categoryId, categoryProducts]) => {
+          const categoryTitle = categoriesMap[categoryId]?.title || 'Không xác định';
+          const categorySlug = categoriesMap[categoryId]?.slug;
+          
           return (
             <CategorySection
               key={categoryId}
               categoryId={categoryId}
-              categoryTitle={category?.title || 'Khác'}
-              categorySlug={category?.slug}
+              categoryTitle={categoryTitle}
+              categorySlug={categorySlug}
               categoryProducts={categoryProducts}
               onProductClick={setModalProduct}
             />
