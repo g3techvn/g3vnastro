@@ -30,7 +30,7 @@ const steps: Step[] = [
   {
     id: 4,
     title: "Giao hàng & lắp đặt",
-    description: "Nhận hàng và hỗ trợ lắp đặt tại nhà",
+    description: "Nhận hàng và miễn phí lắp đặt",
     icon: <TruckIcon className="w-6 h-6" />
   }
 ];

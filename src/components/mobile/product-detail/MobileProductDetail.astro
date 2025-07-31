@@ -1,11 +1,16 @@
 ---
 import MobileProductGallery from './MobileProductGallery';
-import MobileProductInfo from './MobileProductInfo';
-import MobileProductPrice from './MobileProductPrice';
 import MobileProductDescription from './MobileProductDescription';
 import MobileTechnicalSpecs from './MobileTechnicalSpecs';
 import MobileProductActions from './MobileProductActions';
 import MobileHeader from '../MobileHeader';
+import MobileProductHero from './MobileProductHero';
+import MobileTrustSignals from './MobileTrustSignals';
+import MobileSocialProof from './MobileSocialProof';
+import MobileProblemSolution from './MobileProblemSolution';
+import MobileBenefitsShowcase from './MobileBenefitsShowcase';
+import MobileEnhancedReviews from './MobileEnhancedReviews';
+import MobileCTASection from './MobileCTASection';
 
 interface Props {
   product: any;
@@ -62,8 +67,8 @@ const faqItems = [
     answer: "Sản phẩm được bảo hành 12 tháng cho phần cơ khí và 6 tháng cho lưới."
   },
   {
-    question: "Có hỗ trợ lắp đặt tại nhà không?",
-    answer: "G3-TECH hỗ trợ lắp đặt miễn phí tại Hà Nội và TP. Hồ Chí Minh."
+    question: "Có miễn phí lắp đặt không?",
+    answer: "G3-TECH miễn phí lắp đặt tại Hà Nội và TP. Hồ Chí Minh."
   },
   {
     question: "Sản phẩm có thể tùy chỉnh như thế nào?",
@@ -75,53 +80,7 @@ const faqItems = [
   }
 ];
 
-// Reviews data - Đồng bộ với PC
-const reviewsData = [
-  {
-    id: '1',
-    user: { name: 'Tám Phạm' },
-    rating: 5,
-    content: 'Ghế công thái học này thực sự rất thoải mái, ngồi làm việc lâu không bị đau lưng. Chất liệu tốt, lắp ráp dễ dàng. Rất đáng tiền!',
-    date: '26/4/2025',
-    likes: 156,
-    verified: true,
-    publisherReply: {
-      name: 'G3-TECH',
-      date: '26/4/2025',
-      content: 'Cảm ơn bạn đã tin tưởng và lựa chọn ghế công thái học của G3-TECH. Chúng tôi rất vui khi sản phẩm giúp bạn làm việc thoải mái hơn. Nếu cần hỗ trợ thêm, bạn cứ liên hệ với chúng tôi nhé!'
-    }
-  },
-  {
-    id: '2',
-    user: { name: 'Anh Trương' },
-    rating: 4,
-    content: 'Ghế ngồi êm, tựa lưng tốt nhưng phần kê tay hơi thấp so với mình. Mong shop có thêm phụ kiện nâng kê tay.',
-    date: '11/5/2025',
-    likes: 23,
-    verified: true
-  },
-  {
-    id: '3',
-    user: { name: 'Minh Hằng' },
-    rating: 5,
-    content: 'Mình rất thích thiết kế của ghế, hiện đại và chắc chắn. Giao hàng nhanh, đóng gói cẩn thận. Sẽ giới thiệu cho bạn bè!',
-    date: '2/6/2025',
-    likes: 41,
-    verified: true
-  }
-];
-
-const ratingSummary = {
-  average: 4.7,
-  total: 394168,
-  stars: [
-    { star: 5, count: 300000 },
-    { star: 4, count: 60000 },
-    { star: 3, count: 20000 },
-    { star: 2, count: 8000 },
-    { star: 1, count: 6200 },
-  ]
-};
+// Old reviews data removed - now using MobileEnhancedReviews component
 ---
 
 <!-- Mobile Product Detail Layout -->
@@ -137,35 +96,55 @@ const ratingSummary = {
   
   <!-- Content without padding - gallery directly under header -->
   <div class="pt-0">
-    <!-- Product Gallery - Using Island -->
+    <!-- Product Gallery - Using Island (MOVED TO TOP) -->
     <div class="w-full bg-white">
-    <MobileProductGallery 
+      <MobileProductGallery 
+        client:load 
+        product={product}
+      />
+    </div>
+
+    <!-- Hero Section - NEW -->
+    <MobileProductHero 
       client:load 
       product={product}
+    />
+
+    <!-- Trust Signals - NEW -->
+    <MobileTrustSignals 
+      client:load 
+    />
+
+  <!-- Product Info - REMOVED (no content to display) -->
+
+  <!-- Social Proof Notifications - NEW -->
+  <div class="fade-in-on-scroll">
+    <MobileSocialProof 
+      client:load 
     />
   </div>
 
-  <!-- Product Info - Using Island -->
-  <div class="bg-white mt-2 mb-2">
-    <MobileProductInfo 
+  <!-- Problem-Solution Section - NEW -->
+  <div class="fade-in-on-scroll">
+    <MobileProblemSolution 
       client:load 
-      product={product}
     />
-    
-    <MobileProductPrice 
-      client:load 
-      product={product}
-    />
+  </div>
 
-    <!-- Product Tags -->
-    <div class="px-4 pb-4">
-      <div class="flex flex-wrap gap-2">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">Công thái học</span>
-        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">Văn phòng</span>
-        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">Sức khỏe</span>
-        <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-medium">Làm việc lâu dài</span>
-      </div>
-    </div>
+  <!-- Benefits Showcase - NEW -->
+  <div class="fade-in-on-scroll">
+    <MobileBenefitsShowcase 
+      client:load 
+    />
+  </div>
+
+  <!-- Primary CTA - NEW -->
+  <div class="fade-in-on-scroll">
+    <MobileCTASection 
+      client:load 
+      product={product}
+      variant="primary"
+    />
   </div>
 
   <!-- Product Description - Using Island -->
@@ -192,122 +171,19 @@ const ratingSummary = {
     </div>
   )}
 
-  <!-- Reviews Section -->
-  <div class="bg-white mb-2">
-    <div class="p-4">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-          <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-          Đánh giá sản phẩm
-        </h3>
-        <div class="flex items-center text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-          <svg class="w-4 h-4 mr-1 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
-          {ratingSummary.average} ({ratingSummary.total.toLocaleString()} đánh giá)
-        </div>
-      </div>
+  <!-- Enhanced Reviews Section - NEW -->
+  <MobileEnhancedReviews 
+    client:load 
+  />
 
-      <!-- Rating Summary -->
-      <div class="flex items-center gap-6 mb-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
-        <div class="flex flex-col items-center">
-          <span class="text-3xl font-bold text-gray-900">{ratingSummary.average}</span>
-          <div class="flex items-center mt-1">
-            {[...Array(5)].map((_, i) => (
-              <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
-            ))}
-          </div>
-        </div>
-        <div class="flex-1 space-y-2">
-          {ratingSummary.stars.map((starItem) => {
-            const percent = (starItem.count / ratingSummary.total) * 100;
-            return (
-              <div class="flex items-center gap-2">
-                <span class="text-xs text-gray-600 w-4">{starItem.star}</span>
-                <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    class="h-full bg-yellow-400 rounded-full"
-                    style={`width: ${percent.toFixed(1)}%`}
-                  ></div>
-                </div>
-                <span class="text-xs text-gray-600 w-8">{percent.toFixed(0)}%</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+  <!-- Secondary CTA - NEW -->
+  <MobileCTASection 
+    client:load 
+    product={product}
+    variant="secondary"
+  />
 
-      <!-- Reviews List -->
-      <div class="space-y-4">
-        {reviewsData.map((review) => (
-          <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <div class="flex items-start gap-3">
-              <!-- Avatar -->
-              <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                {review.user.name.charAt(0)}
-              </div>
-              
-              <!-- Review Content -->
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="font-medium text-gray-900">{review.user.name}</span>
-                  {review.verified && (
-                    <span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">✓ Đã mua</span>
-                  )}
-                </div>
-                
-                <!-- Rating -->
-                <div class="flex items-center gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <svg class={`w-4 h-4 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                  ))}
-                  <span class="text-sm text-gray-500 ml-1">{review.date}</span>
-                </div>
-                
-                <!-- Comment -->
-                <p class="text-sm text-gray-700 leading-relaxed">{review.content}</p>
-                
-                <!-- Likes -->
-                <div class="mt-2 text-xs text-gray-500">
-                  {review.likes} người thấy bài đánh giá này hữu ích
-                </div>
-                
-                <!-- Publisher Reply -->
-                {review.publisherReply && (
-                  <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
-                    <div class="flex items-center gap-2 mb-1">
-                      <span class="font-semibold text-xs text-blue-700">{review.publisherReply.name}</span>
-                      <span class="text-xs text-blue-400">{review.publisherReply.date}</span>
-                    </div>
-                    <div class="text-blue-700 text-sm">{review.publisherReply.content}</div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <!-- View More Reviews Button -->
-      <button class="w-full mt-4 py-3 text-red-600 text-sm font-medium flex items-center justify-center gap-2 hover:bg-red-50 rounded-lg transition-colors border border-red-200">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-        </svg>
-        Xem tất cả đánh giá
-      </button>
-    </div>
-  </div>
-
-  <!-- FAQ Section -->
+  <!-- FAQ Section - Simplified -->
   <div class="bg-white mb-2">
     <div class="p-4">
       <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -317,8 +193,9 @@ const ratingSummary = {
         Câu hỏi thường gặp
       </h3>
       
+      <!-- Show only top 3 FAQs to avoid overwhelming -->
       <div class="space-y-3">
-        {faqItems.map((faq, index) => (
+        {faqItems.slice(0, 3).map((faq, index) => (
           <div class="border border-gray-200 rounded-lg overflow-hidden">
             <button
               class="w-full px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors flex items-center justify-between"
@@ -335,71 +212,22 @@ const ratingSummary = {
           </div>
         ))}
       </div>
+      
+      <!-- View More FAQs Button -->
+      <button class="w-full mt-4 py-2 text-red-600 text-sm font-medium hover:bg-red-50 rounded-lg transition-colors border border-red-200">
+        Xem thêm câu hỏi
+      </button>
     </div>
   </div>
 
-  <!-- Related Products -->
-  {relatedProducts && relatedProducts.length > 0 && (
-    <div class="bg-white mb-2">
-      <div class="p-4">
-        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-          </svg>
-          Sản phẩm liên quan
-        </h3>
-        
-        <div class="grid grid-cols-2 gap-3">
-          {relatedProducts.slice(0, 4).map((relatedProduct) => (
-            <a href={`/san-pham/${relatedProduct.slug}`} class="group">
-              <div class="bg-gray-50 rounded-lg overflow-hidden border border-gray-200 hover:border-red-300 transition-colors">
-                <div class="aspect-square overflow-hidden">
-                  <img
-                    src={relatedProduct.image_url || '/images/placeholder-product.jpg'}
-                    alt={relatedProduct.name}
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                    onerror="this.onerror=null; this.src='/images/placeholder-product.jpg';"
-                  />
-                </div>
-                <div class="p-3">
-                  <h4 class="text-sm font-medium text-gray-900 line-clamp-2 mb-1">{relatedProduct.name}</h4>
-                  <div class="flex items-center gap-2">
-                    <span class="text-sm font-bold text-red-600">
-                      {relatedProduct.price ? new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND',
-                        minimumFractionDigits: 0,
-                      }).format(relatedProduct.price) : 'Liên hệ'}
-                    </span>
-                    {relatedProduct.original_price && relatedProduct.original_price > (relatedProduct.price || 0) && (
-                      <span class="text-xs text-gray-500 line-through">
-                        {new Intl.NumberFormat('vi-VN', {
-                          style: 'currency',
-                          currency: 'VND',
-                          minimumFractionDigits: 0,
-                        }).format(relatedProduct.original_price)}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-        
-        <a
-          href="/san-pham"
-          class="w-full mt-4 py-3 text-red-600 text-sm font-medium flex items-center justify-center gap-2 hover:bg-red-50 rounded-lg transition-colors border border-red-200"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-          </svg>
-          Xem thêm sản phẩm
-        </a>
-      </div>
-    </div>
-  )}
+  <!-- Final CTA - NEW -->
+  <MobileCTASection 
+    client:load 
+    product={product}
+    variant="final"
+  />
+
+  <!-- Related Products - REMOVED from mobile for better focus -->
 
   <!-- Sticky Bottom Actions - Using Island -->
   <MobileProductActions 
@@ -449,11 +277,40 @@ const ratingSummary = {
     }
   }
 
+  // Intersection Observer for scroll animations
+  function initScrollAnimations() {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with fade-in-on-scroll class
+    document.querySelectorAll('.fade-in-on-scroll').forEach(el => {
+      observer.observe(el);
+    });
+  }
+
+  // Initialize animations when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    initScrollAnimations();
+  });
+
   // Make function globally available
   (window as any).toggleFAQ = toggleFAQ;
 </script>
 
 <style>
+  /* Import animations */
+  @import url('/src/styles/mobile-animations.css');
+
   /* Line clamp utility */
   .line-clamp-2 {
     display: -webkit-box;
@@ -469,6 +326,135 @@ const ratingSummary = {
     overflow: hidden;
   }
 
+  /* Enhanced animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.8), 0 0 30px rgba(239, 68, 68, 0.6);
+    }
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Animation classes */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-bounce-in {
+    animation: bounceIn 0.8s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 2s infinite;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+  }
+
+  /* Stagger delays */
+  .animate-stagger-1 { animation-delay: 0.1s; }
+  .animate-stagger-2 { animation-delay: 0.2s; }
+  .animate-stagger-3 { animation-delay: 0.3s; }
+  .animate-stagger-4 { animation-delay: 0.4s; }
+  .animate-stagger-5 { animation-delay: 0.5s; }
+
+  /* Hover effects */
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .hover-scale {
+    transition: transform 0.2s ease;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  .button-press {
+    transition: transform 0.1s ease;
+  }
+
+  .button-press:active {
+    transform: scale(0.95);
+  }
+
+  /* Scroll animations */
+  .fade-in-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   /* Smooth transitions */
   .transition-all {
     transition: all 0.3s ease;
@@ -482,15 +468,19 @@ const ratingSummary = {
     transition: transform 0.2s ease;
   }
 
-  /* Hover effects */
-  .hover\\:scale-105:hover {
-    transform: scale(1.05);
-  }
-
   /* Grid responsive */
   @media (max-width: 640px) {
     .grid-cols-2 > * {
       min-width: 0;
+    }
+  }
+
+  /* Enhanced mobile experience */
+  @media (max-width: 768px) {
+    .animate-fade-in-up,
+    .animate-bounce-in,
+    .animate-scale-in {
+      animation-duration: 0.4s;
     }
   }
 </style>
