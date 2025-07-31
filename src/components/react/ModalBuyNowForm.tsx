@@ -65,7 +65,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
     address: '',
   });
   const [paymentMethod, setPaymentMethod] = useState('cod');
-  const [voucher, setVoucher] = useState('FREESHIP G3TECH200');
+  const [voucher, setVoucher] = useState('');
   const [productsFromApi, setProductsFromApi] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [errorProducts, setErrorProducts] = useState<string | null>(null);
@@ -449,8 +449,9 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
   });
   const totalDiscount = totalAmountSaved + totalVoucherDiscount;
   
-  // Tính phí ship
-  const shippingFee = voucher.toLowerCase().includes('freeship') ? 0 : 200000;
+  // Tính phí ship - mặc định 200.000đ, chỉ miễn phí khi có mã FREESHIP
+  const voucherCodesLower = voucherCodes.map(code => code.toLowerCase());
+  const shippingFee = voucherCodesLower.includes('freeship') ? 0 : 200000;
   
   // Tính thành tiền cuối cùng (chỉ trừ giảm giá từ mã, không cộng phí ship)
   const finalTotal = total - totalVoucherDiscount;
@@ -777,8 +778,8 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                     </span>
                   )}
                   <span className="text-xl md:text-3xl font-bold tracking-tight text-white">{total.toLocaleString('vi-VN')}₫</span>
-                  {totalDiscount > 0 && (
-                    <span className="text-xs md:text-sm font-medium text-green-300">Tiết kiệm: {totalDiscount.toLocaleString('vi-VN')}₫</span>
+                  {(totalVoucherDiscount > 0 || totalAmountSaved > 0) && (
+                    <span className="text-xs md:text-sm font-medium text-green-300">Tiết kiệm: {(totalVoucherDiscount + totalAmountSaved).toLocaleString('vi-VN')}₫</span>
                   )}
                 </div>
               </div>
@@ -939,30 +940,32 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
                 <div className="flex items-center justify-between">
                   <dt>Phí ship</dt>
                   <dd className="text-xs md:text-sm">
-                    {voucher.toLowerCase().includes('freeship')
+                    {voucherCodesLower.includes('freeship')
                       ? 'Miễn phí'
                       : '200.000₫'}
                   </dd>
                 </div>
-                {/* Block giảm giá riêng */}
-                <div className="border-t border-white/20 pt-2 md:pt-4 mt-2 md:mt-4 rounded">
-                  <div className="text-xs font-semibold text-white/80 mb-1 md:mb-2">Giảm giá</div>
-                  {totalVoucherDiscount > 0 && (
-                    <div className="flex items-center justify-between mb-1 text-xs md:text-sm">
-                      <span>Mã G3TECH200</span>
-                      <span className="text-red-300">- {totalVoucherDiscount.toLocaleString('vi-VN')}₫</span>
-                    </div>
-                  )}
-                  {!totalAmountSaved && !totalVoucherDiscount && (
-                    <div className="flex items-center justify-between mb-1 text-xs md:text-sm">
-                      <span>Khác</span>
-                      <span className="text-red-300">{voucher ? '- ...₫' : '0₫'}</span>
-                    </div>
-                  )}
-                </div>
+                {/* Block giảm giá riêng - chỉ hiển thị khi có giảm giá */}
+                {(totalVoucherDiscount > 0 || totalAmountSaved > 0) && (
+                  <div className="border-t border-white/20 pt-2 md:pt-4 mt-2 md:mt-4 rounded">
+                    <div className="text-xs font-semibold text-white/80 mb-1 md:mb-2">Giảm giá</div>
+                    {totalAmountSaved > 0 && (
+                      <div className="flex items-center justify-between mb-1 text-xs md:text-sm">
+                        <span>Giảm giá sản phẩm</span>
+                        <span className="text-red-300">- {totalAmountSaved.toLocaleString('vi-VN')}₫</span>
+                      </div>
+                    )}
+                    {totalVoucherDiscount > 0 && (
+                      <div className="flex items-center justify-between mb-1 text-xs md:text-sm">
+                        <span>Mã giảm giá</span>
+                        <span className="text-red-300">- {totalVoucherDiscount.toLocaleString('vi-VN')}₫</span>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="flex items-center justify-between border-t border-white/10 pt-3 md:pt-6 text-white">
                   <dt className="text-sm md:text-base font-semibold">Thành tiền</dt>
-                  <dd className="text-lg md:text-xl font-bold">{finalTotal.toLocaleString('vi-VN')}₫</dd>
+                  <dd className="text-lg md:text-xl font-bold">{(finalTotal + shippingFee).toLocaleString('vi-VN')}₫</dd>
                 </div>
               </dl>
             </div>
@@ -973,7 +976,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
         <div className="md:hidden bg-white border-t border-gray-200 px-3 py-3 z-50">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-gray-600">Tổng cộng:</span>
-            <span className="text-lg font-bold text-red-600">{finalTotal.toLocaleString('vi-VN')}₫</span>
+            <span className="text-lg font-bold text-red-600">{(finalTotal + shippingFee).toLocaleString('vi-VN')}₫</span>
           </div>
           <button
             type="button"
