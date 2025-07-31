@@ -1,33 +1,34 @@
 ---
-import MapDrawer from './MapDrawer.astro';
+import MapDrawer from "./MapDrawer.astro";
 
 // Company info constants
 const COMPANY_INFO = {
-	name: 'Công Ty Cổ phần Công nghệ G3 Việt Nam',
-	hotline: '0979983355',
-	email: 'info@g-3.vn',
-	address: 'Tầng 7, Tòa nhà Charmvit, số 117 Trần Duy Hưng, Q. Cầu Giấy, TP. Hà Nội.',
-	website: 'https://g-3.vn',
-	workingHours: '8:00 - 17:30 (Thứ 2 - Thứ 6)',
-	zalo: 'https://zalo.me/0979983355',
+	name: "Công Ty Cổ phần Công nghệ G3 Việt Nam",
+	hotline: "0979983355",
+	email: "info@g-3.vn",
+	address:
+		"Tầng 7, Tòa nhà Charmvit, số 117 Trần Duy Hưng, Q. Cầu Giấy, TP. Hà Nội.",
+	website: "https://g-3.vn",
+	workingHours: "8:00 - 17:30 (Thứ 2 - Thứ 6)",
+	zalo: "https://zalo.me/0979983355",
 };
 
 const SOCIAL_LINKS = [
-	{ name: 'Shopee', href: 'https://shopee.vn/g3tech' },
-	{ name: 'Facebook', href: 'https://www.facebook.com/g3.vntech/' },
-	{ name: 'Tiktok', href: 'https://www.tiktok.com/@g3tech.vn' },
-	{ name: 'Youtube', href: 'https://www.youtube.com/@g3-tech' },
+	{ name: "Shopee", href: "https://shopee.vn/g3tech" },
+	{ name: "Facebook", href: "https://www.facebook.com/g3.vntech/" },
+	{ name: "Tiktok", href: "https://www.tiktok.com/@g3tech.vn" },
+	{ name: "Youtube", href: "https://www.youtube.com/@g3-tech" },
 ];
 
 // Helper function to format phone number
 function formatPhoneNumber(phoneNumber: string | number): string {
-	const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+	const cleaned = ("" + phoneNumber).replace(/\D/g, "");
 	const match = cleaned.match(/^(\d{4})(\d{3})(\d{3})$/);
-	
+
 	if (match) {
-		return match[1] + '.' + match[2] + '.' + match[3];
+		return match[1] + "." + match[2] + "." + match[3];
 	}
-	
+
 	return phoneNumber.toString();
 }
 
@@ -39,25 +40,26 @@ const storeLocations = [
 		address: "Số 128 Phố Vọng, Phương Liệt, Thanh Xuân, Hà Nội",
 		coordinates: {
 			lat: 20.995377,
-			lng: 105.845110
-		}
+			lng: 105.84511,
+		},
 	},
 	{
 		name: "G3 Tech - Nguyễn Văn Cừ",
-		address: "Số 4 ngách 12 ngõ 135 Nguyễn Văn Cừ, Ngọc Lâm, Long Biên, Hà Nội",
+		address:
+			"Số 4 ngách 12 ngõ 135 Nguyễn Văn Cừ, Ngọc Lâm, Long Biên, Hà Nội",
 		coordinates: {
 			lat: 21.044876,
-			lng: 105.870914
-		}
+			lng: 105.870914,
+		},
 	},
 	{
 		name: "G3 Tech - TP.HCM",
 		address: "Số 1/23 Huỳnh Lan Khanh, Phường 2, Tân Bình, TP.HCM",
 		coordinates: {
-			lat: 10.797180,
-			lng: 106.657372
-		}
-	}
+			lat: 10.79718,
+			lng: 106.657372,
+		},
+	},
 ];
 
 const sections = [
@@ -101,35 +103,79 @@ const sections = [
 ---
 
 <footer class="bg-white text-gray-800">
-	<div class="container mx-auto py-8 md:py-12 px-4 sm:px-6 lg:px-0">
+	<div class="mx-10 py-8 md:py-12">
 		<!-- Footer content with 4 main columns -->
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
 			<!-- Cột 1: Logo + Social + Hotline -->
 			<div class="flex flex-col gap-6">
 				<!-- Logo -->
 				<div class="mb-2">
-					<img src="/images/logo-g3.svg" alt="Logo" class="h-12 w-auto" />
+					<img
+						src="/images/logo-g3.svg"
+						alt="Logo"
+						class="h-12 w-auto"
+					/>
 				</div>
 				<!-- Social icons -->
 				<div class="flex gap-4 mb-2">
-					<a href={SOCIAL_LINKS[1].href} aria-label="Facebook" class="text-gray-600 hover:text-red-600" target="_blank" rel="noopener noreferrer">
+					<a
+						href={SOCIAL_LINKS[1].href}
+						aria-label="Facebook"
+						class="text-gray-600 hover:text-red-600"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						<div class="rounded-full border-2 border-gray-300 p-1">
-							<img src="/images/icon/facebook-round-color-icon.svg" alt="Facebook" class="h-6 w-6" />
+							<img
+								src="/images/icon/facebook-round-color-icon.svg"
+								alt="Facebook"
+								class="h-6 w-6"
+							/>
 						</div>
 					</a>
-					<a href={SOCIAL_LINKS[2].href} aria-label="Tiktok" class="text-gray-600 hover:text-red-600" target="_blank" rel="noopener noreferrer">
+					<a
+						href={SOCIAL_LINKS[2].href}
+						aria-label="Tiktok"
+						class="text-gray-600 hover:text-red-600"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						<div class="rounded-full border-2 border-gray-300 p-1">
-							<img src="/images/icon/tiktok-circle.svg" alt="Tiktok" class="h-6 w-6" />
+							<img
+								src="/images/icon/tiktok-circle.svg"
+								alt="Tiktok"
+								class="h-6 w-6"
+							/>
 						</div>
 					</a>
-					<a href={SOCIAL_LINKS[3].href} aria-label="Youtube" class="text-gray-600 hover:text-red-600" target="_blank" rel="noopener noreferrer">
+					<a
+						href={SOCIAL_LINKS[3].href}
+						aria-label="Youtube"
+						class="text-gray-600 hover:text-red-600"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						<div class="rounded-full border-2 border-gray-300 p-1">
-							<img src="/images/icon/youtube-music-icon.svg" alt="Youtube" class="h-6 w-6" />
+							<img
+								src="/images/icon/youtube-music-icon.svg"
+								alt="Youtube"
+								class="h-6 w-6"
+							/>
 						</div>
 					</a>
-					<a href={SOCIAL_LINKS[0].href} aria-label="Shopee" class="text-gray-600 hover:text-red-600" target="_blank" rel="noopener noreferrer">
+					<a
+						href={SOCIAL_LINKS[0].href}
+						aria-label="Shopee"
+						class="text-gray-600 hover:text-red-600"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						<div class="rounded-full border-2 border-gray-300 p-1">
-							<img src="/images/icon/shopee-icon.svg" alt="Shopee" class="h-6 w-6" />
+							<img
+								src="/images/icon/shopee-icon.svg"
+								alt="Shopee"
+								class="h-6 w-6"
+							/>
 						</div>
 					</a>
 				</div>
@@ -141,37 +187,112 @@ const sections = [
 					<div>
 						<div class="font-bold">Hotline</div>
 						<div class="flex items-start gap-2 mt-2">
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+								></path>
 							</svg>
-							<a href={`tel:${COMPANY_INFO.hotline}`} class="text-sm text-black hover:text-red-600 transition-colors">{formattedPhoneNumber}</a>
+							<a
+								href={`tel:${COMPANY_INFO.hotline}`}
+								class="text-sm text-black hover:text-red-600 transition-colors"
+								>{formattedPhoneNumber}</a
+							>
 						</div>
 					</div>
 					<div>
 						<div class="font-bold">Cửa hàng Hà Nội</div>
 						<div class="flex items-start gap-2 mt-2">
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-								<path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+								></path>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
 							</svg>
-							<span class="text-sm">{storeLocations[0].address} (<button onclick={`openMapDrawer(${JSON.stringify(storeLocations[0])})`} class="text-blue-600 underline">Chỉ đường</button>)</span>
+							<span class="text-sm"
+								>{storeLocations[0].address} (<button
+									onclick={`openMapDrawer(${JSON.stringify(storeLocations[0])})`}
+									class="text-blue-600 underline"
+									>Chỉ đường</button
+								>)</span
+							>
 						</div>
 						<div class="flex items-start gap-2 mt-2">
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-								<path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+								></path>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
 							</svg>
-							<span class="text-sm">{storeLocations[1].address} (<button onclick={`openMapDrawer(${JSON.stringify(storeLocations[1])})`} class="text-blue-600 underline">Chỉ đường</button>)</span>
+							<span class="text-sm"
+								>{storeLocations[1].address} (<button
+									onclick={`openMapDrawer(${JSON.stringify(storeLocations[1])})`}
+									class="text-blue-600 underline"
+									>Chỉ đường</button
+								>)</span
+							>
 						</div>
 					</div>
 					<div>
 						<div class="font-bold">Cửa hàng TP. HCM</div>
 						<div class="flex items-start gap-2 mt-2">
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-								<path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+								></path>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
 							</svg>
-							<span class="text-sm">{storeLocations[2].address} (<button onclick={`openMapDrawer(${JSON.stringify(storeLocations[2])})`} class="text-blue-600 underline">Chỉ đường</button>)</span>
+							<span class="text-sm"
+								>{storeLocations[2].address} (<button
+									onclick={`openMapDrawer(${JSON.stringify(storeLocations[2])})`}
+									class="text-blue-600 underline"
+									>Chỉ đường</button
+								>)</span
+							>
 						</div>
 					</div>
 				</div>
@@ -179,26 +300,54 @@ const sections = [
 
 			<!-- Cột 3: Thông tin hữu ích -->
 			<div>
-				<h3 class="text-lg font-semibold mb-4 md:mb-6 text-gray-900">Thông tin hữu ích</h3>
+				<h3 class="text-lg font-semibold mb-4 md:mb-6 text-gray-900">
+					Thông tin hữu ích
+				</h3>
 				<ul class="space-y-2 md:space-y-3">
-					{sections[1].links.map((link) => (
-						<li>
-							<a href={link.href} class="text-sm md:text-base hover:text-red-600 transition-colors">
-								{link.text}
-							</a>
-						</li>
-					))}
+					{
+						sections[1].links.map((link) => (
+							<li>
+								<a
+									href={link.href}
+									class="text-sm md:text-base hover:text-red-600 transition-colors"
+								>
+									{link.text}
+								</a>
+							</li>
+						))
+					}
 				</ul>
 			</div>
 
 			<!-- Cột 4: Phản hồi, góp ý -->
-			<div class="flex flex-col items-center md:items-end justify-between h-full">
+			<div
+				class="flex flex-col items-center md:items-end justify-between h-full"
+			>
 				<div>
-					<h3 class="text-lg font-semibold mb-2 text-gray-900">Phản hồi, góp ý</h3>
-					<p class="text-gray-600 mb-4 max-w-xs text-sm">Đội ngũ Kiểm Soát Chất Lượng của chúng tôi sẵn sàng lắng nghe quý khách.</p>
-					<a href="#" class="inline-flex items-center px-6 py-3 bg-black text-white rounded-full font-semibold text-lg shadow hover:bg-gray-900 transition-colors">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+					<h3 class="text-lg font-semibold mb-2 text-gray-900">
+						Phản hồi, góp ý
+					</h3>
+					<p class="text-gray-600 mb-4 max-w-xs text-sm">
+						Đội ngũ Kiểm Soát Chất Lượng của chúng tôi sẵn sàng lắng
+						nghe quý khách.
+					</p>
+					<a
+						href="#"
+						class="inline-flex items-center px-6 py-3 bg-black text-white rounded-full font-semibold text-lg shadow hover:bg-gray-900 transition-colors"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-5 w-5 mr-2"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+							></path>
 						</svg>
 						Gửi phản hồi
 					</a>
@@ -210,9 +359,12 @@ const sections = [
 		<div class="border-t border-gray-200 mt-8 md:mt-12 pt-6 md:pt-8">
 			<div class="flex flex-col gap-2">
 				<p class="text-left text-gray-500 text-sm px-0">
-					© G3TECH {new Date().getFullYear()} <br />
-					{COMPANY_INFO.name} - GPĐKKD: 0110907369 do sở KH & ĐT TP Hà Nội cấp ngày 04/12/2024 <br />
-					Địa chỉ: Tầng 7, Tòa nhà Charmvit, số 117 Trần Duy Hưng, Phường Trung Hoà, Quận Cầu Giấy,Hà Nội
+					© G3TECH {new Date().getFullYear()}
+					<br />
+					{COMPANY_INFO.name} - GPĐKKD: 0110907369 do sở KH & ĐT TP Hà
+					Nội cấp ngày 04/12/2024 <br />
+					Địa chỉ: Tầng 7, Tòa nhà Charmvit, số 117 Trần Duy Hưng, Phường
+					Trung Hoà, Quận Cầu Giấy,Hà Nội
 				</p>
 				<!-- <div class="flex gap-2 mt-2 md:mt-0">
 					<img src="/images/dmca-badge.png" alt="DMCA" class="h-6" />
@@ -224,4 +376,5 @@ const sections = [
 
 	<!-- Map Drawer -->
 	<MapDrawer location={storeLocations[0]} />
-</footer> 
+</footer>
+
