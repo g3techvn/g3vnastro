@@ -51,7 +51,7 @@ const CategorySection: React.FC<{
       <div className="flex items-center justify-between px-4">
         <a href={categorySlug ? `/categories/${categorySlug}` : '#'} className="group">
           <h2 className="text-lg font-semibold text-red-700 group-hover:underline">
-            Danh mục {categoryTitle}
+            {categoryTitle}
           </h2>
         </a>
         {categoryProducts.length > 3 && (
