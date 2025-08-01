@@ -1,7 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReviewsSkeleton from '../skeletons/ReviewsSkeleton';
 
-const MobileEnhancedReviews: React.FC = () => {
+interface MobileEnhancedReviewsProps {
+  disableLoading?: boolean;
+}
+
+const MobileEnhancedReviews: React.FC<MobileEnhancedReviewsProps> = ({ disableLoading = true }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'photo' | 'video' | '5star'>('all');
+  const [isLoading, setIsLoading] = useState(!disableLoading);
+
+  // Quick loading simulation (only if loading not disabled)
+  useEffect(() => {
+    if (!disableLoading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [disableLoading]);
+
+  if (isLoading && !disableLoading) {
+    return <ReviewsSkeleton />;
+  }
 
   const reviewsData = [
     {

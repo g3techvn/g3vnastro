@@ -1,0 +1,223 @@
+---
+interface Props {
+  product: any;
+  brandName: string;
+  categoryName: string;
+  reviewData?: {
+    ratingValue: number;
+    reviewCount: number;
+    bestRating: number;
+    worstRating: number;
+  };
+}
+
+const { product, brandName, categoryName, reviewData } = Astro.props;
+
+const hasDiscount = product.original_price && product.original_price > product.price;
+const availability = product.stock_quantity > 0 ? 'in_stock' : 'out_of_stock';
+const condition = 'new';
+
+// Product JSON-LD
+const productJsonLd = {
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": product.name,
+  "image": product.image_url ? (product.image_url.startsWith('http') ? product.image_url : `https://g-3.vn${product.image_url}`) : 'https://g-3.vn/images/og-default.jpg',
+  "description": product.description || `${product.name} chất lượng cao từ ${brandName}. Bảo hành 12 tháng, miễn phí lắp đặt, giao hàng nhanh.`,
+  "sku": product.id?.toString() || product.slug,
+  "mpn": product.id?.toString() || product.slug,
+  "brand": {
+    "@type": "Brand",
+    "name": brandName
+  },
+  "category": categoryName,
+  "offers": {
+    "@type": "Offer",
+    "url": `https://g-3.vn/san-pham/${product.slug}`,
+    "priceCurrency": "VND",
+    "price": product.price,
+    "availability": `https://schema.org/${availability === 'in_stock' ? 'InStock' : 'OutOfStock'}`,
+    "itemCondition": "https://schema.org/NewCondition",
+    "seller": {
+      "@type": "Organization",
+      "name": "G3Tech Vietnam",
+      "url": "https://g-3.vn",
+      "logo": "https://g-3.vn/images/logo.png"
+    },
+    "warranty": "P12M",
+    "deliveryLeadTime": "P1D",
+    "shippingDetails": {
+      "@type": "OfferShippingDetails",
+      "shippingRate": {
+        "@type": "MonetaryAmount",
+        "value": "0",
+        "currency": "VND"
+      },
+      "deliveryTime": {
+        "@type": "ShippingDeliveryTime",
+        "handlingTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 0,
+          "maxValue": 1,
+          "unitCode": "DAY"
+        },
+        "transitTime": {
+          "@type": "QuantitativeValue", 
+          "minValue": 1,
+          "maxValue": 3,
+          "unitCode": "DAY"
+        }
+      }
+    },
+    ...(hasDiscount && {
+      "priceValidUntil": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    })
+  },
+  ...(reviewData && {
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": reviewData.ratingValue,
+      "reviewCount": reviewData.reviewCount,
+      "bestRating": reviewData.bestRating,
+      "worstRating": reviewData.worstRating
+    }
+  }),
+  "manufacturer": {
+    "@type": "Organization",
+    "name": brandName,
+    "url": "https://g-3.vn"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "Warranty",
+      "value": "12 tháng bảo hành chính hãng"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Free Installation", 
+      "value": "Miễn phí lắp đặt tại Hà Nội và TP.HCM"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Shipping",
+      "value": "Giao hàng nhanh 24h"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Return Policy",
+      "value": "Đổi trả trong 7 ngày"
+    }
+  ]
+};
+
+// Breadcrumb JSON-LD
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Trang chủ",
+      "item": "https://g-3.vn"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Sản phẩm", 
+      "item": "https://g-3.vn/san-pham"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": categoryName,
+      "item": `https://g-3.vn/categories/${product.categories?.slug || 'office'}`
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": product.name,
+      "item": `https://g-3.vn/san-pham/${product.slug}`
+    }
+  ]
+};
+
+// FAQ JSON-LD (if applicable)
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Sản phẩm có bảo hành không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sản phẩm được bảo hành 12 tháng chính hãng cho phần cơ khí và 6 tháng cho lưới."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có miễn phí lắp đặt không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "G3-TECH miễn phí lắp đặt tại Hà Nội và TP. Hồ Chí Minh."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Thời gian giao hàng bao lâu?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Giao hàng trong 24h tại Hà Nội và TP.HCM, 2-3 ngày cho các tỉnh thành khác."
+      }
+    }
+  ]
+};
+---
+
+<!-- Product Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(productJsonLd)} />
+
+<!-- Breadcrumb Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+
+<!-- FAQ Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+<!-- Additional meta tags for Vietnamese market -->
+<meta name="product:price:amount" content={product.price?.toString() || '0'} />
+<meta name="product:price:currency" content="VND" />
+<meta name="product:availability" content={availability} />
+<meta name="product:condition" content={condition} />
+<meta name="product:brand" content={brandName} />
+<meta name="product:category" content={categoryName} />
+
+{hasDiscount && (
+  <>
+    <meta name="product:original_price:amount" content={product.original_price.toString()} />
+    <meta name="product:sale_price:amount" content={product.price.toString()} />
+    <meta name="product:discount_percentage" content={Math.round(((product.original_price - product.price) / product.original_price) * 100).toString()} />
+  </>
+)}
+
+{reviewData && (
+  <>
+    <meta name="product:rating:value" content={reviewData.ratingValue.toString()} />
+    <meta name="product:rating:count" content={reviewData.reviewCount.toString()} />
+  </>
+)}
+
+<!-- Vietnamese social media optimization -->
+<meta property="zalo:product:price" content={product.price?.toString() || '0'} />
+<meta property="zalo:product:currency" content="VND" />
+<meta property="zalo:product:availability" content={availability} />
+<meta property="zalo:product:brand" content={brandName} />
+
+<!-- Mobile app deep linking -->
+<meta name="al:ios:url" content={`g3tech://product/${product.slug}`} />
+<meta name="al:ios:app_store_id" content="your_ios_app_id" />
+<meta name="al:ios:app_name" content="G3Tech" />
+<meta name="al:android:url" content={`g3tech://product/${product.slug}`} />
+<meta name="al:android:app_name" content="G3Tech" />
+<meta name="al:android:package" content="vn.g3tech.app" />

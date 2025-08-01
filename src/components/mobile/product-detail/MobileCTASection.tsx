@@ -1,14 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ModalBuyNowForm from '../../react/ModalBuyNowForm';
 import { COMPANY_INFO } from '../../../constants';
+import CTASkeleton from '../skeletons/CTASkeleton';
 
 interface MobileCTASectionProps {
   product: any;
   variant?: 'primary' | 'secondary' | 'final';
+  disableLoading?: boolean;
 }
 
-const MobileCTASection: React.FC<MobileCTASectionProps> = ({ product, variant = 'primary' }) => {
+const MobileCTASection: React.FC<MobileCTASectionProps> = ({ product, variant = 'primary', disableLoading = false }) => {
   const [showBuyNowModal, setShowBuyNowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(!disableLoading);
+
+  // Quick loading for CTA (only if loading not disabled)
+  useEffect(() => {
+    if (!disableLoading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [disableLoading]);
+
+  if (isLoading && !disableLoading) {
+    return <CTASkeleton variant={variant} />;
+  }
 
   // Function to open buy now modal
   const handleBuyNow = () => {

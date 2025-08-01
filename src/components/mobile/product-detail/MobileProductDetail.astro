@@ -11,6 +11,7 @@ import MobileProblemSolution from './MobileProblemSolution';
 import MobileBenefitsShowcase from './MobileBenefitsShowcase';
 import MobileEnhancedReviews from './MobileEnhancedReviews';
 import MobileCTASection from './MobileCTASection';
+import MobileProductLoader from '../MobileProductLoader';
 
 interface Props {
   product: any;
@@ -85,6 +86,7 @@ const faqItems = [
 
 <!-- Mobile Product Detail Layout -->
 {product ? (
+<MobileProductLoader client:load disabled={true}>
 <div class="bg-gray-50 min-h-screen -mb-20">
   <!-- Mobile Header -->
   <MobileHeader 
@@ -139,13 +141,17 @@ const faqItems = [
   </div>
 
   <!-- Primary CTA - NEW -->
-  <div class="fade-in-on-scroll">
+  <div class="fade-in-on-scroll mb-4">
     <MobileCTASection 
       client:load 
       product={product}
       variant="primary"
+      disableLoading={true}
     />
   </div>
+
+  <!-- Content Separator -->
+  <div class="h-4 bg-gray-100"></div>
 
   <!-- Product Description - Using Island -->
   {(overview || product?.description || product?.content || (keyFeatures && keyFeatures.length > 0) || (benefits && benefits.length > 0) || (instructions && instructions.length > 0)) && (
@@ -171,17 +177,28 @@ const faqItems = [
     </div>
   )}
 
-  <!-- Enhanced Reviews Section - NEW -->
-  <MobileEnhancedReviews 
-    client:load 
-  />
+  <!-- Content Separator -->
+  <div class="h-4 bg-gray-100"></div>
 
-  <!-- Secondary CTA - NEW -->
-  <MobileCTASection 
-    client:load 
-    product={product}
-    variant="secondary"
-  />
+  <!-- Enhanced Reviews Section - NEW -->
+  <div class="fade-in-on-scroll">
+    <MobileEnhancedReviews 
+      client:load 
+    />
+  </div>
+
+  <!-- Secondary CTA - NEW with optimal spacing -->
+  <div class="fade-in-on-scroll my-6">
+    <MobileCTASection 
+      client:load 
+      product={product}
+      variant="secondary"
+      disableLoading={true}
+    />
+  </div>
+
+  <!-- Content Separator -->
+  <div class="h-4 bg-gray-100"></div>
 
   <!-- FAQ Section - Simplified -->
   <div class="bg-white mb-2">
@@ -220,12 +237,15 @@ const faqItems = [
     </div>
   </div>
 
-  <!-- Final CTA - NEW -->
-  <MobileCTASection 
-    client:load 
-    product={product}
-    variant="final"
-  />
+  <!-- Final CTA - NEW with emphasis -->
+  <div class="fade-in-on-scroll my-8">
+    <MobileCTASection 
+      client:load 
+      product={product}
+      variant="final"
+      disableLoading={true}
+    />
+  </div>
 
   <!-- Related Products - REMOVED from mobile for better focus -->
 
@@ -239,6 +259,7 @@ const faqItems = [
     <div class="h-40"></div>
   </div>
 </div>
+</MobileProductLoader>
 ) : (
   <div class="bg-gray-50 min-h-screen -mb-20">
     <!-- Mobile Header for error state -->
@@ -482,5 +503,41 @@ const faqItems = [
     .animate-scale-in {
       animation-duration: 0.4s;
     }
+  }
+
+  /* Skeleton loading animations */
+  @keyframes skeleton-loading {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+
+  .skeleton-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s infinite;
+  }
+
+  /* Improved CTA spacing */
+  .cta-section {
+    margin: 1.5rem 0;
+  }
+
+  .cta-section:first-of-type {
+    margin-top: 1rem;
+  }
+
+  .cta-section:last-of-type {
+    margin-bottom: 2rem;
+  }
+
+  /* Content separators */
+  .content-separator {
+    height: 1rem;
+    background: linear-gradient(to bottom, #f9fafb, #f3f4f6, #f9fafb);
+    margin: 0.5rem 0;
   }
 </style>

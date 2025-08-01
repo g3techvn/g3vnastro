@@ -1,40 +1,47 @@
 User-agent: *
 Allow: /
 
+# Sitemaps
+Sitemap: https://g-3.vn/sitemap-index.xml
+Sitemap: https://g-3.vn/sitemap-products.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /dist/
+
 # Allow important pages
 Allow: /san-pham/
 Allow: /categories/
 Allow: /brands/
+Allow: /lien-he
+Allow: /chinh-sach
 
-# Disallow API endpoints
-Disallow: /api/
-
-# Disallow checkout pages
-Disallow: /checkout/
-Disallow: /admin/
-Disallow: /_astro/
-Disallow: /node_modules/
-
-# Block sensitive data
-Disallow: /*.json$
-Disallow: /404
-
-# Allow access to public assets
-Allow: /images/
-Allow: /g3tech/
-Allow: /g3tech-otm/
-
-# Crawl delay (be respectful)
+# Crawl delay for respectful crawling
 Crawl-delay: 1
 
-# Sitemap location
-Sitemap: https://g-3.vn/sitemap-index.xml
-Sitemap: https://g-3.vn/sitemap-0.xml
-Sitemap: https://g-3.vn/product-feed.xml
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
 
-# For Vietnamese search engines
-User-agent: VietSpider
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: facebookexternalhit
 Allow: /
 
-User-agent: coccoc
-Allow: / 
+User-agent: Twitterbot
+Allow: /
+
+# Block unwanted bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

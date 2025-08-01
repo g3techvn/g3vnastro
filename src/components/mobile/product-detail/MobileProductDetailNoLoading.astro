@@ -1,0 +1,236 @@
+---
+// Copy of MobileProductDetail.astro without loading states for debugging
+import MobileProductGallery from './MobileProductGallery';
+import MobileProductDescription from './MobileProductDescription';
+import MobileTechnicalSpecs from './MobileTechnicalSpecs';
+import MobileProductActions from './MobileProductActions';
+import MobileHeader from '../MobileHeader';
+import MobileProductHero from './MobileProductHero';
+import MobileTrustSignals from './MobileTrustSignals';
+import MobileSocialProof from './MobileSocialProof';
+import MobileProblemSolution from './MobileProblemSolution';
+import MobileBenefitsShowcase from './MobileBenefitsShowcase';
+import MobileEnhancedReviews from './MobileEnhancedReviews';
+import MobileCTASection from './MobileCTASection';
+
+interface Props {
+  product: any;
+  technicalSpecs: Array<{ title: string; value: string }>;
+  keyFeatures: string[];
+  benefits: string[];
+  instructions: string[];
+  overview: string;
+  relatedProducts?: any[];
+}
+
+const { product, technicalSpecs, keyFeatures, benefits, instructions, overview, relatedProducts = [] } = Astro.props;
+
+const brandName = product.brand?.title || 'Chi tiết sản phẩm';
+
+const faqItems = [
+  {
+    question: "Ghế công thái học phù hợp cho đối tượng nào?",
+    answer: "Ghế phù hợp cho nhân viên văn phòng, học sinh, sinh viên, game thủ và bất kỳ ai cần ngồi lâu."
+  },
+  {
+    question: "Bảo hành sản phẩm trong bao lâu?",
+    answer: "Sản phẩm được bảo hành 12 tháng cho phần cơ khí và 6 tháng cho lưới."
+  },
+  {
+    question: "Có miễn phí lắp đặt không?",
+    answer: "G3-TECH miễn phí lắp đặt tại Hà Nội và TP. Hồ Chí Minh."
+  }
+];
+---
+
+<!-- Mobile Product Detail Layout - No Loading States -->
+{product ? (
+<div class="bg-gray-50 min-h-screen -mb-20">
+  <!-- Mobile Header -->
+  <MobileHeader 
+    client:load 
+    title={brandName}
+    showBack={true}
+    showShare={true}
+  />
+  
+  <!-- Content without loading states -->
+  <div class="pt-0">
+    <!-- Product Gallery -->
+    <div class="w-full bg-white">
+      <MobileProductGallery 
+        client:load 
+        product={product}
+      />
+    </div>
+
+    <!-- Hero Section -->
+    <MobileProductHero 
+      client:load 
+      product={product}
+    />
+
+    <!-- Trust Signals -->
+    <MobileTrustSignals 
+      client:load 
+    />
+
+    <!-- Social Proof -->
+    <MobileSocialProof 
+      client:load 
+    />
+
+    <!-- Problem-Solution -->
+    <MobileProblemSolution 
+      client:load 
+    />
+
+    <!-- Benefits Showcase -->
+    <MobileBenefitsShowcase 
+      client:load 
+    />
+
+    <!-- Primary CTA -->
+    <div class="mb-4">
+      <MobileCTASection 
+        client:load 
+        product={product}
+        variant="primary"
+      />
+    </div>
+
+    <!-- Content Separator -->
+    <div class="h-4 bg-gray-100"></div>
+
+    <!-- Product Description -->
+    {(overview || product?.description || product?.content || (keyFeatures && keyFeatures.length > 0) || (benefits && benefits.length > 0) || (instructions && instructions.length > 0)) && (
+      <div class="bg-white mb-2">
+        <MobileProductDescription 
+          client:load 
+          product={product}
+          overview={overview}
+          keyFeatures={keyFeatures}
+          benefits={benefits}
+          instructions={instructions}
+        />
+      </div>
+    )}
+
+    <!-- Technical Specifications -->
+    {technicalSpecs && technicalSpecs.length > 0 && (
+      <div class="bg-white mb-2">
+        <MobileTechnicalSpecs 
+          client:load 
+          specifications={technicalSpecs}
+        />
+      </div>
+    )}
+
+    <!-- Content Separator -->
+    <div class="h-4 bg-gray-100"></div>
+
+    <!-- Enhanced Reviews -->
+    <MobileEnhancedReviews 
+      client:load 
+    />
+
+    <!-- Secondary CTA -->
+    <div class="my-6">
+      <MobileCTASection 
+        client:load 
+        product={product}
+        variant="secondary"
+      />
+    </div>
+
+    <!-- Content Separator -->
+    <div class="h-4 bg-gray-100"></div>
+
+    <!-- FAQ Section -->
+    <div class="bg-white mb-2">
+      <div class="p-4">
+        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Câu hỏi thường gặp
+        </h3>
+        
+        <div class="space-y-3">
+          {faqItems.map((faq, index) => (
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+              <button
+                class="w-full px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors flex items-center justify-between"
+                onclick={`toggleFAQ(${index})`}
+              >
+                <span class="text-sm font-medium text-gray-900">{faq.question}</span>
+                <svg class="w-5 h-5 text-gray-500 transform transition-transform" id={`faq-icon-${index}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div class="hidden px-4 pb-3 bg-gray-50 border-t border-gray-200" id={`faq-answer-${index}`}>
+                <p class="text-sm text-gray-700 leading-relaxed">{faq.answer}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Final CTA -->
+    <div class="my-8">
+      <MobileCTASection 
+        client:load 
+        product={product}
+        variant="final"
+      />
+    </div>
+
+    <!-- Sticky Bottom Actions -->
+    <MobileProductActions 
+      client:load 
+      product={product}
+    />
+
+    <!-- Spacer -->
+    <div class="h-40"></div>
+  </div>
+</div>
+) : (
+  <div class="bg-gray-50 min-h-screen -mb-20">
+    <MobileHeader 
+      client:load 
+      title="Sản phẩm không tồn tại"
+      showBack={true}
+      showShare={false}
+    />
+    
+    <div class="pt-14 flex items-center justify-center min-h-screen">
+      <div class="text-center">
+        <div class="text-gray-500 text-lg mb-2">Không tìm thấy sản phẩm</div>
+        <a href="/san-pham" class="text-red-600 hover:text-red-700 font-medium">Xem tất cả sản phẩm</a>
+      </div>
+    </div>
+  </div>
+)}
+
+<script>
+  function toggleFAQ(index: number) {
+    const answer = document.getElementById('faq-answer-' + index);
+    const icon = document.getElementById('faq-icon-' + index);
+    
+    if (answer && icon) {
+      const isHidden = answer.classList.contains('hidden');
+      
+      if (isHidden) {
+        answer.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        answer.classList.add('hidden');
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+  }
+
+  (window as any).toggleFAQ = toggleFAQ;
+</script>

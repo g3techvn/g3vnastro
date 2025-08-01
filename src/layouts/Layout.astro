@@ -29,11 +29,19 @@ export interface Props {
 	noFollow?: boolean;
 	showMobileHomeComponents?: boolean;
 	hideMobileHeader?: boolean;
-	// SEO specific props
+	// Enhanced SEO specific props
 	price?: number;
 	originalPrice?: number;
 	brand?: string;
 	category?: string;
+	availability?: 'in_stock' | 'out_of_stock' | 'preorder';
+	condition?: 'new' | 'used' | 'refurbished';
+	reviewData?: {
+		ratingValue: number;
+		reviewCount: number;
+		bestRating: number;
+		worstRating: number;
+	};
 }
 
 const { 
@@ -51,7 +59,10 @@ const {
 	price,
 	originalPrice,
 	brand,
-	category
+	category,
+	availability = 'in_stock',
+	condition = 'new',
+	reviewData
 } = Astro.props;
 
 const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
@@ -104,7 +115,14 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 				optional: {
 					description: description,
 					locale: 'vi_VN',
-					siteName: 'G-3.vn',
+					siteName: 'G-3.vn - Nội thất văn phòng chất lượng cao',
+				},
+				image: {
+					url: image || 'https://g-3.vn/images/og-default.jpg',
+					width: 1200,
+					height: 630,
+					alt: imageAlt || title,
+					type: 'image/jpeg'
 				},
 				...(type === 'product' && price && {
 					product: {
@@ -112,11 +130,16 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 							amount: price,
 							currency: 'VND'
 						},
-						availability: 'in_stock',
+						availability: availability,
+						condition: condition,
 						brand: brand,
 						category: category,
 						...(originalPrice && originalPrice > price && {
 							originalPrice: originalPrice
+						}),
+						...(reviewData && {
+							ratingValue: reviewData.ratingValue,
+							ratingCount: reviewData.reviewCount
 						})
 					}
 				})
@@ -128,43 +151,78 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 				title: title,
 				description: description,
 				image: image || 'https://g-3.vn/images/og-default.jpg',
+				imageAlt: imageAlt || title,
+				...(type === 'product' && price && {
+					label1: 'Giá',
+					data1: `${new Intl.NumberFormat('vi-VN').format(price)}₫`,
+					label2: 'Thương hiệu',
+					data2: brand || 'G3Tech'
+				})
 			}}
 			extend={{
 				link: [
 					{ rel: 'sitemap', href: '/sitemap-index.xml' },
 				],
 				meta: [
-					// Vietnamese social media (Zalo)
+					// Enhanced Vietnamese social media support
 					{ name: 'zalo-platform-site-verification', content: 'zalo_verification_code' },
 					{ property: 'zalo:title', content: title },
 					{ property: 'zalo:description', content: description },
 					{ property: 'zalo:image', content: image || 'https://g-3.vn/images/og-default.jpg' },
 					{ property: 'zalo:url', content: canonicalURL },
+					{ property: 'zalo:type', content: type },
 					
-					// Vietnamese local SEO
+					// Facebook specific
+					{ property: 'fb:app_id', content: 'your_facebook_app_id' },
+					{ property: 'article:publisher', content: 'https://www.facebook.com/g3.vntech/' },
+					
+					// Enhanced Vietnamese local SEO
 					{ name: 'geo.region', content: 'VN' },
-					{ name: 'geo.placename', content: 'Hồ Chí Minh' },
+					{ name: 'geo.placename', content: 'Hồ Chí Minh, Hà Nội' },
 					{ name: 'geo.position', content: '10.7769;106.7009' },
 					{ name: 'ICBM', content: '10.7769, 106.7009' },
+					{ name: 'language', content: 'vi' },
+					{ name: 'country', content: 'Vietnam' },
 					
-					// Business info
+					// Enhanced business info
 					{ name: 'author', content: 'G3Tech Vietnam' },
 					{ name: 'publisher', content: 'G3Tech Vietnam' },
 					{ name: 'copyright', content: `© ${new Date().getFullYear()} G3Tech Vietnam` },
+					{ name: 'robots', content: noIndex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' },
+					{ name: 'googlebot', content: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' },
 					
-					// Keywords (Vietnamese focused)
+					// Mobile optimization
+					{ name: 'format-detection', content: 'telephone=yes' },
+					{ name: 'mobile-web-app-capable', content: 'yes' },
+					{ name: 'apple-mobile-web-app-capable', content: 'yes' },
+					{ name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
+					
+					// Enhanced keywords (Vietnamese focused)
 					...(keywords.length > 0 ? [{ name: 'keywords', content: keywords.join(', ') }] : [
 						{ name: 'keywords', content: `${title}, ${brand || 'G3Tech'}, ghế công thái học, bàn làm việc, nội thất văn phòng, Việt Nam, G-3.vn` }
 					]),
 					
-					// Additional structured data for products
+					// Enhanced product structured data
 					...(type === 'product' && price ? [
 						{ name: 'product:price:amount', content: price.toString() },
 						{ name: 'product:price:currency', content: 'VND' },
-						{ name: 'product:availability', content: 'in_stock' },
+						{ name: 'product:availability', content: availability },
+						{ name: 'product:condition', content: condition },
 						...(brand ? [{ name: 'product:brand', content: brand }] : []),
 						...(category ? [{ name: 'product:category', content: category }] : []),
-					] : [])
+						...(originalPrice && originalPrice > price ? [
+							{ name: 'product:original_price:amount', content: originalPrice.toString() },
+							{ name: 'product:sale_price:amount', content: price.toString() }
+						] : []),
+						...(reviewData ? [
+							{ name: 'product:rating:value', content: reviewData.ratingValue.toString() },
+							{ name: 'product:rating:count', content: reviewData.reviewCount.toString() }
+						] : [])
+					] : []),
+					
+					// Performance and caching
+					{ 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
+					{ name: 'referrer', content: 'origin-when-cross-origin' }
 				]
 			}}
 		/>
@@ -179,6 +237,134 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 		
 		<!-- Analytics Auto-Tracking -->
 		<AnalyticsTracker />
+		
+		<!-- JSON-LD Structured Data for Products -->
+		{type === 'product' && price && (
+			<script type="application/ld+json" set:html={JSON.stringify({
+				"@context": "https://schema.org/",
+				"@type": "Product",
+				"name": title.split(' - ')[0], // Extract product name from title
+				"image": image || 'https://g-3.vn/images/og-default.jpg',
+				"description": description,
+				"brand": {
+					"@type": "Brand",
+					"name": brand || "G3Tech"
+				},
+				"category": category || "Office Furniture",
+				"offers": {
+					"@type": "Offer",
+					"url": canonical,
+					"priceCurrency": "VND",
+					"price": price,
+					"availability": `https://schema.org/${availability === 'in_stock' ? 'InStock' : availability === 'out_of_stock' ? 'OutOfStock' : 'PreOrder'}`,
+					"itemCondition": `https://schema.org/${condition === 'new' ? 'NewCondition' : condition === 'used' ? 'UsedCondition' : 'RefurbishedCondition'}`,
+					"seller": {
+						"@type": "Organization",
+						"name": "G3Tech Vietnam",
+						"url": "https://g-3.vn"
+					},
+					"warranty": "P12M", // 12 months warranty
+					"deliveryLeadTime": "P1D", // 1 day delivery
+					...(originalPrice && originalPrice > price && {
+						"priceValidUntil": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 30 days from now
+					})
+				},
+				...(reviewData && {
+					"aggregateRating": {
+						"@type": "AggregateRating",
+						"ratingValue": reviewData.ratingValue,
+						"reviewCount": reviewData.reviewCount,
+						"bestRating": reviewData.bestRating,
+						"worstRating": reviewData.worstRating
+					}
+				}),
+				"manufacturer": {
+					"@type": "Organization",
+					"name": brand || "G3Tech",
+					"url": "https://g-3.vn"
+				},
+				"additionalProperty": [
+					{
+						"@type": "PropertyValue",
+						"name": "Warranty",
+						"value": "12 tháng bảo hành chính hãng"
+					},
+					{
+						"@type": "PropertyValue", 
+						"name": "Free Installation",
+						"value": "Miễn phí lắp đặt tại Hà Nội và TP.HCM"
+					},
+					{
+						"@type": "PropertyValue",
+						"name": "Shipping",
+						"value": "Giao hàng nhanh 24h"
+					}
+				]
+			})} />
+		)}
+		
+		<!-- Breadcrumb JSON-LD -->
+		{type === 'product' && (
+			<script type="application/ld+json" set:html={JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "BreadcrumbList",
+				"itemListElement": [
+					{
+						"@type": "ListItem",
+						"position": 1,
+						"name": "Trang chủ",
+						"item": "https://g-3.vn"
+					},
+					{
+						"@type": "ListItem", 
+						"position": 2,
+						"name": "Sản phẩm",
+						"item": "https://g-3.vn/san-pham"
+					},
+					{
+						"@type": "ListItem",
+						"position": 3,
+						"name": category || "Sản phẩm văn phòng",
+						"item": `https://g-3.vn/categories/${category?.toLowerCase().replace(/\s+/g, '-') || 'office'}`
+					},
+					{
+						"@type": "ListItem",
+						"position": 4,
+						"name": title.split(' - ')[0],
+						"item": canonical
+					}
+				]
+			})} />
+		)}
+		
+		<!-- Organization JSON-LD -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Organization",
+			"name": "G3Tech Vietnam",
+			"alternateName": "G-3.vn",
+			"url": "https://g-3.vn",
+			"logo": "https://g-3.vn/images/logo.png",
+			"contactPoint": {
+				"@type": "ContactPoint",
+				"telephone": "+84-979-983-355",
+				"contactType": "customer service",
+				"availableLanguage": "Vietnamese"
+			},
+			"address": {
+				"@type": "PostalAddress",
+				"streetAddress": "Tầng 7, Tòa nhà Charmvit, số 117 Trần Duy Hưng",
+				"addressLocality": "Cầu Giấy",
+				"addressRegion": "Hà Nội",
+				"addressCountry": "VN"
+			},
+			"sameAs": [
+				"https://www.facebook.com/g3.vntech/",
+				"https://www.tiktok.com/@g3tech.vn",
+				"https://www.youtube.com/@g3-tech",
+				"https://shopee.vn/g3tech"
+			]
+		})} />
 	</head>
 	<body class="h-full font-sans min-h-screen" transition:animate="fade">
 		<!-- Mobile Layout -->
