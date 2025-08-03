@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MobileHelpPage from '../components/mobile/MobileHelpPage.tsx';
+---
+
+<style>
+  @import '../styles/help-animations.css';
+</style>
+
+<Layout 
+  title="Trợ giúp - Ghế công thái học"
+  description="Hướng dẫn và hỗ trợ khách hàng mua ghế công thái học. Tìm hiểu về sản phẩm, chính sách bảo hành và cách chọn ghế phù hợp."
+>
+  <MobileHelpPage client:load />
+</Layout>
