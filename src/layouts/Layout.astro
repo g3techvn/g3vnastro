@@ -11,6 +11,7 @@ import MobileFeatureProductIsland from '../components/mobile/MobileFeatureProduc
 import BottomNavIsland from '../components/mobile/BottomNavIsland.astro';
 import { ViewTransitions } from 'astro:transitions';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
+import GoogleTag from '../components/GoogleTag.astro';
 import AnalyticsTracker from '../components/AnalyticsTracker.astro';
 import { SEO } from 'astro-seo';
 import '../styles/contact-buttons.css';
@@ -234,6 +235,9 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 		
 		<!-- Google Analytics with Partytown (Optimized) -->
 		<GoogleAnalytics />
+		
+		<!-- Google Tag (Google Ads) with Partytown -->
+		<GoogleTag />
 		
 		<!-- Analytics Auto-Tracking -->
 		<AnalyticsTracker />
