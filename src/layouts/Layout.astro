@@ -222,7 +222,7 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 					] : []),
 					
 					// Performance and caching
-					{ 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
+					{ httpEquiv: 'X-UA-Compatible', content: 'IE=edge' },
 					{ name: 'referrer', content: 'origin-when-cross-origin' }
 				]
 			}}
