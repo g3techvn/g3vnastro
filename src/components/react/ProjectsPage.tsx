@@ -228,9 +228,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, featured = false }) 
         </div>
         
         {/* CTA */}
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
+        <a 
+          href={`/du-an/${project.id}`}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors text-center block"
+        >
           Xem chi tiết
-        </button>
+        </a>
       </div>
     </div>
   );

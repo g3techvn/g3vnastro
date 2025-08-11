@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectDetailPage from '../../components/react/ProjectDetailPage.tsx';
+import { getProjectById, projects } from '../../data/projects';
+
+export async function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+
+if (!project) {
+  return Astro.redirect('/du-an');
+}
+
+const title = `${project.title} - Dự án G-3.vn`;
+const description = project.description;
+const keywords = [
+  project.title,
+  project.client,
+  project.category,
+  'dự án nội thất văn phòng',
+  'thiết kế văn phòng',
+  'thi công nội thất',
+  'G3Tech',
+  ...project.tags
+];
+---
+
+<Layout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  type="article"
+  canonical={`https://g-3.vn/du-an/${project.id}`}
+  image={project.images.thumbnail}
+  imageAlt={project.title}
+>
+  <ProjectDetailPage project={project} client:load />
+</Layout>
