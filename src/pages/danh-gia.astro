@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MobileReviewsPage from '../components/mobile/MobileReviewsPage.tsx';
+
+const title = 'Đánh giá khách hàng - G-3.vn | Reviews sản phẩm nội thất văn phòng';
+const description = 'Xem đánh giá thật từ khách hàng về các sản phẩm nội thất văn phòng của G-3.vn. Ghế công thái học, bàn làm việc, tủ tài liệu và nhiều sản phẩm khác.';
+const keywords = ['đánh giá khách hàng', 'review sản phẩm', 'ghế công thái học', 'bàn làm việc', 'nội thất văn phòng', 'G3Tech', 'feedback'];
+---
+
+<Layout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  type="website"
+  canonical="https://g-3.vn/danh-gia"
+>
+  <MobileReviewsPage client:load />
+</Layout>

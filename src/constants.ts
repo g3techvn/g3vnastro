@@ -1,14 +1,14 @@
 export const COMPANY_INFO = {
   name: 'Công Ty Cổ phần Công nghệ G3 Việt Nam',
   shortName: 'G3Tech',
-  hotline: '0979983355',
+  hotline: '0962636574',
   email: 'info@g-3.vn',
   supportEmail: 'info@g-3.vn',
   address: 'Tầng 7, Tòa nhà Charmvit, số 117 Trần Duy Hưng, Q. Cầu Giấy, TP. Hà Nội.',
   website: 'https://g-3.vn',
   workingHours: '8:00 - 17:30 (Thứ 2 - Thứ 6)',
   supportHours: '8:00 - 22:00 hàng ngày',
-  zalo: 'https://zalo.me/0979983355',
+  zalo: 'https://zalo.me/0962636574',
   storeLocations: [
     {
       name: 'G3 Tech - Phố Vọng',
@@ -82,7 +82,8 @@ export const HELP_CONTACT_METHODS = [
   {
     icon: '📞',
     title: 'Hotline',
-    value: '0979983355',
+    // value: '0979983355',
+    value: '0962636574',
     description: '8:00 - 22:00 hàng ngày',
     type: 'phone'
   },
