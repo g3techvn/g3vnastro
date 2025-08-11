@@ -1,43 +1,241 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { COMPANY_INFO } from '../../constants';
 ---
-<Layout title="Chính sách bảo hành - G3 TECH" description="Chính sách bảo hành của G3 TECH - Đổi mới trong 15 ngày đầu, bảo hành 15 ngày, cam kết chất lượng.">
-  <div class="bg-white px-6 py-32 lg:px-8">
-    <div class="mx-auto max-w-5xl text-base/7 text-gray-700">
-      <p class="text-base/7 font-semibold text-green-700">Chính sách</p>
-      <h1 class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-        Chính sách bảo hành - G3 TECH
-      </h1>
-      <div class="mt-10 max-w-2xl">
-        <p>
-          Chỉ áp dụng cho sản phẩm chính, KHÔNG ÁP DỤNG cho phụ kiện đi kèm sản phẩm chính
-        </p>
-        <ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
-          <li class="flex gap-x-3">
-            <span class="mt-1 h-5 w-5 flex-none text-green-700">✔️</span>
-            <span>
-              <strong class="font-semibold text-gray-900">Đổi mới</strong> trong <strong class="font-semibold text-gray-900">15 ngày đầu</strong> nếu có lỗi từ nhà sản xuất.
-            </span>
-          </li>
-          <li class="flex gap-x-3">
-            <span class="mt-1 h-5 w-5 flex-none text-green-700">✔️</span>
-            <span>
-              Bảo hành trong vòng <strong class="font-semibold text-gray-900">15 ngày</strong> (từ ngày G3 TECH nhận sản phẩm ở trạng thái lỗi đến ngày liên hệ khách hàng nhận sản phẩm đã bảo hành).
-            </span>
-          </li>
-          <li class="flex gap-x-3">
-            <span class="mt-1 h-5 w-5 flex-none text-green-700">✔️</span>
-            <span>
-              Nếu G3 TECH vi phạm cam kết nêu trên (tổng thời gian bảo hành vượt quá 15 ngày, phải bảo hành lại sản phẩm trong 30 ngày kể từ lần bảo hành trước), Quý Khách hàng được <strong class="font-semibold text-gray-900">áp dụng phương thức Đổi mới</strong> tức thì hoặc <strong class="font-semibold text-gray-900">Hoàn tiền với mức phí giảm 50%.</strong>
-            </span>
-          </li>
-        </ul>
-        <p class="mt-8">
-          *Từ tháng thứ 13 trở đi không áp dụng bảo hành cam kết, chỉ áp dụng bảo hành của hãng (nếu có)
-        </p>
-        <p class="mt-8">
-          <strong class="font-semibold text-gray-900">Điều kiện áp dụng:</strong> Sản phẩm đủ điều kiện bảo hành của hãng
-        </p>
+<Layout title="Chính sách bảo hành - G3Tech" description="Chính sách bảo hành toàn diện của G3Tech - Bảo hành 2-5 năm, đổi mới trong 15 ngày, cam kết chất lượng và dịch vụ hậu mãi tận tâm.">
+  <div class="min-h-screen bg-gray-50">
+    <!-- Header Section -->
+    <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-16">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 text-sm font-medium mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Cam kết chất lượng
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4">
+            Chính sách bảo hành
+          </h1>
+          <p class="text-xl opacity-90 max-w-2xl mx-auto">
+            {COMPANY_INFO.shortName} cam kết bảo hành toàn diện, đổi mới nhanh chóng và dịch vụ hậu mãi tận tâm
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-12">
+      <div class="max-w-4xl mx-auto">
+        
+        <!-- Overview Cards -->
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Đổi mới 15 ngày</h3>
+            <p class="text-gray-600">Đổi sản phẩm mới 100% nếu có lỗi từ nhà sản xuất</p>
+          </div>
+          
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Bảo hành 2-5 năm</h3>
+            <p class="text-gray-600">Thời gian bảo hành dài hạn tùy theo từng sản phẩm</p>
+          </div>
+          
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Xử lý nhanh</h3>
+            <p class="text-gray-600">Cam kết xử lý bảo hành trong vòng 15 ngày</p>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+          <div class="mb-8">
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-yellow-700">
+                    <strong>Lưu ý quan trọng:</strong> Chính sách này chỉ áp dụng cho sản phẩm chính, KHÔNG áp dụng cho phụ kiện đi kèm sản phẩm chính.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">📋 Cam kết bảo hành</h2>
+          
+          <div class="space-y-6">
+            <div class="flex gap-4 p-4 bg-green-50 rounded-lg border border-green-200">
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                  <span class="text-white font-bold text-sm">1</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-semibold text-green-800 mb-2">Đổi mới trong 15 ngày đầu</h3>
+                <p class="text-green-700">
+                  Nếu sản phẩm có lỗi từ nhà sản xuất trong 15 ngày đầu sử dụng, chúng tôi sẽ đổi cho bạn sản phẩm mới 100% hoàn toàn miễn phí.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex gap-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                  <span class="text-white font-bold text-sm">2</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-semibold text-blue-800 mb-2">Bảo hành nhanh chóng</h3>
+                <p class="text-blue-700">
+                  Cam kết xử lý bảo hành trong vòng <strong>15 ngày làm việc</strong> (tính từ ngày {COMPANY_INFO.shortName} nhận sản phẩm lỗi đến khi liên hệ khách hàng nhận sản phẩm đã sửa chữa).
+                </p>
+              </div>
+            </div>
+
+            <div class="flex gap-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                  <span class="text-white font-bold text-sm">3</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-semibold text-purple-800 mb-2">Cam kết bồi thường</h3>
+                <p class="text-purple-700">
+                  Nếu {COMPANY_INFO.shortName} vi phạm cam kết thời gian bảo hành (quá 15 ngày) hoặc phải bảo hành lại trong 30 ngày, khách hàng được:
+                </p>
+                <ul class="mt-2 space-y-1 text-purple-700">
+                  <li>• <strong>Đổi sản phẩm mới</strong> ngay lập tức, hoặc</li>
+                  <li>• <strong>Hoàn tiền 50%</strong> giá trị sản phẩm</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Warranty Terms -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">⚖️ Điều kiện bảo hành</h2>
+          
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="font-semibold text-green-800 mb-3">✅ Được bảo hành khi:</h3>
+              <ul class="space-y-2 text-gray-700">
+                <li class="flex items-start gap-2">
+                  <span class="text-green-500 mt-1">•</span>
+                  <span>Sản phẩm có lỗi kỹ thuật từ nhà sản xuất</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-green-500 mt-1">•</span>
+                  <span>Sản phẩm còn trong thời hạn bảo hành</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-green-500 mt-1">•</span>
+                  <span>Có đầy đủ hóa đơn, phiếu bảo hành</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-green-500 mt-1">•</span>
+                  <span>Sản phẩm chưa bị tháo dỡ, sửa chữa bởi bên thứ 3</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 class="font-semibold text-red-800 mb-3">❌ Không bảo hành khi:</h3>
+              <ul class="space-y-2 text-gray-700">
+                <li class="flex items-start gap-2">
+                  <span class="text-red-500 mt-1">•</span>
+                  <span>Hư hỏng do sử dụng sai cách, quá tải</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-500 mt-1">•</span>
+                  <span>Va đập mạnh, rơi vỡ, cháy nổ</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-500 mt-1">•</span>
+                  <span>Hư hỏng do thiên tai, hỏa hoạn</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-500 mt-1">•</span>
+                  <span>Sản phẩm đã hết thời hạn bảo hành</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Warranty Process -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">🔄 Quy trình bảo hành</h2>
+          
+          <div class="grid md:grid-cols-4 gap-4">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-blue-600">1</span>
+              </div>
+              <h4 class="font-semibold mb-2">Liên hệ</h4>
+              <p class="text-sm text-gray-600">Gọi hotline hoặc đến showroom báo lỗi</p>
+            </div>
+            
+            <div class="text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-green-600">2</span>
+              </div>
+              <h4 class="font-semibold mb-2">Kiểm tra</h4>
+              <p class="text-sm text-gray-600">Kỹ thuật viên kiểm tra và xác định lỗi</p>
+            </div>
+            
+            <div class="text-center">
+              <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-orange-600">3</span>
+              </div>
+              <h4 class="font-semibold mb-2">Sửa chữa</h4>
+              <p class="text-sm text-gray-600">Tiến hành sửa chữa hoặc thay thế linh kiện</p>
+            </div>
+            
+            <div class="text-center">
+              <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-purple-600">4</span>
+              </div>
+              <h4 class="font-semibold mb-2">Giao hàng</h4>
+              <p class="text-sm text-gray-600">Liên hệ khách hàng nhận sản phẩm</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="bg-gray-100 rounded-xl p-6">
+          <h3 class="font-semibold text-gray-900 mb-4">📝 Lưu ý quan trọng</h3>
+          <div class="space-y-3 text-sm text-gray-700">
+            <p>
+              <strong>Thời hạn bảo hành:</strong> Từ tháng thứ 13 trở đi, sản phẩm chỉ được áp dụng bảo hành của hãng sản xuất (nếu có), không áp dụng bảo hành cam kết của {COMPANY_INFO.shortName}.
+            </p>
+            <p>
+              <strong>Điều kiện áp dụng:</strong> Sản phẩm phải đủ điều kiện bảo hành theo quy định của hãng sản xuất.
+            </p>
+            <p>
+              <strong>Liên hệ bảo hành:</strong> Hotline <a href={`tel:${COMPANY_INFO.hotline}`} class="text-blue-600 font-semibold">{COMPANY_INFO.hotline}</a> hoặc email <a href={`mailto:${COMPANY_INFO.email}`} class="text-blue-600 font-semibold">{COMPANY_INFO.email}</a>
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

@@ -1,40 +1,323 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { COMPANY_INFO, BANK_INFO, PAYMENT_METHODS } from '../../constants';
 ---
-<Layout title="Chính sách thanh toán - G3 TECH" description="G3 Tech cung cấp nhiều phương thức thanh toán an toàn và tiện lợi cho khách hàng.">
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-6">Chính sách thanh toán</h1>
-    <div class="prose max-w-none">
-      <p>
-        G3 Tech cung cấp nhiều phương thức thanh toán an toàn và tiện lợi cho khách hàng.
-      </p>
-      <h2 class="text-xl font-semibold mt-6 mb-4">1. Phương thức thanh toán</h2>
-      <ul class="list-disc pl-6">
-        <li>Thanh toán khi nhận hàng (COD)</li>
-        <li>Chuyển khoản ngân hàng</li>
-      </ul>
-      <h2 class="text-xl font-semibold mt-6 mb-4">2. Thông tin chuyển khoản</h2>
-      <ul class="list-disc pl-6">
-        <li>Ngân hàng: Vietcombank</li>
-        <li>Số tài khoản: 1234567890</li>
-        <li>Chủ tài khoản: G3 Tech</li>
-        <li>Chi nhánh: Hà Nội</li>
-      </ul>
-      <h2 class="text-xl font-semibold mt-6 mb-4">3. Lưu ý khi thanh toán</h2>
-      <ul class="list-disc pl-6">
-        <li>Kiểm tra kỹ thông tin chuyển khoản</li>
-        <li>Giữ lại biên lai giao dịch</li>
-        <li>Thanh toán đúng số tiền</li>
-        <li>Ghi rõ mã đơn hàng khi chuyển khoản</li>
-      </ul>
-      <h2 class="text-xl font-semibold mt-6 mb-4">4. Liên hệ</h2>
-      <p>
-        Nếu có thắc mắc về chính sách thanh toán, vui lòng liên hệ:
-      </p>
-      <ul class="list-disc pl-6">
-        <li>Email: support@g3.vn</li>
-        <li>Hotline: 1900 1234</li>
-      </ul>
+<Layout title="Chính sách thanh toán - G3Tech" description="G3Tech cung cấp đa dạng phương thức thanh toán an toàn, tiện lợi: COD, chuyển khoản, thẻ tín dụng, ví điện tử. Bảo mật tuyệt đối.">
+  <div class="min-h-screen bg-gray-50">
+    <!-- Header Section -->
+    <div class="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-16">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 text-sm font-medium mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+            Thanh toán an toàn
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4">
+            Chính sách thanh toán
+          </h1>
+          <p class="text-xl opacity-90 max-w-2xl mx-auto">
+            {COMPANY_INFO.shortName} cung cấp đa dạng phương thức thanh toán an toàn, tiện lợi và bảo mật tuyệt đối
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-12">
+      <div class="max-w-4xl mx-auto">
+        
+        <!-- Payment Methods Overview -->
+        <div class="grid md:grid-cols-4 gap-6 mb-12">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-gray-900 mb-2">COD</h3>
+            <p class="text-sm text-gray-600">Thanh toán khi nhận hàng</p>
+          </div>
+          
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-gray-900 mb-2">Thẻ tín dụng</h3>
+            <p class="text-sm text-gray-600">Visa, MasterCard, JCB</p>
+          </div>
+          
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-gray-900 mb-2">Chuyển khoản</h3>
+            <p class="text-sm text-gray-600">Internet Banking</p>
+          </div>
+          
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center">
+            <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-gray-900 mb-2">QR Pay</h3>
+            <p class="text-sm text-gray-600">Quét mã thanh toán</p>
+          </div>
+        </div>
+
+        <!-- Payment Methods Detail -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">💳 Phương thức thanh toán</h2>
+          
+          <div class="space-y-6">
+            <!-- COD -->
+            <div class="border border-gray-200 rounded-lg p-6">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">Thanh toán khi nhận hàng (COD)</h3>
+                  <p class="text-sm text-gray-600">Phương thức phổ biến và an toàn nhất</p>
+                </div>
+              </div>
+              <ul class="space-y-2 text-gray-700 ml-15">
+                <li class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                  <span>Thanh toán bằng tiền mặt khi nhận hàng</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                  <span>Kiểm tra sản phẩm trước khi thanh toán</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                  <span>Phí COD: 0đ (miễn phí)</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Bank Transfer -->
+            <div class="border border-gray-200 rounded-lg p-6">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">Chuyển khoản ngân hàng</h3>
+                  <p class="text-sm text-gray-600">Nhanh chóng và tiết kiệm phí</p>
+                </div>
+              </div>
+              <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 ml-15">
+                <h4 class="font-semibold text-blue-800 mb-3">Thông tin tài khoản:</h4>
+                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span class="text-blue-700 font-medium">Ngân hàng:</span>
+                    <span class="ml-2 text-blue-900">{BANK_INFO.bankName}</span>
+                  </div>
+                  <div>
+                    <span class="text-blue-700 font-medium">Số tài khoản:</span>
+                    <span class="ml-2 text-blue-900 font-mono">{BANK_INFO.accountNumber}</span>
+                  </div>
+                  <div>
+                    <span class="text-blue-700 font-medium">Chủ tài khoản:</span>
+                    <span class="ml-2 text-blue-900">{BANK_INFO.accountName}</span>
+                  </div>
+                  <div>
+                    <span class="text-blue-700 font-medium">Chi nhánh:</span>
+                    <span class="ml-2 text-blue-900">Hà Nội</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Credit Cards -->
+            <div class="border border-gray-200 rounded-lg p-6">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">Thẻ tín dụng / Ghi nợ</h3>
+                  <p class="text-sm text-gray-600">Thanh toán trực tuyến an toàn</p>
+                </div>
+              </div>
+              <div class="ml-15">
+                <div class="flex flex-wrap gap-3 mb-3">
+                  {PAYMENT_METHODS.map((method) => (
+                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                      {method.name}
+                    </span>
+                  ))}
+                </div>
+                <ul class="space-y-2 text-gray-700">
+                  <li class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                    <span>Bảo mật SSL 256-bit</span>
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                    <span>Không lưu trữ thông tin thẻ</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- QR Payment -->
+            <div class="border border-gray-200 rounded-lg p-6">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">Thanh toán QR Code</h3>
+                  <p class="text-sm text-gray-600">Quét mã QR để thanh toán nhanh</p>
+                </div>
+              </div>
+              <ul class="space-y-2 text-gray-700 ml-15">
+                <li class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
+                  <span>Hỗ trợ tất cả ví điện tử phổ biến</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
+                  <span>Thanh toán trong vài giây</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Security -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">🔒 Bảo mật thanh toán</h2>
+          
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">SSL 256-bit</h3>
+              <p class="text-sm text-gray-600">Mã hóa dữ liệu cấp ngân hàng</p>
+            </div>
+            
+            <div class="text-center">
+              <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">PCI DSS</h3>
+              <p class="text-sm text-gray-600">Tuân thủ chuẩn bảo mật quốc tế</p>
+            </div>
+            
+            <div class="text-center">
+              <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">Không lưu trữ</h3>
+              <p class="text-sm text-gray-600">Không lưu thông tin thẻ của bạn</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Notes -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">📝 Lưu ý khi thanh toán</h2>
+          
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 class="font-semibold text-green-800 mb-4">✅ Nên làm:</h3>
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <span class="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span class="text-gray-700">Kiểm tra kỹ thông tin chuyển khoản trước khi thanh toán</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span class="text-gray-700">Giữ lại biên lai, ảnh chụp giao dịch</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span class="text-gray-700">Ghi rõ mã đơn hàng trong nội dung chuyển khoản</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span class="text-gray-700">Thanh toán đúng số tiền như trên đơn hàng</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 class="font-semibold text-red-800 mb-4">❌ Tránh làm:</h3>
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <span class="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span class="text-gray-700">Chuyển khoản sai số tài khoản</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span class="text-gray-700">Thanh toán thiếu hoặc thừa số tiền</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span class="text-gray-700">Không ghi mã đơn hàng khi chuyển khoản</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span class="text-gray-700">Chia sẻ thông tin thẻ với người khác</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Support -->
+        <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-8 text-white text-center">
+          <h2 class="text-2xl font-bold mb-4">Cần hỗ trợ thanh toán?</h2>
+          <p class="opacity-90 mb-6">Đội ngũ {COMPANY_INFO.shortName} sẵn sàng hỗ trợ bạn 24/7</p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href={`tel:${COMPANY_INFO.hotline}`}
+              class="inline-flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+              </svg>
+              Hotline: {COMPANY_INFO.hotline}
+            </a>
+            
+            <a 
+              href={`mailto:${COMPANY_INFO.email}`}
+              class="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+              Email: {COMPANY_INFO.email}
+            </a>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </Layout> 
