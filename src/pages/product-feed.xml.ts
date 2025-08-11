@@ -5,15 +5,16 @@ import { COMPANY_INFO } from '../constants';
 // Google Merchant Center Product Feed
 export const GET: APIRoute = async () => {
   try {
-    // Fetch products data with inventory information
-    const { data: products, error } = await supabase
+    console.log('Fetching products from Supabase...');
+    
+    // Use the same query as ProductList component
+    const { data: rawProducts, error } = await supabase
       .from('products')
       .select(`
         *,
         brands(title, slug),
         product_cats(title, slug)
       `)
-      .eq('status', 'active') // Only active products
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -21,9 +22,35 @@ export const GET: APIRoute = async () => {
       throw error;
     }
 
-    if (!products || products.length === 0) {
-      console.warn('No products found for feed');
-      // Don't throw error, return empty feed instead
+    console.log(`Fetched ${rawProducts?.length || 0} products from database`);
+
+    // Filter products that are suitable for the feed
+    let products: any[] = [];
+    
+    if (rawProducts && rawProducts.length > 0) {
+      console.log(`Processing ${rawProducts.length} products for feed`);
+      
+      // Filter out products that shouldn't be in the feed
+      products = rawProducts.filter(product => {
+        // Must have basic required fields
+        if (!product.name || !product.slug || !product.id) {
+          console.log(`Skipping product ${product.id}: missing name, slug, or id`);
+          return false;
+        }
+        
+        // Must have a valid price (at least 1000 VND)
+        const price = product.price || 0;
+        if (price < 1000) {
+          console.log(`Skipping product ${product.id}: invalid price ${price}`);
+          return false;
+        }
+        
+        return true;
+      });
+      
+      console.log(`After filtering: ${products.length} valid products for feed`);
+    } else {
+      console.warn('No products found in database');
     }
 
     // Generate XML feed
@@ -45,13 +72,20 @@ export const GET: APIRoute = async () => {
     
     ${(products || []).map(product => {
       // Skip products without essential data
-      if (!product.name || !product.slug || !product.id || product.price <= 0) {
+      if (!product.name || !product.slug || !product.id) {
         console.warn(`Skipping product ${product.id || 'unknown'}: missing essential data`);
         return '';
       }
 
       // Skip products that are explicitly inactive
       if (product.status === 'inactive' || product.status === 'draft') {
+        return '';
+      }
+
+      // Ensure price is valid (set minimum price if needed)
+      const productPrice = Math.max(product.price || 0, 1000); // Minimum 1000 VND
+      if (productPrice <= 0) {
+        console.warn(`Skipping product ${product.id}: invalid price`);
         return '';
       }
 
@@ -115,9 +149,9 @@ export const GET: APIRoute = async () => {
         description = `${product.name} - ${brand} chất lượng cao. ${category} chính hãng với bảo hành đầy đủ. Giao hàng nhanh toàn quốc tại G-3.vn.`;
       }
 
-      // Get brand and category info from joined data
-      const brand = (product as any).brands;
-      const category = (product as any).product_cats;
+      // Get brand and category info from joined data or use defaults
+      const brand = (product as any).brands || { title: 'G3Tech', slug: 'g3tech' };
+      const category = (product as any).product_cats || { title: 'Sản phẩm văn phòng', slug: 'san-pham-van-phong' };
 
       // Determine Google product category based on category (more specific mapping)
       let googleProductCategory = 'Furniture > Office Furniture';
@@ -164,13 +198,9 @@ export const GET: APIRoute = async () => {
       }
 
       // Format price according to Google Merchant Center standards
-      // Ensure prices are positive numbers
-      const currentPrice = Math.max(0, product.price || 0);
+      // Use the validated price from above
+      const currentPrice = productPrice;
       const originalPrice = Math.max(0, product.original_price || 0);
-      
-      if (currentPrice <= 0) {
-        return ''; // Skip products with invalid prices
-      }
       
       const hasDiscount = originalPrice > 0 && originalPrice > currentPrice;
       const regularPrice = hasDiscount ? `${originalPrice.toFixed(0)} VND` : `${currentPrice.toFixed(0)} VND`;
@@ -218,18 +248,31 @@ export const GET: APIRoute = async () => {
       <g:return_policy_label>30 days return</g:return_policy_label>
       <pubDate>${new Date(product.created_at || Date.now()).toUTCString()}</pubDate>
     </item>`;
-    }).filter(item => item.trim() !== '').join('\n    ')}
+    }).filter(item => {
+      const isValid = item.trim() !== '';
+      if (!isValid) {
+        console.log('Filtered out empty product item');
+      }
+      return isValid;
+    }).join('\n    ')}
     
   </channel>
 </rss>`;
+
+    const productCount = (products || []).length;
+    const validProductCount = xml.split('<item>').length - 1;
+    
+    console.log(`Generated feed with ${validProductCount} valid products out of ${productCount} total products`);
 
     return new Response(xml, {
       status: 200,
       headers: {
         'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=1800', // Cache for 30 minutes (more frequent updates)
+        'Cache-Control': 'public, max-age=1800', // Cache for 30 minutes
         'Last-Modified': now,
-        'X-Robots-Tag': 'noindex', // Don't index the feed itself
+        'X-Robots-Tag': 'noindex',
+        'X-Product-Count': productCount.toString(),
+        'X-Valid-Product-Count': validProductCount.toString(),
       },
     });
 
