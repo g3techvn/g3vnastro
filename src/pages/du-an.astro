@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectsPage from '../components/react/ProjectsPage.tsx';
+
+const title = 'Dự án - G-3.vn | Những dự án nội thất văn phòng tiêu biểu';
+const description = 'Khám phá những dự án nội thất văn phòng tiêu biểu của G-3.vn. Từ các tập đoàn lớn đến startup, chúng tôi đã tạo ra những không gian làm việc hiện đại và hiệu quả.';
+const keywords = ['dự án nội thất văn phòng', 'thiết kế văn phòng', 'thi công nội thất', 'không gian làm việc', 'G3Tech', 'dự án tiêu biểu'];
+---
+
+<Layout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  type="website"
+  canonical="https://g-3.vn/du-an"
+>
+  <ProjectsPage client:load />
+</Layout>

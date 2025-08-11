@@ -21,7 +21,7 @@ const CategorySection: React.FC<{
       const scrollLeft = scrollRef.current.scrollLeft;
       const itemWidth = scrollRef.current.clientWidth;
       const scrollWidth = scrollRef.current.scrollWidth;
-      
+
       // Check if scrolled to the end
       if (scrollLeft + itemWidth >= scrollWidth - 10) {
         // If near the end, set to last slide
@@ -60,15 +60,14 @@ const CategorySection: React.FC<{
               <button
                 key={index}
                 onClick={() => scrollToSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? 'bg-red-500 w-4' : 'bg-gray-300 w-2'
-                }`}
+                className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? 'bg-red-500 w-4' : 'bg-gray-300 w-2'
+                  }`}
               />
             ))}
           </div>
         )}
       </div>
-      <div 
+      <div
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto flex-nowrap snap-x snap-mandatory px-4 pb-4 scrollbar-hide"
         onScroll={handleScroll}
@@ -108,7 +107,7 @@ const CategorySection: React.FC<{
                     <div className="flex items-center justify-between text-xs text-gray-500 mt-1">
                       <div className="flex items-center gap-2">
                         <span className="flex items-center gap-0.5">
-                          <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6 "/></svg>
+                          <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.6 1.6,7.3 6.1,11.2 4.8,17.1 9.9,14.1 15,17.1 13.7,11.2 18.2,7.3 12.2,6.6 " /></svg>
                           {(product.rating || 4.9).toFixed(1)}
                         </span>
                         <span>•</span>
@@ -184,10 +183,10 @@ const BrandProductListMobile: React.FC<BrandProductListMobileProps> = ({
           new Map(
             initialProducts
               .filter(p => p.product_cats)
-              .map(p => [p.product_cats!.slug, { 
-                id: p.pd_cat_id!, 
-                title: p.product_cats!.title, 
-                slug: p.product_cats!.slug 
+              .map(p => [p.product_cats!.slug, {
+                id: p.pd_cat_id!,
+                title: p.product_cats!.title,
+                slug: p.product_cats!.slug
               }])
           ).values()
         );
@@ -226,10 +225,10 @@ const BrandProductListMobile: React.FC<BrandProductListMobileProps> = ({
         } else {
           console.log('Raw products data:', productsResult.data);
           console.log('Brand ID:', brandId);
-          
+
           // Apply filters and sorting
           let filtered = productsResult.data || [];
-          
+
           // Apply price range filters
           filtered = filtered.filter(product => {
             return product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
@@ -237,7 +236,7 @@ const BrandProductListMobile: React.FC<BrandProductListMobileProps> = ({
 
           // Apply category filters
           if (filters.categories.length > 0) {
-            filtered = filtered.filter(product => 
+            filtered = filtered.filter(product =>
               product.pd_cat_id && filters.categories.includes(product.pd_cat_id)
             );
           }
@@ -322,7 +321,7 @@ const BrandProductListMobile: React.FC<BrandProductListMobileProps> = ({
         {sortedCategoryEntries.map(([categoryId, categoryProducts]) => {
           const categoryTitle = categoriesMap[categoryId]?.title || 'Không xác định';
           const categorySlug = categoriesMap[categoryId]?.slug;
-          
+
           return (
             <CategorySection
               key={categoryId}
@@ -335,7 +334,7 @@ const BrandProductListMobile: React.FC<BrandProductListMobileProps> = ({
           );
         })}
       </div>
-      
+
       {/* Modal mua hàng nhanh */}
       {modalProduct && (
         <ModalBuyNowForm

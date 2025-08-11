@@ -6,6 +6,7 @@ import { productAPI } from '../../lib/supabase';
 
 const navigation = [
   { name: 'Cửa hàng', href: '/san-pham', current: false },
+  { name: 'Dự án', href: '/du-an', current: false },
   { name: 'Hướng dẫn', href: '/huong-dan-mua-hang', current: false },
   { name: 'Chính sách', href: '/chinh-sach', current: false },
   { name: 'Liên hệ', href: '/lien-he', current: false },
