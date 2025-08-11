@@ -6,7 +6,7 @@ import { COMPANY_INFO } from '../constants';
 export const GET: APIRoute = async () => {
   try {
     console.log('Fetching products from Supabase...');
-    
+
     // Use the same query as ProductList component
     const { data: rawProducts, error } = await supabase
       .from('products')
@@ -26,10 +26,10 @@ export const GET: APIRoute = async () => {
 
     // Filter products that are suitable for the feed
     let products: any[] = [];
-    
+
     if (rawProducts && rawProducts.length > 0) {
       console.log(`Processing ${rawProducts.length} products for feed`);
-      
+
       // Filter out products that shouldn't be in the feed
       products = rawProducts.filter(product => {
         // Must have basic required fields
@@ -37,17 +37,17 @@ export const GET: APIRoute = async () => {
           console.log(`Skipping product ${product.id}: missing name, slug, or id`);
           return false;
         }
-        
+
         // Must have a valid price (at least 1000 VND)
         const price = product.price || 0;
         if (price < 1000) {
           console.log(`Skipping product ${product.id}: invalid price ${price}`);
           return false;
         }
-        
+
         return true;
       });
-      
+
       console.log(`After filtering: ${products.length} valid products for feed`);
     } else {
       console.warn('No products found in database');
@@ -91,7 +91,7 @@ export const GET: APIRoute = async () => {
 
       // Get optimized image URL (JPEG for better Google compatibility)
       let imageUrl = `${baseUrl}/images/no-image.jpg`; // Default fallback
-      
+
       if (product.image_url) {
         if (product.image_url.startsWith('http')) {
           // External URL - use as is but ensure HTTPS
@@ -112,7 +112,7 @@ export const GET: APIRoute = async () => {
         product.gallery_array.forEach((galleryImg: string) => {
           if (galleryImg && galleryImg !== product.image_url && additionalImages.length < 10) {
             let optimizedUrl = '';
-            
+
             if (galleryImg.startsWith('http')) {
               // External URL - use as is but ensure HTTPS
               optimizedUrl = galleryImg.replace('http://', 'https://');
@@ -124,7 +124,7 @@ export const GET: APIRoute = async () => {
               const filename = galleryImg.split('/').pop()?.replace(/\.(jpg|jpeg|png|webp|avif)$/i, '.jpg') || 'image.jpg';
               optimizedUrl = `${baseUrl}/g3tech-otm/products/${product.slug}/${filename}`;
             }
-            
+
             if (optimizedUrl) {
               additionalImages.push(optimizedUrl);
             }
@@ -141,7 +141,7 @@ export const GET: APIRoute = async () => {
           .trim()
           .substring(0, 5000);
       }
-      
+
       // Fallback description if empty or too short
       if (!description || description.length < 10) {
         const brand = (product as any).brands?.title || 'G3Tech';
@@ -182,7 +182,7 @@ export const GET: APIRoute = async () => {
 
       // Determine availability based on inventory
       let availability = 'in_stock'; // Default to in stock
-      
+
       // Check if product has inventory tracking
       if (product.inventory_quantity !== undefined && product.inventory_quantity !== null) {
         if (product.inventory_quantity <= 0) {
@@ -191,7 +191,7 @@ export const GET: APIRoute = async () => {
           availability = 'limited_availability';
         }
       }
-      
+
       // Check if product is marked as out of stock
       if (product.stock_status === 'out_of_stock' || product.status === 'inactive') {
         availability = 'out_of_stock';
@@ -201,17 +201,17 @@ export const GET: APIRoute = async () => {
       // Use the validated price from above
       const currentPrice = productPrice;
       const originalPrice = Math.max(0, product.original_price || 0);
-      
+
       const hasDiscount = originalPrice > 0 && originalPrice > currentPrice;
       const regularPrice = hasDiscount ? `${originalPrice.toFixed(0)} VND` : `${currentPrice.toFixed(0)} VND`;
       const salePrice = hasDiscount ? `${currentPrice.toFixed(0)} VND` : null;
 
       // Generate unique ID for Google (required)
       const productId = `${product.id}_${product.slug}`.replace(/[^a-zA-Z0-9_-]/g, '');
-      
+
       // Ensure title is not too long (max 150 chars for Google)
       const title = product.name.length > 150 ? product.name.substring(0, 147) + '...' : product.name;
-      
+
       return `<item>
       <g:id>${productId}</g:id>
       <g:title><![CDATA[${title}]]></g:title>
@@ -261,7 +261,7 @@ export const GET: APIRoute = async () => {
 
     const productCount = (products || []).length;
     const validProductCount = xml.split('<item>').length - 1;
-    
+
     console.log(`Generated feed with ${validProductCount} valid products out of ${productCount} total products`);
 
     return new Response(xml, {
