@@ -12,10 +12,15 @@ interface Props {
     discount_percentage?: number;
     description?: string;
     image_url?: string;
+    stock_status?: string;
+    status?: string;
+    inventory_quantity?: number;
+    stock_quantity?: number;
   };
+  availability?: string;
 }
 
-const { product } = Astro.props;
+const { product, availability = 'in_stock' } = Astro.props;
 
 // Xử lý tên thương hiệu
 const brandName = typeof product.brand === 'string' 
@@ -30,6 +35,42 @@ const formatCurrency = (price: number) => {
     minimumFractionDigits: 0,
   }).format(price);
 };
+
+// Get availability display info
+const getAvailabilityInfo = (availability: string) => {
+  switch (availability) {
+    case 'in_stock':
+      return {
+        text: 'Còn hàng',
+        color: 'text-green-600',
+        bgColor: 'bg-green-100',
+        icon: '✓'
+      };
+    case 'limited_availability':
+      return {
+        text: 'Sắp hết hàng',
+        color: 'text-orange-600',
+        bgColor: 'bg-orange-100',
+        icon: '⚠'
+      };
+    case 'out_of_stock':
+      return {
+        text: 'Hết hàng',
+        color: 'text-red-600',
+        bgColor: 'bg-red-100',
+        icon: '✗'
+      };
+    default:
+      return {
+        text: 'Còn hàng',
+        color: 'text-green-600',
+        bgColor: 'bg-green-100',
+        icon: '✓'
+      };
+  }
+};
+
+const availabilityInfo = getAvailabilityInfo(availability);
 
 ---
 
@@ -55,6 +96,19 @@ const formatCurrency = (price: number) => {
     {product.discount_percentage && (
       <span class="text-sm font-medium text-red-600">
         -{product.discount_percentage}%
+      </span>
+    )}
+  </div>
+
+  <!-- Trạng thái kho hàng -->
+  <div class="flex items-center gap-2">
+    <span class={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${availabilityInfo.bgColor} ${availabilityInfo.color}`}>
+      <span>{availabilityInfo.icon}</span>
+      {availabilityInfo.text}
+    </span>
+    {availability === 'limited_availability' && product.inventory_quantity && (
+      <span class="text-sm text-gray-500">
+        (Chỉ còn {product.inventory_quantity} sản phẩm)
       </span>
     )}
   </div>

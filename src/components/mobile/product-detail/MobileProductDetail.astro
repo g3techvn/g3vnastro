@@ -21,9 +21,10 @@ interface Props {
   instructions: string[];
   overview: string;
   relatedProducts?: any[];
+  availability?: string;
 }
 
-const { product, technicalSpecs, keyFeatures, benefits, instructions, overview, relatedProducts = [] } = Astro.props;
+const { product, technicalSpecs, keyFeatures, benefits, instructions, overview, relatedProducts = [], availability = 'in_stock' } = Astro.props;
 
 // Get brand name from product - brand is an object from brands table
 const brandName = product.brand?.title || 'Chi tiết sản phẩm';
@@ -110,6 +111,7 @@ const faqItems = [
     <MobileProductHero 
       client:load 
       product={product}
+      availability={availability}
     />
 
     <!-- Trust Signals - NEW -->

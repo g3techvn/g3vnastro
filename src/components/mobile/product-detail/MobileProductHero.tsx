@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 interface MobileProductHeroProps {
   product: any;
+  availability?: string;
 }
 
-const MobileProductHero: React.FC<MobileProductHeroProps> = ({ product }) => {
+const MobileProductHero: React.FC<MobileProductHeroProps> = ({ product, availability = 'in_stock' }) => {
   const [timeLeft, setTimeLeft] = useState({
     hours: 23,
     minutes: 45,
@@ -34,6 +35,38 @@ const MobileProductHero: React.FC<MobileProductHeroProps> = ({ product }) => {
     ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
     : 0;
 
+  // Get availability display info
+  const getAvailabilityInfo = (availability: string) => {
+    switch (availability) {
+      case 'in_stock':
+        return {
+          text: 'Còn hàng',
+          bgColor: 'bg-green-500',
+          icon: '✓'
+        };
+      case 'limited_availability':
+        return {
+          text: 'Sắp hết hàng',
+          bgColor: 'bg-orange-500',
+          icon: '⚠'
+        };
+      case 'out_of_stock':
+        return {
+          text: 'Hết hàng',
+          bgColor: 'bg-red-700',
+          icon: '✗'
+        };
+      default:
+        return {
+          text: 'Còn hàng',
+          bgColor: 'bg-green-500',
+          icon: '✓'
+        };
+    }
+  };
+
+  const availabilityInfo = getAvailabilityInfo(availability);
+
   return (
     <div className="bg-gradient-to-br from-red-600 via-red-500 to-orange-500 text-white relative overflow-hidden animate-gradient">
       {/* Background Pattern */}
@@ -45,7 +78,13 @@ const MobileProductHero: React.FC<MobileProductHeroProps> = ({ product }) => {
       <div className="relative px-4 py-6 fade-in-on-scroll">
         {/* Badges Row */}
         <div className="flex flex-wrap gap-2 mb-4">
-          <div className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 animate-bounce-in animate-stagger-1 hover-scale">
+          {/* Availability Badge */}
+          <div className={`${availabilityInfo.bgColor} text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 animate-bounce-in animate-stagger-1 hover-scale`}>
+            <span>{availabilityInfo.icon}</span>
+            {availabilityInfo.text.toUpperCase()}
+          </div>
+          
+          <div className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 animate-bounce-in animate-stagger-2 hover-scale">
             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
@@ -53,12 +92,12 @@ const MobileProductHero: React.FC<MobileProductHeroProps> = ({ product }) => {
           </div>
           
           {hasDiscount && (
-            <div className="bg-green-400 text-green-900 px-3 py-1 rounded-full text-xs font-bold animate-bounce-in animate-stagger-2 hover-scale animate-pulse-slow">
+            <div className="bg-green-400 text-green-900 px-3 py-1 rounded-full text-xs font-bold animate-bounce-in animate-stagger-3 hover-scale animate-pulse-slow">
               GIẢM {discountPercent}%
             </div>
           )}
           
-          <div className="bg-blue-400 text-blue-900 px-3 py-1 rounded-full text-xs font-bold animate-bounce-in animate-stagger-3 hover-scale">
+          <div className="bg-blue-400 text-blue-900 px-3 py-1 rounded-full text-xs font-bold animate-bounce-in animate-stagger-4 hover-scale">
             MIỄN PHÍ SHIP
           </div>
         </div>

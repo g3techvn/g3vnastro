@@ -180,21 +180,27 @@ export const GET: APIRoute = async () => {
         googleProductCategory = 'Lighting > Lamps > Desk Lamps';
       }
 
-      // Determine availability based on inventory
-      let availability = 'in_stock'; // Default to in stock
+      // Determine availability - Default to in_stock for better Google Merchant performance
+      let availability = 'in_stock';
 
-      // Check if product has inventory tracking
-      if (product.inventory_quantity !== undefined && product.inventory_quantity !== null) {
-        if (product.inventory_quantity <= 0) {
-          availability = 'out_of_stock';
-        } else if (product.inventory_quantity <= 5) {
-          availability = 'limited_availability';
-        }
+      // Only set out_of_stock for explicitly marked products
+      if (product.stock_status === 'out_of_stock' || product.status === 'inactive' || product.status === 'draft') {
+        availability = 'out_of_stock';
+      }
+      // Optional: Use limited_availability only if you want to show low stock
+      else if (product.inventory_quantity !== undefined && 
+               product.inventory_quantity !== null && 
+               product.inventory_quantity > 0 && 
+               product.inventory_quantity <= 3) {
+        availability = 'limited_availability';
       }
 
-      // Check if product is marked as out of stock
-      if (product.stock_status === 'out_of_stock' || product.status === 'inactive') {
-        availability = 'out_of_stock';
+      // FORCE ALL PRODUCTS TO BE IN STOCK (uncomment if needed)
+      // availability = 'in_stock';
+
+      // Debug logging for availability issues
+      if (availability !== 'in_stock') {
+        console.log(`Product ${product.id} (${product.name}): availability=${availability}, inventory=${product.inventory_quantity}, stock_status=${product.stock_status}, status=${product.status}`);
       }
 
       // Format price according to Google Merchant Center standards

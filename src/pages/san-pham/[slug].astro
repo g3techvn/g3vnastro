@@ -103,8 +103,27 @@ const productKeywords = [
   ...(product.price ? [`${Math.floor(product.price / 1000000)} triệu`, 'giá tốt'] : [])
 ];
 
-// Product availability and condition
-const availability = product.stock_quantity > 0 ? 'in_stock' : 'out_of_stock';
+// Product availability and condition - consistent with product feed logic
+let availability = 'in_stock'; // Default to in_stock for better SEO and user experience
+
+// Only set out_of_stock for explicitly marked products
+if (product.stock_status === 'out_of_stock' || product.status === 'inactive' || product.status === 'draft') {
+  availability = 'out_of_stock';
+}
+// Optional: Use limited_availability only if you want to show low stock
+else if (product.inventory_quantity !== undefined && 
+         product.inventory_quantity !== null && 
+         product.inventory_quantity > 0 && 
+         product.inventory_quantity <= 3) {
+  availability = 'limited_availability';
+}
+// Legacy support for stock_quantity field
+else if (product.stock_quantity !== undefined && 
+         product.stock_quantity !== null && 
+         product.stock_quantity <= 0) {
+  availability = 'out_of_stock';
+}
+
 const condition = 'new';
 
 // Review data for rich snippets (if available)
@@ -252,6 +271,7 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
       instructions={instructions}
       overview={overview}
       relatedProducts={relatedProducts}
+      availability={availability}
     />
   </div>
 
@@ -332,7 +352,7 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
 
           <!-- Product Info - 2 columns -->
           <div class="md:col-span-2">
-            <ProductInfo product={product} />
+            <ProductInfo product={product} availability={availability} />
           </div>
         </div>
 
