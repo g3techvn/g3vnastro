@@ -5,9 +5,9 @@ interface SearchFAQProps {
   placeholder?: string;
 }
 
-const SearchFAQ: React.FC<SearchFAQProps> = ({ 
-  onSearch, 
-  placeholder = "Tìm kiếm câu hỏi..." 
+const SearchFAQ: React.FC<SearchFAQProps> = ({
+  onSearch,
+  placeholder = "Tìm kiếm câu hỏi..."
 }) => {
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
@@ -40,19 +40,18 @@ const SearchFAQ: React.FC<SearchFAQProps> = ({
           `}
         />
         <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-          <svg 
-            className={`w-5 h-5 transition-colors duration-200 ${
-              isFocused ? 'text-blue-500' : 'text-gray-400'
-            }`}
-            fill="none" 
-            viewBox="0 0 24 24" 
+          <svg
+            className={`w-5 h-5 transition-colors duration-200 ${isFocused ? 'text-blue-500' : 'text-gray-400'
+              }`}
+            fill="none"
+            viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
         </div>
@@ -67,7 +66,7 @@ const SearchFAQ: React.FC<SearchFAQProps> = ({
           </button>
         )}
       </div>
-      
+
       {/* Search suggestions */}
       {isFocused && !query && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 z-10 fade-in-up">
