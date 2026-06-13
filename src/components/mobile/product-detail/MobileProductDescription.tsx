@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Product } from '../../../types/Product';
+import type { Product } from '../../../types';
 
 interface MobileProductDescriptionProps {
   product: Product;

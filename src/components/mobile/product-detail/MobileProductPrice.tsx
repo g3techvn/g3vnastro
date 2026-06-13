@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Product } from '../../../types/Product';
+import type { Product } from '../../../types';
 
 interface MobileProductPriceProps {
   product: Product;
@@ -24,7 +24,7 @@ export default function MobileProductPrice({ product, soldCount = 0 }: MobilePro
   // Get brand name
   const brandName = typeof product.brand === 'string' 
     ? product.brand 
-    : product.brand?.title || 'G3 - TECH';
+    : product.brand?.name || 'G3 - TECH';
 
   return (
     <div className="bg-white p-4 space-y-3 md:hidden">

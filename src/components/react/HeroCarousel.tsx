@@ -210,6 +210,9 @@ export default function HeroCarousel() {
                         alt={item.title}
                         className="w-full h-full object-cover transition-all duration-700"
                         loading={index === currentSlide ? "eager" : "lazy"}
+                        width={600}
+                        height={500}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
                       />
                       
                       {/* Image overlay */}
