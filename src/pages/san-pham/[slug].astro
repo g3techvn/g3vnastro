@@ -336,6 +336,7 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
               galleryUrl={product?.gallery_url ?? undefined}
               mainImageUrl={product?.image_url ?? undefined}
               galleryArray={product?.gallery_array}
+              optimizedGallery={(product as any)._optimized_gallery}
               videoInfo={product?.video_url ? {
                 videoUrl: product.video_url,
                 thumbnail: product?.image_url || ''

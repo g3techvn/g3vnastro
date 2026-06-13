@@ -14,6 +14,7 @@ interface ProductGalleryProps {
   galleryUrl?: string;
   mainImageUrl?: string;
   galleryArray?: string[];
+  optimizedGallery?: Array<{ path: string; width: number; size: number }>[];
   videoInfo?: {
     videoUrl: string;
     thumbnail: string;
@@ -40,6 +41,7 @@ export default function ProductGallery({
   galleryUrl,
   mainImageUrl,
   galleryArray,
+  optimizedGallery,
   videoInfo,
   className = ""
 }: ProductGalleryProps) {
@@ -131,14 +133,41 @@ export default function ProductGallery({
   // Fetch gallery images from Supabase
   useEffect(() => {
     const fetchGalleryImages = async () => {
+      //优先使用 optimizedGallery (from content collections)
+      if (optimizedGallery && Array.isArray(optimizedGallery) && optimizedGallery.length > 0) {
+        const items: GalleryItem[] = optimizedGallery.map(optImages => {
+          // Use largest available size for gallery
+          const largest = optImages.reduce((prev, current) => 
+            current.width > prev.width ? current : prev
+          );
+          return { type: 'image', url: largest.path };
+        });
+
+        // Chèn video vào vị trí thứ 2 (index 1) sau ảnh đầu tiên
+        if (videoInfo?.videoUrl) {
+          const videoItem = {
+            type: 'video' as const,
+            url: '',
+            videoUrl: getYouTubeEmbedUrl(videoInfo.videoUrl),
+            thumbnail: videoInfo.thumbnail || getYouTubeThumbnailUrl(videoInfo.videoUrl)
+          };
+          if (items.length > 1) {
+            items.splice(1, 0, videoItem);
+          } else {
+            items.push(videoItem);
+          }
+        }
+        setGalleryItems(items);
+        setIsLoadingGallery(false);
+        return;
+      }
+
       if (galleryArray && Array.isArray(galleryArray) && galleryArray.length > 0) {
         // Chỉ sử dụng galleryArray, không thêm mainImageUrl
         const items: GalleryItem[] = galleryArray.map(url => {
-          let newUrl = url;
-          if (url.startsWith('/g3tech/') && /\.(jpg|jpeg|png|webp)$/i.test(url)) {
-            newUrl = url.replace(/^\/g3tech\//, '/g3tech-otm/').replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
-          }
-          return { type: 'image', url: newUrl };
+          // Keep original URL - browser will load it
+          // No conversion needed as URLs are already correct
+          return { type: 'image', url };
         });
 
         // Chèn video vào vị trí thứ 2 (index 1) sau ảnh đầu tiên
@@ -247,7 +276,19 @@ export default function ProductGallery({
     };
 
     fetchGalleryImages();
-  }, [galleryUrl, mainImageUrl, videoInfo, galleryArray]);
+  }, [galleryUrl, mainImageUrl, videoInfo, galleryArray, optimizedGallery]);
+
+  // Helper function to insert video at position 1
+  const insertVideoAtPosition = (items: GalleryItem[], videoItem: GalleryItem): GalleryItem[] => {
+    if (videoInfo?.videoUrl) {
+      if (items.length > 1) {
+        items.splice(1, 0, videoItem);
+      } else {
+        items.push(videoItem);
+      }
+    }
+    return items;
+  };
 
   // Autoplay & fade effect for modal
   useEffect(() => {
