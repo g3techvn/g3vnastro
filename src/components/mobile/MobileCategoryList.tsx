@@ -3,19 +3,19 @@ import React, { useState } from 'react';
 interface Category {
   id: number | string;
   title: string;
-  description?: string;
+  description?: string | null;
   slug: string;
-  image_url?: string;
-  image_square_url?: string;
+  image_url?: string | null;
+  image_square_url?: string | null;
 }
 
 interface Brand {
   id: number | string;
   title: string;
-  description?: string;
+  description?: string | null;
   slug: string;
-  image_url?: string;
-  image_square_url?: string;
+  image_url?: string | null;
+  image_square_url?: string | null;
 }
 
 interface MobileCategoryListProps {
@@ -71,7 +71,11 @@ const MobileCategoryList: React.FC<MobileCategoryListProps> = ({ categories, bra
           <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center text-gray-600">
             {item.image_square_url || item.image_url ? (
               <img
-                src={item.image_square_url || item.image_url}
+                src={
+                  (item.image_square_url || item.image_url || '').startsWith('http')
+                    ? `/g3cdn?url=${encodeURIComponent(item.image_square_url || item.image_url || '')}`
+                    : (item.image_square_url || item.image_url || undefined)
+                }
                 alt={item.title}
                 className="w-8 h-8 object-contain rounded"
                 loading="lazy"

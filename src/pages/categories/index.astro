@@ -93,11 +93,22 @@ const description =
                 <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
                   <div class="aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
                     {brand.image_square_url || brand.image_url ? (
-                      <img
-                        src={brand.image_square_url || brand.image_url}
-                        alt={brand.title}
-                        class="h-full w-full object-contain"
-                      />
+                      isExternalUrl(brand.image_square_url || brand.image_url) ? (
+                        <img
+                          src={brand.image_square_url || brand.image_url}
+                          alt={brand.title}
+                          class="h-full w-full object-contain"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <Image
+                          src={brand.image_square_url || brand.image_url}
+                          alt={brand.title}
+                          class="h-full w-full object-contain"
+                          width={300}
+                          height={300}
+                        />
+                      )
                     ) : (
                       <div class="flex h-full items-center justify-center">
                         <span class="text-2xl font-bold text-gray-400">
