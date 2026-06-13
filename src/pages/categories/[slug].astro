@@ -60,7 +60,25 @@ const description =
   <CategoryPageWrapper
     categorySlug={slug}
     categoryData={{ ...category, id: String(category.id), description: category.description ?? undefined, image_url: category.image_url ?? undefined }}
-    initialProducts={initialProducts.map(p => ({ ...p, id: String(p.id), brand_id: p.brand_id ? String(p.brand_id) : undefined, pd_cat_id: p.pd_cat_id ? String(p.pd_cat_id) : undefined, original_price: p.original_price ?? undefined, image_url: p.image_url ?? undefined, image_square_url: p.image_square_url ?? undefined, rating: p.rating ?? undefined }))}
+    initialProducts={initialProducts.map(p => {
+      // Get optimized image if available
+      const optimizedImages = (p as any)._optimized_image || [];
+      const thumbnailImage = optimizedImages.length > 0 
+        ? optimizedImages.find((img: any) => img.width === 200) || optimizedImages[0]
+        : null;
+  
+      return { 
+        ...p, 
+        id: String(p.id), 
+        brand_id: p.brand_id ? String(p.brand_id) : undefined, 
+        pd_cat_id: p.pd_cat_id ? String(p.pd_cat_id) : undefined, 
+        original_price: p.original_price ?? undefined, 
+        image_url: p.image_url ?? undefined, 
+        image_square_url: p.image_square_url ?? undefined,
+        optimized_image_url: thumbnailImage?.path || undefined,
+        rating: p.rating ?? undefined 
+      };
+    })}
     availableBrands={brands.map(b => ({ ...b, id: String(b.id) }))}
     client:idle
   />

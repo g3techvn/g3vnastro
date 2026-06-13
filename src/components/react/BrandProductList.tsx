@@ -11,6 +11,7 @@ interface Product {
   original_price?: number;
   image_url?: string;
   image_square_url?: string;
+  optimized_image_url?: string;
   rating?: number;
   sold_count?: number;
   brand_id?: string;
@@ -195,9 +196,10 @@ const BrandProductList: React.FC<BrandProductListProps> = ({
                   </div>
                 )}
                 <img 
-                  src={product.image_square_url || product.image_url || '/images/placeholder-product.jpg'} 
+                  src={product.optimized_image_url || product.image_square_url || product.image_url || '/images/placeholder-product.jpg'} 
                   alt={product.name} 
                   className="object-contain w-full h-full"
+                  loading="lazy"
                 />
                 {/* Quick view icon */}
                 <button

@@ -11,6 +11,7 @@ interface Product {
   original_price?: number;
   image_url?: string;
   image_square_url?: string;
+  optimized_image_url?: string;
   rating?: number;
   sold_count?: number;
   brand_id?: string;

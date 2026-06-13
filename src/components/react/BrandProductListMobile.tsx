@@ -82,9 +82,10 @@ const CategorySection: React.FC<{
                 <div className="flex items-center p-2">
                   <div className="relative w-20 h-20">
                     <img
-                      src={product.image_square_url || product.image_url || '/images/placeholder-product.jpg'}
+                      src={product.optimized_image_url || product.image_square_url || product.image_url || '/images/placeholder-product.jpg'}
                       alt={product.name}
                       className="rounded-lg object-contain w-full h-full"
+                      loading="lazy"
                     />
                   </div>
                   <div className="flex-1 min-w-0 ml-2">
@@ -145,6 +146,7 @@ interface Product {
   original_price?: number;
   image_url?: string;
   image_square_url?: string;
+  optimized_image_url?: string;
   rating?: number;
   sold_count?: number;
   brand_id?: string;
