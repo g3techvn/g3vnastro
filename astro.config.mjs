@@ -88,13 +88,14 @@ export default defineConfig({
         return item;
       },
     }),
-    partytown({
-      // Configure Partytown
-      config: {
-        forward: ['dataLayer.push', 'gtag'],
-        debug: false, // Set to true for debugging in development
-      },
-    }),
+    // partytown({
+    //   // Partytown disabled due to production 404 errors
+    //   // Using async scripts instead for better reliability
+    //   config: {
+    //     forward: ['dataLayer.push', 'gtag'],
+    //     debug: false,
+    //   },
+    // }),
   ],
 
   output: 'static',

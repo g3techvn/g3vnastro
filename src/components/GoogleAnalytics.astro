@@ -2,9 +2,9 @@
 import { GA_MEASUREMENT_ID } from '../lib/analytics';
 ---
 
-<!-- Google Analytics with Partytown - Optimized Performance -->
-<script type="text/partytown" async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
-<script type="text/partytown" is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+<!-- Google Analytics - Async Loading -->
+<script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+<script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
