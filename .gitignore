@@ -24,6 +24,7 @@ pnpm-debug.log*
 .idea/
 dist/
 
-# Optimized images (generated at build time)
-public/optimized/
+# Generated assets (keep optimized images in git for deployment)
+# public/optimized/  - Now tracked for production deployment
+# src/assets/g3tech/ - Still ignored (local only)
 src/assets/g3tech/
