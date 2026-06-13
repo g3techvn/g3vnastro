@@ -3,7 +3,6 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
-import partytown from '@astrojs/partytown';
 import path from 'path';
 
 
@@ -93,14 +92,6 @@ export default defineConfig({
         return item;
       },
     }),
-    // partytown({
-    //   // Partytown disabled due to production 404 errors
-    //   // Using async scripts instead for better reliability
-    //   config: {
-    //     forward: ['dataLayer.push', 'gtag'],
-    //     debug: false,
-    //   },
-    // }),
   ],
 
   output: 'static',

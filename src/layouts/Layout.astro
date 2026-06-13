@@ -10,9 +10,6 @@ import MobileBestsellerProductsIsland from '../components/mobile/MobileBestselle
 import MobileFeatureProductIsland from '../components/mobile/MobileFeatureProductIsland.astro';
 import BottomNavIsland from '../components/mobile/BottomNavIsland.astro';
 import { ViewTransitions } from 'astro:transitions';
-import GoogleAnalytics from '../components/GoogleAnalytics.astro';
-import GoogleTag from '../components/GoogleTag.astro';
-import AnalyticsTracker from '../components/AnalyticsTracker.astro';
 import { SEO } from 'astro-seo';
 import '../styles/contact-buttons.css';
 import '../styles/global.css';
@@ -234,15 +231,6 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-		
-		<!-- Google Analytics with Partytown (Optimized) -->
-		<GoogleAnalytics />
-		
-		<!-- Google Tag (Google Ads) with Partytown -->
-		<GoogleTag />
-		
-		<!-- Analytics Auto-Tracking -->
-		<AnalyticsTracker />
 		
 		<!-- JSON-LD Structured Data for Products -->
 		{type === 'product' && price && (
