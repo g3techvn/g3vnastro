@@ -1,14 +1,20 @@
 /**
  * Download external images to local public directory
  * Run this script before build to ensure all images are local
+ * Usage: npm run download-images
  */
-import fs from 'fs/promises';
+import fs from 'fs';
+import fsPromises from 'fs/promises';
 import path from 'path';
 import https from 'https';
 import http from 'http';
+import { fileURLToPath } from 'url';
 
-const PRODUCTS_DIR = './src/content/products';
-const PUBLIC_DIR = './public';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const PRODUCTS_DIR = path.join(__dirname, 'src/content/products');
+const PUBLIC_DIR = path.join(__dirname, 'public');
 
 // Extract hostname and create local path from URL
 function urlToLocalPath(url) {
@@ -59,12 +65,12 @@ function downloadFile(url, dest) {
 
 // Ensure directory exists
 async function ensureDir(dirPath) {
-  await fs.mkdir(dirPath, { recursive: true });
+  await fsPromises.mkdir(dirPath, { recursive: true });
 }
 
 // Process a single product JSON file
 async function processProductFile(filePath) {
-  const content = await fs.readFile(filePath, 'utf8');
+  const content = await fsPromises.readFile(filePath, 'utf8');
   const product = JSON.parse(content);
   
   let updated = false;
@@ -105,7 +111,7 @@ async function processProductFile(filePath) {
         
         // Check if file already exists
         try {
-          await fs.access(fullPath);
+          await fsPromises.access(fullPath);
           console.log(`  ✓ Already exists: ${localPath}`);
         } catch {
           // File doesn't exist, download it
@@ -121,7 +127,7 @@ async function processProductFile(filePath) {
   
   // Save updated JSON if changed
   if (updated) {
-    await fs.writeFile(filePath, JSON.stringify(product, null, 2) + '\n', 'utf8');
+    await fsPromises.writeFile(filePath, JSON.stringify(product, null, 2) + '\n', 'utf8');
     console.log(`  ↻ Updated: ${path.basename(filePath)}`);
   }
   
@@ -133,7 +139,7 @@ async function main() {
   console.log('🚀 Downloading external images to local...\n');
   
   try {
-    const files = await fs.readdir(PRODUCTS_DIR);
+    const files = await fsPromises.readdir(PRODUCTS_DIR);
     const jsonFiles = files.filter(f => f.endsWith('.json'));
     
     let updatedCount = 0;

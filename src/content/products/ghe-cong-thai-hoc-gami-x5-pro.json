@@ -5,14 +5,14 @@
   "description": "Ghế Gami X5 Pro - phiên bản nâng cấp của X5, tích hợp lưng FlexBack 4 mảnh, 2 màu Phantom (Batman) và Flash (The Flash). Tải trọng 150kg, bảo hành 3 năm.",
   "price": 9100000,
   "original_price": null,
-  "image_url": "https://cdn.hstatic.net/products/200000912647/1_e0cfff97dad24eeca48ba37518bab894.png",
+  "image_url": "/g3tech/external/cdn_hstatic_net/products/200000912647/1_e0cfff97dad24eeca48ba37518bab894.png",
   "gallery_url": null,
   "gallery_array": [
-    "https://cdn.hstatic.net/products/200000912647/1_e0cfff97dad24eeca48ba37518bab894.png",
-    "https://cdn.hstatic.net/products/200000912647/2_309f68e0d9604cef9b6676bb67f78cf9.png",
-    "https://cdn.hstatic.net/products/200000912647/3_8ae612a4730a4d7e847f9dff3675d835.png",
-    "https://cdn.hstatic.net/products/200000912647/4_224c1d97bb314272aeccaac7b57e4c33.png",
-    "https://cdn.hstatic.net/products/200000912647/5_e150a75e646d48798249eb598b78d347.png"
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/1_e0cfff97dad24eeca48ba37518bab894.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/2_309f68e0d9604cef9b6676bb67f78cf9.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/3_8ae612a4730a4d7e847f9dff3675d835.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/4_224c1d97bb314272aeccaac7b57e4c33.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/5_e150a75e646d48798249eb598b78d347.png"
   ],
   "rating": 4.9,
   "sold_count": 45,
@@ -32,10 +32,22 @@
     "Hỗ trợ lưng và vai tốt nhất dòng X"
   ],
   "thong_so_ky_thuat": [
-    { "title": "Tải trọng tối đa", "value": "150kg" },
-    { "title": "Bảo hành", "value": "3 năm" },
-    { "title": "Màu sắc", "value": "Phantom / Flash" },
-    { "title": "Công nghệ lưng", "value": "FlexBack Pro 4 mảnh" }
+    {
+      "title": "Tải trọng tối đa",
+      "value": "150kg"
+    },
+    {
+      "title": "Bảo hành",
+      "value": "3 năm"
+    },
+    {
+      "title": "Màu sắc",
+      "value": "Phantom / Flash"
+    },
+    {
+      "title": "Công nghệ lưng",
+      "value": "FlexBack Pro 4 mảnh"
+    }
   ],
   "created_at": "2025-08-29T00:00:00Z",
   "updated_at": "2026-06-10T00:00:00Z"

@@ -5,22 +5,22 @@
   "description": "Ghế công thái học Gami Hexa - toàn bộ hợp kim, lưới Wintex đan chéo tăng độ bền. Tựa đầu NeckFlow 4D, lưng BackLift 2D, hai phiên bản tay 4D và 6D.",
   "price": 6300000,
   "original_price": 6390000,
-  "image_url": "https://cdn.hstatic.net/products/200000912647/1_ea1ae0e3b76445a3830274153c6e2f30.png",
+  "image_url": "/g3tech/external/cdn_hstatic_net/products/200000912647/1_ea1ae0e3b76445a3830274153c6e2f30.png",
   "gallery_url": null,
   "gallery_array": [
-    "https://cdn.hstatic.net/products/200000912647/1_ea1ae0e3b76445a3830274153c6e2f30.png",
-    "https://cdn.hstatic.net/products/200000912647/2_c82e6b7ea2e14e1bb92c61b1236012b8.png",
-    "https://cdn.hstatic.net/products/200000912647/3_fc80652c1c9f4b5891d95e8dcf9fa7ee.png",
-    "https://cdn.hstatic.net/products/200000912647/4_6f291a8b9ec5432dba8fbedf41b5351f.png",
-    "https://cdn.hstatic.net/products/200000912647/5_0239bc7973d74508bc9f5525db348cf8.png",
-    "https://cdn.hstatic.net/products/200000912647/6_d51122f244e5458b8d7695cf96fe6ff7.png",
-    "https://cdn.hstatic.net/products/200000912647/7_4b53db70b79a4931869c387e1faab69b.png",
-    "https://cdn.hstatic.net/products/200000912647/8_07cac65f032e46df9332016dea98a942.png",
-    "https://cdn.hstatic.net/products/200000912647/9_3f1bfd6631674d3cbfae5c6cec7f7de4.png",
-    "https://cdn.hstatic.net/products/200000912647/11_9942eb2df5d5451585d1b972900ee792.png",
-    "https://cdn.hstatic.net/products/200000912647/12_21f5f8295d7a4f5b8b1fafad69413ce7.png",
-    "https://cdn.hstatic.net/products/200000912647/13_836b29a49d444a83973ff12834e4eb7c.png",
-    "https://cdn.hstatic.net/products/200000912647/14_6bb98e3fbe624632af0653a049853758.png"
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/1_ea1ae0e3b76445a3830274153c6e2f30.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/2_c82e6b7ea2e14e1bb92c61b1236012b8.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/3_fc80652c1c9f4b5891d95e8dcf9fa7ee.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/4_6f291a8b9ec5432dba8fbedf41b5351f.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/5_0239bc7973d74508bc9f5525db348cf8.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/6_d51122f244e5458b8d7695cf96fe6ff7.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/7_4b53db70b79a4931869c387e1faab69b.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/8_07cac65f032e46df9332016dea98a942.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/9_3f1bfd6631674d3cbfae5c6cec7f7de4.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/11_9942eb2df5d5451585d1b972900ee792.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/12_21f5f8295d7a4f5b8b1fafad69413ce7.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/13_836b29a49d444a83973ff12834e4eb7c.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/14_6bb98e3fbe624632af0653a049853758.png"
   ],
   "rating": 4.9,
   "sold_count": 191,
@@ -43,15 +43,42 @@
     "Bảo hành 5 năm"
   ],
   "thong_so_ky_thuat": [
-    { "title": "Tải trọng tối đa", "value": "160kg" },
-    { "title": "Bảo hành", "value": "5 năm" },
-    { "title": "Chất liệu lưới", "value": "Wintex - Hàn Quốc (ISO 9001, BS 5852)" },
-    { "title": "Chân ghế", "value": "Hợp kim nhôm chống rỉ" },
-    { "title": "Tay ghế", "value": "4D hoặc 6D hợp kim nhôm" },
-    { "title": "Tựa đầu", "value": "NeckFlow 4D - 8 hướng" },
-    { "title": "Tựa lưng", "value": "BackLift 2D - 8 nấc" },
-    { "title": "Ngả lưng", "value": "145 độ, 4 vị trí khóa" },
-    { "title": "Piston", "value": "WITHUS Class 4 - Hàn Quốc" }
+    {
+      "title": "Tải trọng tối đa",
+      "value": "160kg"
+    },
+    {
+      "title": "Bảo hành",
+      "value": "5 năm"
+    },
+    {
+      "title": "Chất liệu lưới",
+      "value": "Wintex - Hàn Quốc (ISO 9001, BS 5852)"
+    },
+    {
+      "title": "Chân ghế",
+      "value": "Hợp kim nhôm chống rỉ"
+    },
+    {
+      "title": "Tay ghế",
+      "value": "4D hoặc 6D hợp kim nhôm"
+    },
+    {
+      "title": "Tựa đầu",
+      "value": "NeckFlow 4D - 8 hướng"
+    },
+    {
+      "title": "Tựa lưng",
+      "value": "BackLift 2D - 8 nấc"
+    },
+    {
+      "title": "Ngả lưng",
+      "value": "145 độ, 4 vị trí khóa"
+    },
+    {
+      "title": "Piston",
+      "value": "WITHUS Class 4 - Hàn Quốc"
+    }
   ],
   "created_at": "2025-10-08T00:00:00Z",
   "updated_at": "2026-06-11T00:00:00Z"

@@ -5,18 +5,18 @@
   "description": "Ghế Gami X5 - thiết kế lưng FlexBack công nghệ 4 mảnh thông minh, ôm trọn bờ vai. Có 2 phiên bản màu Phantom (Batman) và Luna (Sailor Moon). Tải trọng 150kg.",
   "price": 6700000,
   "original_price": null,
-  "image_url": "https://cdn.hstatic.net/products/200000912647/9_e42f56ddd5634a129ae79143b852a3ec.png",
+  "image_url": "/g3tech/external/cdn_hstatic_net/products/200000912647/9_e42f56ddd5634a129ae79143b852a3ec.png",
   "gallery_url": null,
   "gallery_array": [
-    "https://cdn.hstatic.net/products/200000912647/9_e42f56ddd5634a129ae79143b852a3ec.png",
-    "https://cdn.hstatic.net/products/200000912647/4_224c1d97bb314272aeccaac7b57e4c33.png",
-    "https://cdn.hstatic.net/products/200000912647/5_e150a75e646d48798249eb598b78d347.png",
-    "https://cdn.hstatic.net/products/200000912647/6_150cca57c788429e90248ce9695b36b6.png",
-    "https://cdn.hstatic.net/products/200000912647/8_ebb993544560440491c35e3c83af53d5.png",
-    "https://cdn.hstatic.net/products/200000912647/4_9194336e128446908d923810731cbf07.png",
-    "https://cdn.hstatic.net/products/200000912647/1_e0cfff97dad24eeca48ba37518bab894.png",
-    "https://cdn.hstatic.net/products/200000912647/2_309f68e0d9604cef9b6676bb67f78cf9.png",
-    "https://cdn.hstatic.net/products/200000912647/3_8ae612a4730a4d7e847f9dff3675d835.png"
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/9_e42f56ddd5634a129ae79143b852a3ec.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/4_224c1d97bb314272aeccaac7b57e4c33.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/5_e150a75e646d48798249eb598b78d347.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/6_150cca57c788429e90248ce9695b36b6.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/8_ebb993544560440491c35e3c83af53d5.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/4_9194336e128446908d923810731cbf07.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/1_e0cfff97dad24eeca48ba37518bab894.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/2_309f68e0d9604cef9b6676bb67f78cf9.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/3_8ae612a4730a4d7e847f9dff3675d835.png"
   ],
   "rating": 4.8,
   "sold_count": 72,
@@ -37,10 +37,22 @@
     "Lắp đặt đơn giản"
   ],
   "thong_so_ky_thuat": [
-    { "title": "Tải trọng tối đa", "value": "150kg" },
-    { "title": "Bảo hành", "value": "3 năm" },
-    { "title": "Màu sắc", "value": "Phantom / Luna" },
-    { "title": "Công nghệ lưng", "value": "FlexBack 4 mảnh" }
+    {
+      "title": "Tải trọng tối đa",
+      "value": "150kg"
+    },
+    {
+      "title": "Bảo hành",
+      "value": "3 năm"
+    },
+    {
+      "title": "Màu sắc",
+      "value": "Phantom / Luna"
+    },
+    {
+      "title": "Công nghệ lưng",
+      "value": "FlexBack 4 mảnh"
+    }
   ],
   "created_at": "2025-09-27T00:00:00Z",
   "updated_at": "2026-06-07T00:00:00Z"

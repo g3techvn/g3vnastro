@@ -5,16 +5,16 @@
   "description": "Ghế Gami X3 Pro - dòng ghế công thái học cao cấp nhất của Gami, công nghệ Suspension Technology tạo cảm giác lơ lửng êm ái, tải trọng 160kg.",
   "price": 18500000,
   "original_price": null,
-  "image_url": "https://cdn.hstatic.net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3.png",
+  "image_url": "/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3.png",
   "gallery_url": null,
   "gallery_array": [
-    "https://cdn.hstatic.net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3.png",
-    "https://cdn.hstatic.net/products/200000912647/x3_pro__4__d0ababbba2414e5eb61c036dff84c942.png",
-    "https://cdn.hstatic.net/products/200000912647/x3_pro__3__bc7a98b07269493b8c5cf0f007409bf2.png",
-    "https://cdn.hstatic.net/products/200000912647/x3_pro__2__d7c72e3ab3aa4671a7199aa4ee661289.png",
-    "https://cdn.hstatic.net/products/200000912647/x3_pro_0e00aa777b3046ae9a7508c24c5404c5.png"
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__4__d0ababbba2414e5eb61c036dff84c942.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__3__bc7a98b07269493b8c5cf0f007409bf2.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__2__d7c72e3ab3aa4671a7199aa4ee661289.png",
+    "/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro_0e00aa777b3046ae9a7508c24c5404c5.png"
   ],
-  "rating": 5.0,
+  "rating": 5,
   "sold_count": 7,
   "brand_id": 1,
   "pd_cat_id": 1,
@@ -32,10 +32,22 @@
     "Hỗ trợ lưng tối đa"
   ],
   "thong_so_ky_thuat": [
-    { "title": "Tải trọng tối đa", "value": "160kg" },
-    { "title": "Bảo hành", "value": "3 năm" },
-    { "title": "Màu sắc", "value": "Fantasy" },
-    { "title": "Công nghệ", "value": "Suspension Technology" }
+    {
+      "title": "Tải trọng tối đa",
+      "value": "160kg"
+    },
+    {
+      "title": "Bảo hành",
+      "value": "3 năm"
+    },
+    {
+      "title": "Màu sắc",
+      "value": "Fantasy"
+    },
+    {
+      "title": "Công nghệ",
+      "value": "Suspension Technology"
+    }
   ],
   "created_at": "2025-12-26T00:00:00Z",
   "updated_at": "2026-04-24T00:00:00Z"
