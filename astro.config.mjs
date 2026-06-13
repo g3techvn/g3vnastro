@@ -104,9 +104,6 @@ export default defineConfig({
   },
 
   vite: {
-    optimizeDeps: {
-      include: ['@supabase/supabase-js']
-    },
     resolve: {
       alias: {
         '@': path.resolve('./src')

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev --host --port 4321",
+    "download-images": "node download-external-images.mjs",
     "optimize-images": "node optimize-images.mjs",
     "build": "astro build",
     "preview": "astro preview",

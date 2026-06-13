@@ -226,7 +226,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project }) => {
                 <h4 className="font-semibold text-gray-900 mb-3">Bạn có dự án tương tự?</h4>
                 <div className="space-y-2">
                   <a
-                    href="tel:0979983355"
+                    href="tel:0947776662"
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

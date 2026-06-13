@@ -28,12 +28,12 @@ interface MapDrawerProps {
 
 const COMPANY_INFO = {
   name: 'Công Ty Cổ phần Công nghệ G3 Việt Nam',
-  hotline: '0979983355',
+  hotline: '0947776662',
   email: 'info@g-3.vn',
   address: 'Tầng 7, Tòa nhà Charmvit, số 117 Trần Duy Hưng, Q. Cầu Giấy, TP. Hà Nội.',
   website: 'https://g-3.vn',
   workingHours: '8:00 - 17:30 (Thứ 2 - Thứ 6)',
-  zalo: 'https://zalo.me/0979983355',
+  zalo: 'https://zalo.me/0947776662',
 };
 
 const MapDrawerReact: React.FC<MapDrawerProps> = ({ location, open, onClose }) => {

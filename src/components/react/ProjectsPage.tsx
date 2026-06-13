@@ -147,7 +147,7 @@ const ProjectsPage: React.FC = () => {
             Liên hệ với chúng tôi để được tư vấn miễn phí và nhận báo giá chi tiết cho dự án của bạn
           </p>
           <div className="cta-buttons">
-            <a href="tel:0979983355" className="cta-button-primary">
+            <a href="tel:0947776662" className="cta-button-primary">
               📞 Gọi ngay: 0979 983 355
             </a>
             <a href="/lien-he" className="cta-button-secondary">

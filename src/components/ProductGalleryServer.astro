@@ -1,6 +1,8 @@
 ---
 import { readdir } from 'fs/promises';
 import { join } from 'path';
+import { Image } from 'astro:assets';
+import { isExternalUrl } from './OptimizedImage';
 
 export interface Props {
   productName: string;
@@ -98,11 +100,22 @@ const hasImages = galleryItems.length > 0;
               class="w-full h-full absolute inset-0 bg-black"
             />
           ) : (
-            <img
-              src={galleryItems[0].url}
-              alt={`${productName} - Ảnh chính`}
-              class="w-full h-full object-contain"
-            />
+            isExternalUrl(galleryItems[0].url) ? (
+              <img
+                src={galleryItems[0].url}
+                alt={`${productName} - Ảnh chính`}
+                class="w-full h-full object-contain"
+                loading="lazy"
+              />
+            ) : (
+              <Image
+                src={galleryItems[0].url}
+                alt={`${productName} - Ảnh chính`}
+                class="w-full h-full object-contain"
+                width={800}
+                height={800}
+              />
+            )
           )}
         </div>
       </div>
@@ -125,11 +138,22 @@ const hasImages = galleryItems.length > 0;
                   </div>
                 </>
               ) : (
-                <img
-                  src={item.url && item.url.includes('/g3tech-otm/') && item.url.endsWith('.avif') ? item.url.replace('.avif', '_thumb.avif') : item.url && item.url.includes('/g3tech/') && /\.(jpg|jpeg|png|webp)$/i.test(item.url) ? item.url.replace(/^\/g3tech\//, '/g3tech-otm/').replace(/\.(jpg|jpeg|png|webp)$/i, '_thumb.avif') : item.url}
-                  alt={`${productName} - ${index + 1}`}
-                  class="w-full h-full object-cover"
-                />
+                isExternalUrl(item.url) ? (
+                  <img
+                    src={item.url}
+                    alt={`${productName} - ${index + 1}`}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <Image
+                    src={item.url}
+                    alt={`${productName} - ${index + 1}`}
+                    class="w-full h-full object-cover"
+                    width={96}
+                    height={96}
+                  />
+                )
               )}
             </div>
           ))}

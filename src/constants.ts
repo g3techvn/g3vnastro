@@ -82,7 +82,7 @@ export const HELP_CONTACT_METHODS = [
   {
     icon: '📞',
     title: 'Hotline',
-    // value: '0979983355',
+    // value: '0947776662',
     value: '0947776662',
     description: '8:00 - 22:00 hàng ngày',
     type: 'phone'
