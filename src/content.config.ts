@@ -28,6 +28,17 @@ const productSchema = z.object({
   })).optional().default([]),
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
+  // Optimized image metadata (added by build script)
+  _optimized_image: z.array(z.object({
+    path: z.string(),
+    width: z.number(),
+    size: z.number(),
+  })).optional().default([]),
+  _optimized_gallery: z.array(z.array(z.object({
+    path: z.string(),
+    width: z.number(),
+    size: z.number(),
+  }))).optional().default([]),
 });
 
 const brandSchema = z.object({
