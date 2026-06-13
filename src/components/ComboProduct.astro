@@ -1,7 +1,7 @@
 ---
+import ResponsiveImage from './ResponsiveImage.astro';
 import { Image } from 'astro:assets';
 import { getFeaturedProductsByIds } from '../lib/collections';
-import { isExternalUrl } from './OptimizedImage';
 
 // Fetch products at build time
 const featuredProductIds = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -48,6 +48,7 @@ function getDiscountPercentage(price: number, originalPrice?: number | null): nu
       {/* First 2 products - takes 1 column each */}
       {orderedProducts.slice(0, 2).map((product) => {
         const discount = getDiscountPercentage(product.price, product.original_price);
+        const imageUrl = product.image_url;
         return (
           <div class="col-span-3 lg:col-span-1">
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden">
@@ -58,22 +59,14 @@ function getDiscountPercentage(price: number, originalPrice?: number | null): nu
                   </div>
                 )}
                 <a href={`/san-pham/${product.slug}`}>
-                  {isExternalUrl(product.image_url) ? (
-                    <img
-                      src={product.image_url}
-                      alt={product.name}
-                      class="object-contain w-full h-full cursor-pointer"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <Image
-                      src={product.image_url}
-                      alt={product.name}
-                      class="object-contain w-full h-full cursor-pointer"
-                      width={400}
-                      height={400}
-                    />
-                  )}
+                  <ResponsiveImage
+                    optimizedImages={(product as any)._optimized_image}
+                    fallbackSrc={imageUrl}
+                    alt={product.name}
+                    class="object-contain w-full h-full cursor-pointer"
+                    width={400}
+                    height={400}
+                  />
                 </a>
               </div>
               <a href={`/san-pham/${product.slug}`} class="block">
@@ -121,6 +114,7 @@ function getDiscountPercentage(price: number, originalPrice?: number | null): nu
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
       {orderedProducts.slice(2).map((product) => {
         const discount = getDiscountPercentage(product.price, product.original_price);
+        const imageUrl = product.image_url;
         return (
           <div>
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden">
@@ -131,22 +125,14 @@ function getDiscountPercentage(price: number, originalPrice?: number | null): nu
                   </div>
                 )}
                 <a href={`/san-pham/${product.slug}`}>
-                  {isExternalUrl(product.image_url) ? (
-                    <img
-                      src={product.image_url}
-                      alt={product.name}
-                      class="object-contain w-full h-full cursor-pointer"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <Image
-                      src={product.image_url}
-                      alt={product.name}
-                      class="object-contain w-full h-full cursor-pointer"
-                      width={400}
-                      height={400}
-                    />
-                  )}
+                  <ResponsiveImage
+                    optimizedImages={(product as any)._optimized_image}
+                    fallbackSrc={imageUrl}
+                    alt={product.name}
+                    class="object-contain w-full h-full cursor-pointer"
+                    width={400}
+                    height={400}
+                  />
                 </a>
               </div>
               <a href={`/san-pham/${product.slug}`} class="block">

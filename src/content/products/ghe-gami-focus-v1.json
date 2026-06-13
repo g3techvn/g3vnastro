@@ -32,12 +32,161 @@
     "Dễ điều chỉnh phù hợp chiều cao"
   ],
   "thong_so_ky_thuat": [
-    { "title": "Tải trọng tối đa", "value": "150kg" },
-    { "title": "Bảo hành", "value": "3 năm" },
-    { "title": "Chất liệu lưới", "value": "Lưới mesh cao cấp" },
-    { "title": "Chân ghế", "value": "Hợp kim nhôm" },
-    { "title": "Tay ghế", "value": "4D" }
+    {
+      "title": "Tải trọng tối đa",
+      "value": "150kg"
+    },
+    {
+      "title": "Bảo hành",
+      "value": "3 năm"
+    },
+    {
+      "title": "Chất liệu lưới",
+      "value": "Lưới mesh cao cấp"
+    },
+    {
+      "title": "Chân ghế",
+      "value": "Hợp kim nhôm"
+    },
+    {
+      "title": "Tay ghế",
+      "value": "4D"
+    }
   ],
   "created_at": "2024-01-01T00:00:00Z",
-  "updated_at": "2026-06-01T00:00:00Z"
+  "updated_at": "2026-06-01T00:00:00Z",
+  "_optimized_image": [
+    {
+      "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-1-200w.webp",
+      "width": 200,
+      "size": 2086
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-1-400w.webp",
+      "width": 400,
+      "size": 5418
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-1-800w.webp",
+      "width": 800,
+      "size": 15006
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-1.webp",
+      "width": 800,
+      "size": 24694
+    }
+  ],
+  "_optimized_gallery": [
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-1-200w.webp",
+        "width": 200,
+        "size": 2086
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-1-400w.webp",
+        "width": 400,
+        "size": 5418
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-1-800w.webp",
+        "width": 800,
+        "size": 15006
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-1.webp",
+        "width": 800,
+        "size": 24694
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-2-200w.webp",
+        "width": 200,
+        "size": 2168
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-2-400w.webp",
+        "width": 400,
+        "size": 5238
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-2-800w.webp",
+        "width": 800,
+        "size": 13408
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-2.webp",
+        "width": 800,
+        "size": 19864
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-3-200w.webp",
+        "width": 200,
+        "size": 1998
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-3-400w.webp",
+        "width": 400,
+        "size": 4490
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-3-800w.webp",
+        "width": 800,
+        "size": 9782
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-3.webp",
+        "width": 800,
+        "size": 12944
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-4-200w.webp",
+        "width": 200,
+        "size": 2326
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-4-400w.webp",
+        "width": 400,
+        "size": 5900
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-4-800w.webp",
+        "width": 800,
+        "size": 16054
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-4.webp",
+        "width": 800,
+        "size": 23920
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-5-200w.webp",
+        "width": 200,
+        "size": 2376
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-5-400w.webp",
+        "width": 400,
+        "size": 6052
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-5-800w.webp",
+        "width": 800,
+        "size": 21080
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/gami-focus-v1/ghe-gami-focus-v1-g-3.vn-5.webp",
+        "width": 800,
+        "size": 36458
+      }
+    ]
+  ]
 }

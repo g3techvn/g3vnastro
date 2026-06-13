@@ -32,12 +32,139 @@
     "Hỗ trợ lưng tối ưu"
   ],
   "thong_so_ky_thuat": [
-    { "title": "Tải trọng tối đa", "value": "160kg" },
-    { "title": "Bảo hành", "value": "5 năm" },
-    { "title": "Chất liệu lưng", "value": "Carbon" },
-    { "title": "Chân ghế", "value": "Hợp kim nhôm" },
-    { "title": "Tay ghế", "value": "4D hợp kim" }
+    {
+      "title": "Tải trọng tối đa",
+      "value": "160kg"
+    },
+    {
+      "title": "Bảo hành",
+      "value": "5 năm"
+    },
+    {
+      "title": "Chất liệu lưng",
+      "value": "Carbon"
+    },
+    {
+      "title": "Chân ghế",
+      "value": "Hợp kim nhôm"
+    },
+    {
+      "title": "Tay ghế",
+      "value": "4D hợp kim"
+    }
   ],
   "created_at": "2024-01-01T00:00:00Z",
-  "updated_at": "2026-06-01T00:00:00Z"
+  "updated_at": "2026-06-01T00:00:00Z",
+  "_optimized_image": [
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1-200w.webp",
+      "width": 200,
+      "size": 2412
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1-400w.webp",
+      "width": 400,
+      "size": 7106
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1-800w.webp",
+      "width": 800,
+      "size": 21420
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1.webp",
+      "width": 800,
+      "size": 32254
+    }
+  ],
+  "_optimized_gallery": [
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1-200w.webp",
+        "width": 200,
+        "size": 2412
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1-400w.webp",
+        "width": 400,
+        "size": 7106
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1-800w.webp",
+        "width": 800,
+        "size": 21420
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1.webp",
+        "width": 800,
+        "size": 32254
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-2-200w.webp",
+        "width": 200,
+        "size": 2352
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-2-400w.webp",
+        "width": 400,
+        "size": 5598
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-2-800w.webp",
+        "width": 800,
+        "size": 12378
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-2.webp",
+        "width": 800,
+        "size": 16648
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-3-200w.webp",
+        "width": 200,
+        "size": 2452
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-3-400w.webp",
+        "width": 400,
+        "size": 6474
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-3-800w.webp",
+        "width": 800,
+        "size": 17736
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-3.webp",
+        "width": 800,
+        "size": 24878
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-4-200w.webp",
+        "width": 200,
+        "size": 2750
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-4-400w.webp",
+        "width": 400,
+        "size": 8038
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-4-800w.webp",
+        "width": 800,
+        "size": 24782
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-4.webp",
+        "width": 800,
+        "size": 35152
+      }
+    ]
+  ]
 }

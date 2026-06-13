@@ -27,11 +27,79 @@
     "Thiết kế hiện đại"
   ],
   "thong_so_ky_thuat": [
-    { "title": "Tải trọng tối đa", "value": "130kg" },
-    { "title": "Bảo hành", "value": "2 năm" },
-    { "title": "Chất liệu lưới", "value": "Lưới mesh" },
-    { "title": "Tay ghế", "value": "3D" }
+    {
+      "title": "Tải trọng tối đa",
+      "value": "130kg"
+    },
+    {
+      "title": "Bảo hành",
+      "value": "2 năm"
+    },
+    {
+      "title": "Chất liệu lưới",
+      "value": "Lưới mesh"
+    },
+    {
+      "title": "Tay ghế",
+      "value": "3D"
+    }
   ],
   "created_at": "2024-01-01T00:00:00Z",
-  "updated_at": "2026-06-01T00:00:00Z"
+  "updated_at": "2026-06-01T00:00:00Z",
+  "_optimized_image": [
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1-200w.webp",
+      "width": 200,
+      "size": 3766
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1-400w.webp",
+      "width": 400,
+      "size": 10384
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1-800w.webp",
+      "width": 800,
+      "size": 38000
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1.webp",
+      "width": 800,
+      "size": 345378
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1-1200w.webp",
+      "width": 1200,
+      "size": 91012
+    }
+  ],
+  "_optimized_gallery": [
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1-200w.webp",
+        "width": 200,
+        "size": 3766
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1-400w.webp",
+        "width": 400,
+        "size": 10384
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1-800w.webp",
+        "width": 800,
+        "size": 38000
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1.webp",
+        "width": 800,
+        "size": 345378
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1-1200w.webp",
+        "width": 1200,
+        "size": 91012
+      }
+    ]
+  ]
 }

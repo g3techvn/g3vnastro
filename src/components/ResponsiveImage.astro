@@ -1,0 +1,64 @@
+---
+/**
+ * ResponsiveImage - Component for optimized images with srcset
+ * Uses pre-optimized WebP images with multiple sizes
+ */
+
+interface Props {
+  optimizedImages?: Array<{ path: string; width: number; size: number }>;
+  fallbackSrc?: string | null;
+  alt: string;
+  class?: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+}
+
+const { 
+  optimizedImages, 
+  fallbackSrc, 
+  alt, 
+  class: className = '',
+  width = 400,
+  height = 400,
+  loading = 'lazy'
+} = Astro.props;
+
+// Generate srcset from optimized images
+let srcset = '';
+let bestImage = fallbackSrc;
+
+if (optimizedImages && optimizedImages.length > 0) {
+  srcset = optimizedImages.map(img => `${img.path} ${img.width}w`).join(', ');
+  // Use the largest available image as fallback
+  bestImage = optimizedImages[optimizedImages.length - 1].path;
+}
+---
+
+{srcset ? (
+  <img
+    src={bestImage}
+    srcset={srcset}
+    sizes={`(max-width: 768px) 50vw, (max-width: 1024px) 33vw, ${width}px`}
+    alt={alt}
+    class={className}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+  />
+) : fallbackSrc ? (
+  <img
+    src={fallbackSrc}
+    alt={alt}
+    class={className}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+  />
+) : (
+  <div class={`bg-gray-100 flex items-center justify-center ${className}`}>
+    <span class="text-gray-400 text-sm">No image</span>
+  </div>
+)}

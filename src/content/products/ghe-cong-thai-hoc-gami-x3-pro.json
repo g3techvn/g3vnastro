@@ -50,5 +50,139 @@
     }
   ],
   "created_at": "2025-12-26T00:00:00Z",
-  "updated_at": "2026-04-24T00:00:00Z"
+  "updated_at": "2026-04-24T00:00:00Z",
+  "_optimized_image": [
+    {
+      "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3-200w.webp",
+      "width": 200,
+      "size": 2772
+    },
+    {
+      "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3-400w.webp",
+      "width": 400,
+      "size": 6460
+    },
+    {
+      "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3-800w.webp",
+      "width": 800,
+      "size": 15034
+    },
+    {
+      "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3.webp",
+      "width": 800,
+      "size": 18326
+    }
+  ],
+  "_optimized_gallery": [
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3-200w.webp",
+        "width": 200,
+        "size": 2772
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3-400w.webp",
+        "width": 400,
+        "size": 6460
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3-800w.webp",
+        "width": 800,
+        "size": 15034
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__1__abeb129053ff4cb7a30681c8cca164c3.webp",
+        "width": 800,
+        "size": 18326
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__4__d0ababbba2414e5eb61c036dff84c942-200w.webp",
+        "width": 200,
+        "size": 3684
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__4__d0ababbba2414e5eb61c036dff84c942-400w.webp",
+        "width": 400,
+        "size": 9280
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__4__d0ababbba2414e5eb61c036dff84c942-800w.webp",
+        "width": 800,
+        "size": 22834
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__4__d0ababbba2414e5eb61c036dff84c942.webp",
+        "width": 800,
+        "size": 27594
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__3__bc7a98b07269493b8c5cf0f007409bf2-200w.webp",
+        "width": 200,
+        "size": 3218
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__3__bc7a98b07269493b8c5cf0f007409bf2-400w.webp",
+        "width": 400,
+        "size": 8062
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__3__bc7a98b07269493b8c5cf0f007409bf2-800w.webp",
+        "width": 800,
+        "size": 19502
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__3__bc7a98b07269493b8c5cf0f007409bf2.webp",
+        "width": 800,
+        "size": 23488
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__2__d7c72e3ab3aa4671a7199aa4ee661289-200w.webp",
+        "width": 200,
+        "size": 2888
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__2__d7c72e3ab3aa4671a7199aa4ee661289-400w.webp",
+        "width": 400,
+        "size": 6864
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__2__d7c72e3ab3aa4671a7199aa4ee661289-800w.webp",
+        "width": 800,
+        "size": 15480
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro__2__d7c72e3ab3aa4671a7199aa4ee661289.webp",
+        "width": 800,
+        "size": 17848
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro_0e00aa777b3046ae9a7508c24c5404c5-200w.webp",
+        "width": 200,
+        "size": 2882
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro_0e00aa777b3046ae9a7508c24c5404c5-400w.webp",
+        "width": 400,
+        "size": 6560
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro_0e00aa777b3046ae9a7508c24c5404c5-800w.webp",
+        "width": 800,
+        "size": 14730
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/x3_pro_0e00aa777b3046ae9a7508c24c5404c5.webp",
+        "width": 800,
+        "size": 17828
+      }
+    ]
+  ]
 }

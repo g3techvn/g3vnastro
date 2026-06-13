@@ -12,7 +12,7 @@
     "/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-2.webp",
     "/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-3.webp"
   ],
-  "rating": 5.0,
+  "rating": 5,
   "sold_count": 89,
   "brand_id": 1,
   "pd_cat_id": 1,
@@ -32,13 +32,121 @@
     "Bảo hành 5 năm"
   ],
   "thong_so_ky_thuat": [
-    { "title": "Tải trọng tối đa", "value": "160kg" },
-    { "title": "Bảo hành", "value": "5 năm" },
-    { "title": "Chất liệu lưới", "value": "Wintex - Hàn Quốc" },
-    { "title": "Chân ghế", "value": "Hợp kim nhôm" },
-    { "title": "Tay ghế", "value": "6D hợp kim" },
-    { "title": "Ngả lưng", "value": "145 độ" }
+    {
+      "title": "Tải trọng tối đa",
+      "value": "160kg"
+    },
+    {
+      "title": "Bảo hành",
+      "value": "5 năm"
+    },
+    {
+      "title": "Chất liệu lưới",
+      "value": "Wintex - Hàn Quốc"
+    },
+    {
+      "title": "Chân ghế",
+      "value": "Hợp kim nhôm"
+    },
+    {
+      "title": "Tay ghế",
+      "value": "6D hợp kim"
+    },
+    {
+      "title": "Ngả lưng",
+      "value": "145 độ"
+    }
   ],
   "created_at": "2024-01-01T00:00:00Z",
-  "updated_at": "2026-06-01T00:00:00Z"
+  "updated_at": "2026-06-01T00:00:00Z",
+  "_optimized_image": [
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1-200w.webp",
+      "width": 200,
+      "size": 3068
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1-400w.webp",
+      "width": 400,
+      "size": 9358
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1-800w.webp",
+      "width": 800,
+      "size": 29126
+    },
+    {
+      "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1.webp",
+      "width": 800,
+      "size": 43550
+    }
+  ],
+  "_optimized_gallery": [
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1-200w.webp",
+        "width": 200,
+        "size": 3068
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1-400w.webp",
+        "width": 400,
+        "size": 9358
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1-800w.webp",
+        "width": 800,
+        "size": 29126
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1.webp",
+        "width": 800,
+        "size": 43550
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-2-200w.webp",
+        "width": 200,
+        "size": 2028
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-2-400w.webp",
+        "width": 400,
+        "size": 7850
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-2-800w.webp",
+        "width": 800,
+        "size": 31388
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-2.webp",
+        "width": 800,
+        "size": 49270
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-3-200w.webp",
+        "width": 200,
+        "size": 1986
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-3-400w.webp",
+        "width": 400,
+        "size": 4876
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-3-800w.webp",
+        "width": 800,
+        "size": 13390
+      },
+      {
+        "path": "/optimized/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-3.webp",
+        "width": 800,
+        "size": 19212
+      }
+    ]
+  ]
 }

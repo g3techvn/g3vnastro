@@ -61,5 +61,304 @@
     }
   ],
   "created_at": "2026-01-28T00:00:00Z",
-  "updated_at": "2026-06-13T00:00:00Z"
+  "updated_at": "2026-06-13T00:00:00Z",
+  "_optimized_image": [
+    {
+      "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21-200w.webp",
+      "width": 200,
+      "size": 3842
+    },
+    {
+      "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21-400w.webp",
+      "width": 400,
+      "size": 9758
+    },
+    {
+      "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21-800w.webp",
+      "width": 800,
+      "size": 23948
+    },
+    {
+      "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21.webp",
+      "width": 800,
+      "size": 75860
+    },
+    {
+      "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21-1200w.webp",
+      "width": 1200,
+      "size": 41156
+    }
+  ],
+  "_optimized_gallery": [
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21-200w.webp",
+        "width": 200,
+        "size": 3842
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21-400w.webp",
+        "width": 400,
+        "size": 9758
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21-800w.webp",
+        "width": 800,
+        "size": 23948
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21.webp",
+        "width": 800,
+        "size": 75860
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21-1200w.webp",
+        "width": 1200,
+        "size": 41156
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/1_d1e92c67bb394e8c82faaa6f5311c9e6-200w.webp",
+        "width": 200,
+        "size": 5650
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/1_d1e92c67bb394e8c82faaa6f5311c9e6-400w.webp",
+        "width": 400,
+        "size": 14520
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/1_d1e92c67bb394e8c82faaa6f5311c9e6-800w.webp",
+        "width": 800,
+        "size": 36002
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/1_d1e92c67bb394e8c82faaa6f5311c9e6.webp",
+        "width": 800,
+        "size": 114888
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/1_d1e92c67bb394e8c82faaa6f5311c9e6-1200w.webp",
+        "width": 1200,
+        "size": 62552
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/2_e9d01712f327408f9716f47b27e02271-200w.webp",
+        "width": 200,
+        "size": 5872
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/2_e9d01712f327408f9716f47b27e02271-400w.webp",
+        "width": 400,
+        "size": 17686
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/2_e9d01712f327408f9716f47b27e02271-800w.webp",
+        "width": 800,
+        "size": 47518
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/2_e9d01712f327408f9716f47b27e02271.webp",
+        "width": 800,
+        "size": 133428
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/2_e9d01712f327408f9716f47b27e02271-1200w.webp",
+        "width": 1200,
+        "size": 79324
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/3_7d28ebfbb869440a8b9fa523e93be2dc-200w.webp",
+        "width": 200,
+        "size": 4856
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/3_7d28ebfbb869440a8b9fa523e93be2dc-400w.webp",
+        "width": 400,
+        "size": 12026
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/3_7d28ebfbb869440a8b9fa523e93be2dc-800w.webp",
+        "width": 800,
+        "size": 26478
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/3_7d28ebfbb869440a8b9fa523e93be2dc.webp",
+        "width": 800,
+        "size": 68846
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/3_7d28ebfbb869440a8b9fa523e93be2dc-1200w.webp",
+        "width": 1200,
+        "size": 41666
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/4_0cc9b8ecb1d14f3db95ee797cd09fb09-200w.webp",
+        "width": 200,
+        "size": 4880
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/4_0cc9b8ecb1d14f3db95ee797cd09fb09-400w.webp",
+        "width": 400,
+        "size": 13224
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/4_0cc9b8ecb1d14f3db95ee797cd09fb09-800w.webp",
+        "width": 800,
+        "size": 38894
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/4_0cc9b8ecb1d14f3db95ee797cd09fb09.webp",
+        "width": 800,
+        "size": 127508
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/4_0cc9b8ecb1d14f3db95ee797cd09fb09-1200w.webp",
+        "width": 1200,
+        "size": 69692
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/5_9ca113c9199a4ffc8365e1e31367e6cb-200w.webp",
+        "width": 200,
+        "size": 5114
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/5_9ca113c9199a4ffc8365e1e31367e6cb-400w.webp",
+        "width": 400,
+        "size": 13768
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/5_9ca113c9199a4ffc8365e1e31367e6cb-800w.webp",
+        "width": 800,
+        "size": 34014
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/5_9ca113c9199a4ffc8365e1e31367e6cb.webp",
+        "width": 800,
+        "size": 89886
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/5_9ca113c9199a4ffc8365e1e31367e6cb-1200w.webp",
+        "width": 1200,
+        "size": 54534
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/6_958b017f464a4d948d3f216c1bce3350-200w.webp",
+        "width": 200,
+        "size": 5222
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/6_958b017f464a4d948d3f216c1bce3350-400w.webp",
+        "width": 400,
+        "size": 14648
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/6_958b017f464a4d948d3f216c1bce3350-800w.webp",
+        "width": 800,
+        "size": 36880
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/6_958b017f464a4d948d3f216c1bce3350.webp",
+        "width": 800,
+        "size": 100580
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/6_958b017f464a4d948d3f216c1bce3350-1200w.webp",
+        "width": 1200,
+        "size": 60356
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/7_e6b8c4c78c9246f38e7d647f573ec522-200w.webp",
+        "width": 200,
+        "size": 5632
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/7_e6b8c4c78c9246f38e7d647f573ec522-400w.webp",
+        "width": 400,
+        "size": 14182
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/7_e6b8c4c78c9246f38e7d647f573ec522-800w.webp",
+        "width": 800,
+        "size": 40308
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/7_e6b8c4c78c9246f38e7d647f573ec522.webp",
+        "width": 800,
+        "size": 116224
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/7_e6b8c4c78c9246f38e7d647f573ec522-1200w.webp",
+        "width": 1200,
+        "size": 67426
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/8_5f93ebdd6b004abab956b5d9cba6248c-200w.webp",
+        "width": 200,
+        "size": 4468
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/8_5f93ebdd6b004abab956b5d9cba6248c-400w.webp",
+        "width": 400,
+        "size": 13310
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/8_5f93ebdd6b004abab956b5d9cba6248c-800w.webp",
+        "width": 800,
+        "size": 39154
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/8_5f93ebdd6b004abab956b5d9cba6248c.webp",
+        "width": 800,
+        "size": 108586
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/8_5f93ebdd6b004abab956b5d9cba6248c-1200w.webp",
+        "width": 1200,
+        "size": 64002
+      }
+    ],
+    [
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/9_e3af1814f52c4a94ba87c02a83bcae07-200w.webp",
+        "width": 200,
+        "size": 4790
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/9_e3af1814f52c4a94ba87c02a83bcae07-400w.webp",
+        "width": 400,
+        "size": 15160
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/9_e3af1814f52c4a94ba87c02a83bcae07-800w.webp",
+        "width": 800,
+        "size": 39650
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/9_e3af1814f52c4a94ba87c02a83bcae07.webp",
+        "width": 800,
+        "size": 104942
+      },
+      {
+        "path": "/optimized/g3tech/external/cdn_hstatic_net/products/200000912647/9_e3af1814f52c4a94ba87c02a83bcae07-1200w.webp",
+        "width": 1200,
+        "size": 62630
+      }
+    ]
+  ]
 }
