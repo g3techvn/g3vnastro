@@ -10,6 +10,7 @@ interface Product {
   price: number;
   original_price?: number;
   image_url?: string;
+  optimized_image_url?: string;
   rating?: number;
   sold_count?: number;
   brand_id?: string;
@@ -113,10 +114,10 @@ const ProductList: React.FC<ProductListProps> = ({ filters, sortBy = 'price_desc
         id: product.id,
         name: product.name,
         price: product.price,
-        image_url: product.image_url,
+        image_url: product.optimized_image_url || product.image_url,
         slug: product.slug,
         quantity: 1,
-        image: product.image_url || ''
+        image: product.optimized_image_url || product.image_url || ''
       });
     }
     
@@ -204,9 +205,10 @@ const ProductList: React.FC<ProductListProps> = ({ filters, sortBy = 'price_desc
                   </div>
                 )}
                 <img 
-                  src={product.image_url || '/images/placeholder-product.jpg'} 
+                  src={product.optimized_image_url || product.image_url || '/images/placeholder-product.jpg'} 
                   alt={product.name} 
                   className="object-contain w-full h-full"
+                  loading="lazy"
                 />
                 {/* Quick view icon */}
                 <button
@@ -219,7 +221,7 @@ const ProductList: React.FC<ProductListProps> = ({ filters, sortBy = 'price_desc
                     setPreview({
                       x: e.clientX,
                       y: e.clientY,
-                      image: product.image_url || '/images/placeholder-product.jpg',
+                      image: product.optimized_image_url || product.image_url || '/images/placeholder-product.jpg',
                     });
                   }}
                   onMouseMove={e => {
