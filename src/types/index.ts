@@ -11,6 +11,7 @@ export interface Product {
   discount_percentage?: number;
   image_url?: string;
   image_square_url?: string;
+  optimized_image_url?: string;
   gallery_url?: string;
   gallery_urls?: string[];
   gallery_array?: string[];

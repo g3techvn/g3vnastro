@@ -111,7 +111,7 @@ const MobileBestsellerProductsIsland: React.FC = () => {
                 <div className="flex items-center p-2">
                   <div className="relative w-20 h-20">
                     <img
-                      src={product.image_url || "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=200&auto=format"}
+                      src={product.optimized_image_url || product.image_url || "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=200&auto=format"}
                       alt={product.name}
                       className="rounded-lg object-cover w-full h-full"
                       loading="lazy"
