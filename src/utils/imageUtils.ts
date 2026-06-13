@@ -4,8 +4,8 @@
 
 /**
  * Convert optimized image path to thumbnail version
- * @param imagePath - Original optimized image path (e.g., "/g3tech-otm/products/chair.avif")
- * @returns Thumbnail path (e.g., "/g3tech-otm/products/chair_thumb.avif")
+ * @param imagePath - Original optimized image path (e.g., "/optimized/g3tech/products/chair.webp")
+ * @returns Thumbnail path (e.g., "/optimized/g3tech/products/chair-200w.webp")
  */
 export function getThumbPath(imagePath: string): string {
   if (!imagePath) return imagePath;
@@ -15,17 +15,25 @@ export function getThumbPath(imagePath: string): string {
     return imagePath;
   }
   
-  // For optimized images in g3tech-otm folder
+  // For build-time optimized images - use 200w version as thumbnail
+  if (imagePath.includes('/optimized/') && /\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
+    // If already a sized version, return as-is or get smallest
+    if (/-\d+w\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
+      // Extract base path and convert to 200w
+      return imagePath.replace(/-\d+w\.(jpg|jpeg|png|webp)$/i, '-200w.$1');
+    }
+    // If it's the original optimized, add -200w suffix
+    return imagePath.replace(/\.(jpg|jpeg|png|webp)$/i, '-200w.$1');
+  }
+  
+  // For optimized images in g3tech-otm folder (legacy)
   if (imagePath.includes('/g3tech-otm/') && imagePath.endsWith('.avif')) {
     return imagePath.replace('.avif', '_thumb.avif');
   }
   
-  // For original images in g3tech folder - convert to optimized thumb
+  // For original images in g3tech folder - return as-is (will be loaded from CDN)
   if (imagePath.includes('/g3tech/') && /\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
-    const optimizedPath = imagePath
-      .replace(/^\/g3tech\//, '/g3tech-otm/')
-      .replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
-    return optimizedPath.replace('.avif', '_thumb.avif');
+    return imagePath;
   }
   
   // Return original path if it doesn't match expected patterns

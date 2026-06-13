@@ -4,6 +4,7 @@ import { getThumbPath } from '../utils/imageUtils';
 interface GalleryItem {
   type: 'image' | 'video';
   url: string;
+  optimizedImages?: Array<{ path: string; width: number; size: number }>;
   thumbnail?: string;
   videoUrl?: string;
   title?: string;
@@ -136,11 +137,15 @@ export default function ProductGallery({
       //优先使用 optimizedGallery (from content collections)
       if (optimizedGallery && Array.isArray(optimizedGallery) && optimizedGallery.length > 0) {
         const items: GalleryItem[] = optimizedGallery.map(optImages => {
-          // Use largest available size for gallery
+          // Use largest available size for main display
           const largest = optImages.reduce((prev, current) => 
             current.width > prev.width ? current : prev
           );
-          return { type: 'image', url: largest.path };
+          return { 
+            type: 'image', 
+            url: largest.path,
+            optimizedImages: optImages  // Store all sizes for thumbnail
+          };
         });
 
         // Chèn video vào vị trí thứ 2 (index 1) sau ảnh đầu tiên
