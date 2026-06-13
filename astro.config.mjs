@@ -111,6 +111,9 @@ export default defineConfig({
       alias: {
         '@': path.resolve('./src')
       }
+    },
+    server: {
+      allowedHosts: ['www.g-3.vn', 'g-3.vn']
     }
   },
 
