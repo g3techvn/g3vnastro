@@ -8,7 +8,6 @@
     "download-images": "node download-external-images.mjs",
     "optimize-images": "node optimize-images.mjs",
     "optimize-build": "node optimize-build-images.mjs",
-    "prebuild": "npm run optimize-build",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
