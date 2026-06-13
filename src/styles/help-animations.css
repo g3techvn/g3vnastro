@@ -215,7 +215,8 @@
   animation: checkmark 0.6s ease-out forwards;
 }
 
-* Drawer animations */ .drawer-backdrop {
+/** Drawer animations */
+.drawer-backdrop {
   animation: fadeIn 0.3s ease-out forwards;
 }
 

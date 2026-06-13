@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
+    "start": "astro dev --host --port 4321",
     "optimize-images": "node optimize-images.mjs",
     "build": "astro build",
     "preview": "astro preview",
