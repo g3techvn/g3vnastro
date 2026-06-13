@@ -11,6 +11,11 @@ import path from 'path';
 export default defineConfig({
   site: 'https://g-3.vn',
 
+  // Disable Dev Toolbar for cleaner development experience
+  devToolbar: {
+    enabled: false,
+  },
+
   integrations: [
     react(),
     tailwind(),
