@@ -10,4 +10,4 @@ export interface Props {
 const { products, loading = false } = Astro.props;
 ---
 
-<SimilarProducts products={products} loading={loading} client:load /> 
+<SimilarProducts products={products} loading={loading} client:visible /> 

@@ -3,7 +3,7 @@ import { ProductDescription } from './ProductDescription';
 const { overview, content, keyFeatures, benefits, instructions } = Astro.props;
 ---
 
-<ProductDescription client:load 
+<ProductDescription client:visible 
   overview={overview}
   content={content}
   keyFeatures={keyFeatures}
