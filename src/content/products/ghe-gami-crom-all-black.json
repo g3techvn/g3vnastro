@@ -1,0 +1,44 @@
+{
+  "id": 3,
+  "name": "Ghế Gami Crom (All Black)",
+  "slug": "ghe-gami-crom-all-black",
+  "description": "Ghế Gami Crom phiên bản All Black - thiết kế tối màu sang trọng, khung hợp kim chắc chắn, lưới cao cấp, đầy đủ tính năng công thái học.",
+  "price": 6490000,
+  "original_price": 6990000,
+  "image_url": "/g3tech/products/gami/ghe-gami-crom-all-black/ghe-gami-crom-all-black-g-3.vn-1.webp",
+  "gallery_url": "gami/ghe-gami-crom-all-black",
+  "gallery_array": [
+    "/g3tech/products/gami/ghe-gami-crom-all-black/ghe-gami-crom-all-black-g-3.vn-1.webp",
+    "/g3tech/products/gami/ghe-gami-crom-all-black/ghe-gami-crom-all-black-g-3.vn-2.webp",
+    "/g3tech/products/gami/ghe-gami-crom-all-black/ghe-gami-crom-all-black-g-3.vn-3.webp",
+    "/g3tech/products/gami/ghe-gami-crom-all-black/ghe-gami-crom-all-black-g-3.vn-4.webp"
+  ],
+  "rating": 4.9,
+  "sold_count": 187,
+  "brand_id": 1,
+  "pd_cat_id": 1,
+  "status": "active",
+  "tinh_nang": [
+    "Khung hợp kim nhôm toàn bộ",
+    "Lưới cao cấp chịu lực tốt",
+    "Tựa đầu 4D điều chỉnh đa hướng",
+    "Kê tay 4D hợp kim nhôm",
+    "Ngả lưng 145 độ",
+    "Piston Class 4 tải trọng 160kg"
+  ],
+  "loi_ich": [
+    "Thiết kế toàn đen sang trọng",
+    "Bền bỉ với khung hợp kim",
+    "Hỗ trợ lưng dưới tốt nhất"
+  ],
+  "thong_so_ky_thuat": [
+    { "title": "Tải trọng tối đa", "value": "160kg" },
+    { "title": "Bảo hành", "value": "5 năm" },
+    { "title": "Chất liệu khung", "value": "Hợp kim nhôm" },
+    { "title": "Chân ghế", "value": "Hợp kim nhôm" },
+    { "title": "Tay ghế", "value": "4D hợp kim" },
+    { "title": "Màu sắc", "value": "All Black" }
+  ],
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2026-06-01T00:00:00Z"
+}

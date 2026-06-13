@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import DualRangeSlider from '../react/DualRangeSlider';
 import type { FilterState } from '../react/BrandFilter';
 
@@ -21,6 +20,10 @@ interface MobileBrandFilterProps {
     title: string;
     slug: string;
   }>;
+  initialProducts?: Array<{
+    price: number;
+    pd_cat_id?: string | null;
+  }>;
 }
 
 
@@ -31,10 +34,11 @@ const MobileBrandFilter: React.FC<MobileBrandFilterProps> = ({
   brandId, 
   isOpen, 
   onClose,
-  availableCategories = []
+  availableCategories = [],
+  initialProducts = [],
 }) => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(availableCategories.length === 0);
+  const [loading, setLoading] = useState(false);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(5000000);
   const [filters, setFilters] = useState<FilterState>({
@@ -43,130 +47,40 @@ const MobileBrandFilter: React.FC<MobileBrandFilterProps> = ({
   });
 
   useEffect(() => {
-    if (isOpen) {
-      if (availableCategories.length === 0) {
-        fetchFilterData();
-      } else {
-        fetchPriceData();
-      }
+    if (!isOpen) return;
+
+    // Compute price range and category counts from initialProducts (local, no network)
+    const products = initialProducts.length > 0 ? initialProducts : [];
+    const prices = products.map(p => p.price).filter(Boolean);
+
+    let computedMin = 0;
+    let computedMax = 5000000;
+    if (prices.length > 0) {
+      computedMin = Math.min(...prices);
+      computedMax = Math.max(...prices);
     }
-  }, [brandId, isOpen, availableCategories.length]);
+    setMinPrice(computedMin);
+    setMaxPrice(computedMax);
 
-  const fetchPriceData = async () => {
-    try {
-      setLoading(true);
-      const supabase = createClient(
-        import.meta.env.PUBLIC_SUPABASE_URL,
-        import.meta.env.PUBLIC_SUPABASE_ANON_KEY
-      );
-
-      // Fetch products in this brand for price calculation
-      const { data: products, error: productsError } = await supabase
-        .from('products')
-        .select('price, pd_cat_id')
-        .eq('brand_id', brandId);
-
-      if (productsError) {
-        console.error('Error fetching products:', productsError);
-      } else {
-        // Calculate price range
-        const prices = products.map(p => p.price).filter(Boolean);
-        if (prices.length > 0) {
-          const minProductPrice = Math.min(...prices);
-          const maxProductPrice = Math.max(...prices);
-          setMinPrice(minProductPrice);
-          setMaxPrice(maxProductPrice);
-
-          if (filters.priceRange.min === 0 && filters.priceRange.max === 5000000) {
-            setFilters(prev => ({
-              ...prev,
-              priceRange: { min: minProductPrice, max: maxProductPrice }
-            }));
-          }
-        }
-
-        // Use pre-fetched categories and add product counts
-        const categoriesWithCount = availableCategories
-          .map(category => ({
-            id: category.id,
-            title: category.title,
-            slug: category.slug,
-            product_count: products.filter(p => p.pd_cat_id === category.id).length
-          }))
-          .filter(category => category.product_count > 0);
-
-        setCategories(categoriesWithCount);
-      }
-    } catch (error) {
-      console.error('Error fetching price data:', error);
-    } finally {
-      setLoading(false);
+    if (filters.priceRange.min === 0 && filters.priceRange.max === 5000000) {
+      setFilters(prev => ({
+        ...prev,
+        priceRange: { min: computedMin, max: computedMax }
+      }));
     }
-  };
 
-  const fetchFilterData = async () => {
-    try {
-      setLoading(true);
-      const supabase = createClient(
-        import.meta.env.PUBLIC_SUPABASE_URL,
-        import.meta.env.PUBLIC_SUPABASE_ANON_KEY
-      );
-
-      // Fetch products in this brand
-      const { data: products, error: productsError } = await supabase
-        .from('products')
-        .select('price, pd_cat_id')
-        .eq('brand_id', brandId);
-
-      if (productsError) {
-        console.error('Error fetching products:', productsError);
-      } else {
-        // Calculate price range
-        const prices = products.map(p => p.price).filter(Boolean);
-        if (prices.length > 0) {
-          const minProductPrice = Math.min(...prices);
-          const maxProductPrice = Math.max(...prices);
-          setMinPrice(minProductPrice);
-          setMaxPrice(maxProductPrice);
-
-          if (filters.priceRange.min === 0 && filters.priceRange.max === 5000000) {
-            setFilters(prev => ({
-              ...prev,
-              priceRange: { min: minProductPrice, max: maxProductPrice }
-            }));
-          }
-        }
-
-        // Get categories
-        const categoryIds = [...new Set(products.map(p => p.pd_cat_id).filter(Boolean))];
-
-        if (categoryIds.length > 0) {
-          const { data: categoriesData, error: categoriesError } = await supabase
-            .from('product_cats')
-            .select('id, title, slug')
-            .in('id', categoryIds)
-            .order('title');
-
-          if (!categoriesError && categoriesData) {
-            const categoriesWithCount = categoriesData
-              .map(category => ({
-                id: category.id,
-                title: category.title,
-                slug: category.slug,
-                product_count: products.filter(p => p.pd_cat_id === category.id).length
-              }))
-              .filter(category => category.product_count > 0);
-
-            setCategories(categoriesWithCount);
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching filter data:', error);
-    } finally {
-      setLoading(false);
+    if (availableCategories.length > 0) {
+      const categoriesWithCount = availableCategories
+        .map(category => ({
+          id: category.id,
+          title: category.title,
+          slug: category.slug,
+          product_count: products.filter(p => p.pd_cat_id === category.id).length
+        }))
+        .filter(c => c.product_count > 0);
+      setCategories(categoriesWithCount);
     }
-  }; 
+  }, [brandId, isOpen, initialProducts.length, availableCategories.length]);
  useEffect(() => {
     onFilterChange(filters);
   }, [filters, onFilterChange]);

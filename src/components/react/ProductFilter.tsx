@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import DualRangeSlider from './DualRangeSlider';
 
 interface Brand {
@@ -53,90 +52,44 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onFilterChange, initialFi
   const fetchFilterData = async () => {
     try {
       setLoading(true);
-      const supabase = createClient(
-        import.meta.env.PUBLIC_SUPABASE_URL,
-        import.meta.env.PUBLIC_SUPABASE_ANON_KEY
-      );
 
-      // Fetch all products to calculate min and max prices
-      const { data: products, error: productsError } = await supabase
-        .from('products')
-        .select('price');
+      // Fetch all data in parallel from local API routes
+      const [productsRes, brandsRes, categoriesRes] = await Promise.all([
+        fetch('/api/products'),
+        fetch('/api/brands'),
+        fetch('/api/categories'),
+      ]);
 
-      if (productsError) {
-        console.error('Error fetching products:', productsError);
-      } else {
-        // Calculate min and max prices from all products
-        const prices = products.map(p => p.price).filter(Boolean);
-        if (prices.length > 0) {
-          const minProductPrice = Math.min(...prices);
-          const maxProductPrice = Math.max(...prices);
-          setMinPrice(minProductPrice);
-          setMaxPrice(maxProductPrice);
-          
-          // Update filters if they're at default values
-          if (filters.priceRange.min === 0 && filters.priceRange.max === 5000000) {
-            setFilters(prev => ({
-              ...prev,
-              priceRange: { min: minProductPrice, max: maxProductPrice }
-            }));
-          }
+      const [productsJson, brandsJson, categoriesJson] = await Promise.all([
+        productsRes.json(),
+        brandsRes.json(),
+        categoriesRes.json(),
+      ]);
+
+      // Compute price range
+      const allProducts: Array<{ price: number }> = productsJson.products || [];
+      const prices = allProducts.map(p => p.price).filter(Boolean);
+      if (prices.length > 0) {
+        const minProductPrice = Math.min(...prices);
+        const maxProductPrice = Math.max(...prices);
+        setMinPrice(minProductPrice);
+        setMaxPrice(maxProductPrice);
+        if (filters.priceRange.min === 0 && filters.priceRange.max === 5000000) {
+          setFilters(prev => ({
+            ...prev,
+            priceRange: { min: minProductPrice, max: maxProductPrice }
+          }));
         }
       }
 
-      // Fetch brands with product count
-      const { data: brandsData, error: brandsError } = await supabase
-        .from('brands')
-        .select(`
-          id,
-          title,
-          slug,
-          products!inner(id)
-        `)
-        .order('title');
+      // Set brands with product count
+      const brandsData: Array<{ id: string; title: string; slug: string; product_count?: number }> = brandsJson.brands || [];
+      setBrands(brandsData.filter(b => (b.product_count ?? 0) > 0).map(b => ({ ...b, product_count: b.product_count ?? 0 })));
 
-      if (brandsError) {
-        console.error('Error fetching brands:', brandsError);
-      } else {
-        // Process brands to get product count and filter out empty ones
-        const brandsWithCount = (brandsData || [])
-          .map(brand => ({
-            id: brand.id,
-            title: brand.title,
-            slug: brand.slug,
-            product_count: brand.products?.length || 0
-          }))
-          .filter(brand => brand.product_count > 0);
-        
-        setBrands(brandsWithCount);
-      }
+      // Set categories with product count
+      const categoriesData: Array<{ id: string; title: string; slug: string; product_count?: number }> = categoriesJson.categories || [];
+      setCategories(categoriesData.filter(c => (c.product_count ?? 0) > 0).map(c => ({ ...c, product_count: c.product_count ?? 0 })));
 
-      // Fetch categories with product count
-      const { data: categoriesData, error: categoriesError } = await supabase
-        .from('product_cats')
-        .select(`
-          id,
-          title,
-          slug,
-          products!inner(id)
-        `)
-        .order('title');
-
-      if (categoriesError) {
-        console.error('Error fetching categories:', categoriesError);
-      } else {
-        // Process categories to get product count and filter out empty ones
-        const categoriesWithCount = (categoriesData || [])
-          .map(category => ({
-            id: category.id,
-            title: category.title,
-            slug: category.slug,
-            product_count: category.products?.length || 0
-          }))
-          .filter(category => category.product_count > 0);
-        
-        setCategories(categoriesWithCount);
-      }
     } catch (error) {
       console.error('Error fetching filter data:', error);
     } finally {

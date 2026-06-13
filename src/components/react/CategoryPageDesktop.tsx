@@ -74,6 +74,7 @@ const CategoryPageDesktop: React.FC<CategoryPageDesktopProps> = ({
             initialFilters={filters}
             categoryId={categoryData.id}
             availableBrands={availableBrands}
+            initialProducts={initialProducts}
           />
         </div>
 

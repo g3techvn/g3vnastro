@@ -1,0 +1,42 @@
+{
+  "id": 6,
+  "name": "Ghế Gami Focus V2 Full lưới",
+  "slug": "ghe-gami-focus-v2",
+  "description": "Ghế Gami Focus V2 phiên bản Full lưới - nâng cấp toàn diện từ V1, lưới bao phủ toàn lưng, tựa đầu cải tiến, thoáng mát tối đa.",
+  "price": 3700000,
+  "original_price": 3890000,
+  "image_url": "/g3tech/products/gami/ghe-gami-focus-v2/ghe-gami-focus-v2-g-3.vn-1.webp",
+  "gallery_url": "gami/ghe-gami-focus-v2",
+  "gallery_array": [
+    "/g3tech/products/gami/ghe-gami-focus-v2/ghe-gami-focus-v2-g-3.vn-1.webp",
+    "/g3tech/products/gami/ghe-gami-focus-v2/ghe-gami-focus-v2-g-3.vn-2.webp",
+    "/g3tech/products/gami/ghe-gami-focus-v2/ghe-gami-focus-v2-g-3.vn-3.webp",
+    "/g3tech/products/gami/ghe-gami-focus-v2/ghe-gami-focus-v2-g-3.vn-4.webp"
+  ],
+  "rating": 4.8,
+  "sold_count": 276,
+  "brand_id": 1,
+  "pd_cat_id": 1,
+  "status": "active",
+  "tinh_nang": [
+    "Full lưới thoáng mát toàn lưng",
+    "Tựa đầu 4D điều chỉnh đa hướng",
+    "Kê tay 4D",
+    "Ngả lưng tới 145 độ",
+    "Piston tải trọng 150kg"
+  ],
+  "loi_ich": [
+    "Thoáng mát hơn V1",
+    "Hỗ trợ lưng toàn diện",
+    "Phù hợp làm việc nhiều giờ"
+  ],
+  "thong_so_ky_thuat": [
+    { "title": "Tải trọng tối đa", "value": "150kg" },
+    { "title": "Bảo hành", "value": "3 năm" },
+    { "title": "Chất liệu lưới", "value": "Lưới mesh cao cấp" },
+    { "title": "Chân ghế", "value": "Hợp kim nhôm" },
+    { "title": "Tay ghế", "value": "4D" }
+  ],
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2026-06-01T00:00:00Z"
+}

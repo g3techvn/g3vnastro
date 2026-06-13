@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { supabase } from '../../lib/supabase';
+import { getAllProducts, type ProductEntry } from '../../lib/collections';
 import TechnicalSpecsIsland from '../../components/TechnicalSpecsIsland.astro';
 import ProductDescriptionIsland from '../../components/ProductDescriptionIsland.astro';
 import ProductInfo from '../../components/ProductInfo.astro';
@@ -14,24 +14,15 @@ import MobileProductDetail from '../../components/mobile/product-detail/MobilePr
 import ProductSEO from '../../components/SEO/ProductSEO.astro';
 
 export async function getStaticPaths() {
-  try {
-    const { data: products, error } = await supabase
-      .from('products')
-      .select('*');
+  const products = await getAllProducts();
+  return products.map((product: ProductEntry) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
 
-    if (error) {
-      console.error('Error fetching products:', error);
-      return [];
-    }
-
-    return products?.map((product) => ({
-      params: { slug: product.slug },
-      props: { product },
-    })) || [];
-  } catch (error) {
-    console.error('Error in getStaticPaths:', error);
-    return [];
-  }
+interface Props {
+  product: ProductEntry;
 }
 
 const { product } = Astro.props;
@@ -40,13 +31,11 @@ const { product } = Astro.props;
 const relatedProducts = await getRelatedProducts(product, 6);
 
 // Enhanced SEO configuration for product pages
-const brandName = typeof product.brand === 'string' 
-  ? product.brand 
-  : product.brand?.title || 'G3Tech';
+const brandName = product.brands?.title || 'G3Tech';
+const categoryName = product.product_cats?.title || 'Sản phẩm văn phòng';
 
-const categoryName = typeof product.categories === 'string'
-  ? product.categories
-  : product.categories?.title || 'Sản phẩm văn phòng';
+// Category slug for breadcrumb
+const categorySlug = product.product_cats?.slug || '';
 
 // Optimized image URL for social sharing
 const productImageUrl = product.image_url 
@@ -57,13 +46,13 @@ const productImageUrl = product.image_url
   : 'https://g-3.vn/images/og-product-default.jpg';
 
 // Enhanced SEO title with benefits
-const hasDiscount = product.original_price && product.original_price > product.price;
-const discountText = hasDiscount ? ` - Giảm ${Math.round(((product.original_price - product.price) / product.original_price) * 100)}%` : '';
+const hasDiscount = product.original_price != null && product.original_price > product.price;
+const discountText = hasDiscount ? ` - Giảm ${Math.round(((product.original_price! - product.price) / product.original_price!) * 100)}%` : '';
 const seoTitle = `${product.name}${discountText} - ${brandName} | Bảo hành 12 tháng | G-3.vn`;
 
 // Enhanced meta description with key selling points
 const priceText = product.price 
-  ? `Giá ${new Intl.NumberFormat('vi-VN').format(product.price)}₫${hasDiscount ? ` (tiết kiệm ${new Intl.NumberFormat('vi-VN').format(product.original_price - product.price)}₫)` : ''}`
+  ? `Giá ${new Intl.NumberFormat('vi-VN').format(product.price)}₫${hasDiscount ? ` (tiết kiệm ${new Intl.NumberFormat('vi-VN').format(product.original_price! - product.price)}₫)` : ''}`
   : 'Giá tốt nhất';
 
 const seoDescription = product.description 
@@ -74,7 +63,7 @@ const seoDescription = product.description
 const breadcrumbs = [
   { name: 'Trang chủ', url: 'https://g-3.vn' },
   { name: 'Sản phẩm', url: 'https://g-3.vn/san-pham' },
-  { name: categoryName, url: `https://g-3.vn/categories/${product.categories?.slug || ''}` },
+  { name: categoryName, url: `https://g-3.vn/categories/${categorySlug}` },
   { name: product.name, url: `https://g-3.vn/san-pham/${product.slug}` }
 ];
 
@@ -104,24 +93,14 @@ const productKeywords = [
 ];
 
 // Product availability and condition - consistent with product feed logic
-let availability = 'in_stock'; // Default to in_stock for better SEO and user experience
+let availability: 'in_stock' | 'out_of_stock' | 'preorder' = 'in_stock';
 
 // Only set out_of_stock for explicitly marked products
 if (product.stock_status === 'out_of_stock' || product.status === 'inactive' || product.status === 'draft') {
   availability = 'out_of_stock';
 }
-// Optional: Use limited_availability only if you want to show low stock
-else if (product.inventory_quantity !== undefined && 
-         product.inventory_quantity !== null && 
-         product.inventory_quantity > 0 && 
-         product.inventory_quantity <= 3) {
-  availability = 'limited_availability';
-}
-// Legacy support for stock_quantity field
-else if (product.stock_quantity !== undefined && 
-         product.stock_quantity !== null && 
-         product.stock_quantity <= 0) {
-  availability = 'out_of_stock';
+else if (product.stock_status === 'preorder') {
+  availability = 'preorder';
 }
 
 const condition = 'new';
@@ -226,6 +205,20 @@ const overview = product?.description || '';
 
 
 
+// Normalize nulls to undefined for component compatibility
+const productNormalized = {
+  ...product,
+  original_price: product.original_price ?? undefined,
+  image_url: product.image_url ?? undefined,
+  image_square_url: product.image_square_url ?? undefined,
+  gallery_url: product.gallery_url ?? undefined,
+  video_url: product.video_url ?? undefined,
+  rating: product.rating ?? undefined,
+  brand_id: product.brand_id ?? undefined,
+  pd_cat_id: product.pd_cat_id ?? undefined,
+  stock_status: product.stock_status ?? undefined,
+};
+
 // Check if components should be rendered
 const hasTechnicalSpecs = technicalSpecs.length > 0;
 const hasKeyFeatures = keyFeatures.length > 0;
@@ -244,7 +237,7 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
   imageAlt={`${product.name} - ${brandName} - Bảo hành 12 tháng, miễn phí lắp đặt`}
   type="product"
   price={product.price}
-  originalPrice={product.original_price}
+  originalPrice={product.original_price ?? undefined}
   brand={brandName}
   category={categoryName}
   keywords={productKeywords}
@@ -340,8 +333,8 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
           <div class="md:col-span-3">
             <ProductGalleryIsland
               productName={product?.name || 'Sản phẩm'}
-              galleryUrl={product?.gallery_url}
-              mainImageUrl={product?.image_url}
+              galleryUrl={product?.gallery_url ?? undefined}
+              mainImageUrl={product?.image_url ?? undefined}
               galleryArray={product?.gallery_array}
               videoInfo={product?.video_url ? {
                 videoUrl: product.video_url,
@@ -352,7 +345,7 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
 
           <!-- Product Info - 2 columns -->
           <div class="md:col-span-2">
-            <ProductInfo product={product} availability={availability} />
+            <ProductInfo product={productNormalized} availability={availability} />
           </div>
         </div>
 
@@ -405,7 +398,7 @@ const hasProductDescription = hasOverview || hasContent || hasKeyFeatures || has
         </div>
       </div>
     </div>
-    <FloatProductAction product={product} />
+    <FloatProductAction product={productNormalized} />
   </div>
 </Layout>
 

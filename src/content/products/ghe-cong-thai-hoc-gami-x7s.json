@@ -1,0 +1,50 @@
+{
+  "id": 14,
+  "name": "Ghế Công thái học Gami X7S",
+  "slug": "ghe-cong-thai-hoc-gami-x7s",
+  "description": "Ghế Gami X7S phiên bản Panda - lưng Backlift autofit 4D, cụm lưng chỉnh lên xuống 6cm, tựa lưng dưới autofit 4 hướng tiến lùi 4cm. Tải trọng 150kg.",
+  "price": 5390000,
+  "original_price": 5500000,
+  "image_url": "https://cdn.hstatic.net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21.png",
+  "gallery_url": null,
+  "gallery_array": [
+    "https://cdn.hstatic.net/products/200000912647/gami_x7s_3f4ccd5f8d6741ebbb2de3bd7cfccf21.png",
+    "https://cdn.hstatic.net/products/200000912647/1_d1e92c67bb394e8c82faaa6f5311c9e6.png",
+    "https://cdn.hstatic.net/products/200000912647/2_e9d01712f327408f9716f47b27e02271.png",
+    "https://cdn.hstatic.net/products/200000912647/3_7d28ebfbb869440a8b9fa523e93be2dc.png",
+    "https://cdn.hstatic.net/products/200000912647/4_0cc9b8ecb1d14f3db95ee797cd09fb09.png",
+    "https://cdn.hstatic.net/products/200000912647/5_9ca113c9199a4ffc8365e1e31367e6cb.png",
+    "https://cdn.hstatic.net/products/200000912647/6_958b017f464a4d948d3f216c1bce3350.png",
+    "https://cdn.hstatic.net/products/200000912647/7_e6b8c4c78c9246f38e7d647f573ec522.png",
+    "https://cdn.hstatic.net/products/200000912647/8_5f93ebdd6b004abab956b5d9cba6248c.png",
+    "https://cdn.hstatic.net/products/200000912647/9_e3af1814f52c4a94ba87c02a83bcae07.png"
+  ],
+  "rating": 4.8,
+  "sold_count": 38,
+  "brand_id": 1,
+  "pd_cat_id": 1,
+  "status": "active",
+  "tinh_nang": [
+    "Lưng Backlift autofit 4D tự động khớp cơ thể",
+    "Cụm lưng chỉnh lên xuống 6cm",
+    "Tựa lưng dưới autofit 4 hướng, tiến lùi 4cm",
+    "Phù hợp cả người thắt lưng nông và sâu",
+    "Phiên bản màu Panda đặc biệt",
+    "Tải trọng tối đa 150kg",
+    "Bảo hành 3 năm"
+  ],
+  "loi_ich": [
+    "Tự động điều chỉnh theo lưng người dùng",
+    "Màu Panda độc đáo",
+    "Giá tốt, tính năng cao cấp"
+  ],
+  "thong_so_ky_thuat": [
+    { "title": "Tải trọng tối đa", "value": "150kg" },
+    { "title": "Bảo hành", "value": "3 năm" },
+    { "title": "Màu sắc", "value": "Panda" },
+    { "title": "Công nghệ lưng", "value": "Backlift autofit 4D" },
+    { "title": "Điều chỉnh cụm lưng", "value": "6cm lên xuống" }
+  ],
+  "created_at": "2026-01-28T00:00:00Z",
+  "updated_at": "2026-06-13T00:00:00Z"
+}

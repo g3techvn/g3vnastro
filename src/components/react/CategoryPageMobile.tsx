@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MobileCategoryFilter from '../mobile/MobileCategoryFilter';
 import MobileSortModal from '../mobile/MobileSortModal';
-import type { FilterState } from '../mobile/MobileCategoryFilter';
+import type { FilterState } from './CategoryFilter';
 import CategoryProductListMobile from './CategoryProductListMobile';
 
 interface Product {
@@ -197,6 +197,7 @@ const CategoryPageMobile: React.FC<CategoryPageMobileProps> = ({
         initialFilters={filters}
         categoryId={categoryData.id}
         availableBrands={availableBrands}
+        initialProducts={initialProducts}
       />
 
       {/* Mobile Sort Modal */}

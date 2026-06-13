@@ -1,5 +1,6 @@
 ---
-import { supabase } from '../lib/supabase';
+import { readdir } from 'fs/promises';
+import { join } from 'path';
 
 export interface Props {
   productName: string;
@@ -29,56 +30,40 @@ let galleryItems: Array<{
 }> = [];
 
 if (galleryUrl) {
-  try {
-    const bucket = 'g3tech';
-    const folder = galleryUrl.replace(/^\/|\/$/g, '');
-    const { data, error } = await supabase
-      .storage
-      .from(bucket)
-      .list(folder, {
-        limit: 100,
-        offset: 0,
-        sortBy: { column: 'name', order: 'asc' }
-      });
-    if (!error && data) {
-      const files = data.filter(item => 
-        !item.metadata?.mimetype?.includes('directory') && 
-        item.name.includes('.')
-      );
-      const images = await Promise.all(
-        files.map(async (file) => {
-          const filePath = `${folder}/${file.name}`;
-          const { data: urlData } = await supabase
-            .storage
-            .from(bucket)
-            .getPublicUrl(filePath);
-          return {
-            name: file.name,
-            url: urlData.publicUrl,
-            path: filePath
-          };
-        })
-      );
-      const items: typeof galleryItems = [];
-      if (mainImageUrl) {
-        items.push({ type: 'image', url: mainImageUrl });
-      }
-      if (videoInfo?.videoUrl && videoInfo?.thumbnail) {
-        items.push({ 
-          type: 'video', 
-          url: '', 
-          videoUrl: videoInfo.videoUrl, 
-          thumbnail: videoInfo.thumbnail,
-          title: `${productName} - Video`
-        });
-      }
-      images.forEach(img => {
-        if (img.url !== mainImageUrl) {
-          items.push({ type: 'image', url: img.url });
-        }
-      });
-      galleryItems = items;
+    try {
+    const folder2 = galleryUrl.replace(/^[/]|[/]$/g, '');
+    const publicDir = join(process.cwd(), 'public', folder2);
+    let fileNames: string[] = [];
+    try {
+      const dirEntries = await readdir(publicDir);
+      fileNames = dirEntries.filter(n => /[.](jpg|jpeg|png|webp|avif|svg)$/i.test(n));
+    } catch {
+      // folder may not exist
     }
+    const images = fileNames.map(name => ({
+      name,
+      url: `/${folder2}/${name}`,
+      path: `${folder2}/${name}`
+    }));
+    const items: typeof galleryItems = [];
+    if (mainImageUrl) {
+      items.push({ type: 'image', url: mainImageUrl });
+    }
+    if (videoInfo?.videoUrl && videoInfo?.thumbnail) {
+      items.push({ 
+        type: 'video', 
+        url: '', 
+        videoUrl: videoInfo.videoUrl, 
+        thumbnail: videoInfo.thumbnail,
+        title: `${productName} - Video`
+      });
+    }
+    images.forEach(img => {
+      if (img.url !== mainImageUrl) {
+        items.push({ type: 'image', url: img.url });
+      }
+    });
+    galleryItems = items;
   } catch (error) {
     console.error('Error fetching gallery images:', error);
   }

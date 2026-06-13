@@ -1,0 +1,43 @@
+{
+  "id": 4,
+  "name": "Ghế Gami Crom (Phiên bản lưng Carbon)",
+  "slug": "ghe-gami-crom-carbon",
+  "description": "Ghế Gami Crom phiên bản lưng Carbon - kết hợp vật liệu carbon cao cấp với khung hợp kim, tạo nên chiếc ghế cứng cáp và thẩm mỹ vượt trội.",
+  "price": 7290000,
+  "original_price": 7769000,
+  "image_url": "/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1.webp",
+  "gallery_url": "gami/ghe-gami-crom-carbon",
+  "gallery_array": [
+    "/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-1.webp",
+    "/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-2.webp",
+    "/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-3.webp",
+    "/g3tech/products/gami/ghe-gami-crom-carbon/gami-crom-carbon-g-3.vn-4.webp"
+  ],
+  "rating": 4.9,
+  "sold_count": 143,
+  "brand_id": 1,
+  "pd_cat_id": 1,
+  "status": "active",
+  "tinh_nang": [
+    "Lưng Carbon cao cấp",
+    "Khung hợp kim nhôm toàn bộ",
+    "Tựa đầu 4D",
+    "Kê tay 4D hợp kim nhôm",
+    "Ngả lưng 145 độ",
+    "Piston Class 4 tải trọng 160kg"
+  ],
+  "loi_ich": [
+    "Vật liệu carbon nhẹ và bền",
+    "Thẩm mỹ cao cấp, độc đáo",
+    "Hỗ trợ lưng tối ưu"
+  ],
+  "thong_so_ky_thuat": [
+    { "title": "Tải trọng tối đa", "value": "160kg" },
+    { "title": "Bảo hành", "value": "5 năm" },
+    { "title": "Chất liệu lưng", "value": "Carbon" },
+    { "title": "Chân ghế", "value": "Hợp kim nhôm" },
+    { "title": "Tay ghế", "value": "4D hợp kim" }
+  ],
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2026-06-01T00:00:00Z"
+}

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { productAPI } from '../../lib/supabase';
 
 const navigation = [
   { name: 'Cửa hàng', href: '/san-pham', current: false },
@@ -36,8 +35,9 @@ const Header: React.FC = () => {
     const fetchProducts = async () => {
       setLoadingProducts(true);
       try {
-        const data = await productAPI.getProducts(100, 0);
-        setProducts(data || []);
+        const res = await fetch('/api/products?limit=100');
+        const json = await res.json();
+        setProducts(json.products || []);
       } catch (err) {
         setProducts([]);
       } finally {

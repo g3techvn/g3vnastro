@@ -1,0 +1,36 @@
+{
+  "id": 9,
+  "name": "Kê chân công thái học Gami Enjoy",
+  "slug": "ke-chan-cong-thai-hoc-gami-enjoy",
+  "description": "Kê chân công thái học Gami Enjoy - hỗ trợ tư thế ngồi đúng, giảm áp lực lên lưng và chân khi ngồi lâu.",
+  "price": 850000,
+  "original_price": null,
+  "image_url": "/g3tech/products/gami/ke-chan-cong-thai-hoc-gami-enjoy/ke-chan-cong-thai-hoc-gami-enjoy-g-3.vn-1.jpg",
+  "gallery_url": "gami/ke-chan-cong-thai-hoc-gami-enjoy",
+  "gallery_array": [
+    "/g3tech/products/gami/ke-chan-cong-thai-hoc-gami-enjoy/ke-chan-cong-thai-hoc-gami-enjoy-g-3.vn-1.jpg",
+    "/g3tech/products/gami/ke-chan-cong-thai-hoc-gami-enjoy/ke-chan-cong-thai-hoc-gami-enjoy-g-3.vn-2.webp"
+  ],
+  "rating": 4.6,
+  "sold_count": 423,
+  "brand_id": 1,
+  "pd_cat_id": 3,
+  "status": "active",
+  "tinh_nang": [
+    "Điều chỉnh độ cao linh hoạt",
+    "Bề mặt chống trượt",
+    "Tải trọng lên tới 80kg"
+  ],
+  "loi_ich": [
+    "Giảm áp lực lên chân và lưng",
+    "Cải thiện lưu thông máu",
+    "Phù hợp mọi chiều cao"
+  ],
+  "thong_so_ky_thuat": [
+    { "title": "Tải trọng tối đa", "value": "80kg" },
+    { "title": "Bảo hành", "value": "1 năm" },
+    { "title": "Chất liệu", "value": "Nhựa ABS cao cấp" }
+  ],
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2026-06-01T00:00:00Z"
+}

@@ -1,0 +1,39 @@
+{
+  "id": 2,
+  "name": "Ghế Gami Core",
+  "slug": "ghe-gami-core",
+  "description": "Ghế Gami Core - lựa chọn tầm trung giá tốt nhất, thiết kế gọn nhẹ, phù hợp cho học sinh, sinh viên và nhân viên văn phòng.",
+  "price": 2050000,
+  "original_price": 2250000,
+  "image_url": "/g3tech/products/gami/ghe-gami-core/3_7c01e870c2834d0a8911372562eaf1eb_master.webp",
+  "gallery_url": "gami/ghe-gami-core",
+  "gallery_array": [
+    "/g3tech/products/gami/ghe-gami-core/3_7c01e870c2834d0a8911372562eaf1eb_master.webp"
+  ],
+  "rating": 4.7,
+  "sold_count": 548,
+  "brand_id": 1,
+  "pd_cat_id": 1,
+  "status": "active",
+  "tinh_nang": [
+    "Tựa lưng lưới thoáng mát",
+    "Tựa đầu cố định",
+    "Kê tay 3D",
+    "Ngả lưng tới 135 độ",
+    "Piston tải trọng 130kg"
+  ],
+  "loi_ich": [
+    "Giá tốt nhất phân khúc tầm trung",
+    "Dễ lắp đặt",
+    "Lưới thoáng mát"
+  ],
+  "thong_so_ky_thuat": [
+    { "title": "Tải trọng tối đa", "value": "130kg" },
+    { "title": "Bảo hành", "value": "1 năm" },
+    { "title": "Chất liệu lưới", "value": "Lưới mesh" },
+    { "title": "Chân ghế", "value": "Nhựa PP" },
+    { "title": "Tay ghế", "value": "3D" }
+  ],
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2026-06-01T00:00:00Z"
+}

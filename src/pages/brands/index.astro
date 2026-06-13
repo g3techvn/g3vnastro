@@ -1,30 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { supabase } from '../../lib/supabase';
+import { getAllBrands } from '../../lib/collections';
 
-let brands: Array<{
-  id: number;
-  title: string;
-  slug: string;
-  image_url?: string;
-  image_square_url?: string;
-}> = [];
-
-try {
-  // Lấy dữ liệu trực tiếp từ Supabase
-  const { data, error } = await supabase
-    .from('brands')
-    .select('*')
-    .order('title', { ascending: true });
-
-  if (error) {
-    console.error('Error fetching brands:', error);
-  } else {
-    brands = data || [];
-  }
-} catch (error) {
-  console.error('Error fetching brands:', error);
-}
+const brands = await getAllBrands();
 
 const title = 'Thương hiệu | G3 - Công Thái Học';
 const description = 'Khám phá các thương hiệu nội thất công thái học tại G3.vn. Nội thất công thái học, bảo hành 12 tháng, giao hàng toàn quốc.';

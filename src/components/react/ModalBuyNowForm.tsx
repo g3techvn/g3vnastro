@@ -8,7 +8,7 @@ import { jsPDF } from "jspdf";
 import { PrinterIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { z } from 'zod';
-import { orderAPI } from '../../lib/supabase';
+import { orderService } from '../../lib/orderService';
 import { COMPANY_INFO } from '../../constants';
 import { sendOrderNotificationEmail, sendCustomerOrderConfirmation, formatOrderDataForEmail } from '../../lib/emailService';
 
@@ -368,7 +368,7 @@ const ModalBuyNowForm: React.FC<ModalBuyNowFormProps> = ({ open, onClose, produc
       };
 
       
-      const result = await orderAPI.createOrder(orderData);
+      const result = await orderService.createOrder(orderData);
       
       
       if (result.success) {

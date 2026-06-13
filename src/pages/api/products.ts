@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { productAPI } from '../../lib/supabase';
+import { getAllProducts } from '../../lib/collections';
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -10,31 +10,25 @@ export const GET: APIRoute = async ({ request }) => {
 
     const offset = (page - 1) * limit;
 
-    let products;
-    
-    if (videoOnly) {
-      // Lấy sản phẩm có video từ database
-      products = await productAPI.getProductsWithVideo(limit, offset);
-    } else {
-      // Lấy tất cả sản phẩm từ database
-      products = await productAPI.getProducts(limit, offset);
-    }
+    const allProducts = await getAllProducts();
+    let filtered = videoOnly
+      ? allProducts.filter(p => p.video_url)
+      : allProducts;
+    const products = filtered.slice(offset, offset + limit);
 
-    // Transform data để match với format mong đợi
     const transformedProducts = products.map(product => ({
       id: product.id,
       name: product.name,
       slug: product.slug,
-      description: (product as any).description || '',
+      description: product.description || '',
       price: product.price,
       original_price: product.original_price || null,
       image_url: product.image_url || null,
-      video_url: (product as any).video_url || null,
+      video_url: product.video_url || null,
       rating: product.rating || null,
       brand_id: product.brand_id || null,
-      brand: (product as any).brands?.name || null,
+      brand: product.brands?.title || null,
       sold_count: product.sold_count || 0,
-      // Thêm gallery_url để tương thích với frontend
       gallery_url: product.slug
     }));
 

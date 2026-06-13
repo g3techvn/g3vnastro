@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { productAPI } from '../../lib/supabase';
+import { getAllProducts, getAllBrands } from '../../lib/collections';
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -9,26 +9,24 @@ export const GET: APIRoute = async ({ request }) => {
 
     const offset = (page - 1) * limit;
 
-    // Lấy chỉ sản phẩm có video từ database
-    const products = await productAPI.getProductsWithVideo(limit, offset);
-    
-    // Lấy brands để map brand_id thành tên
-    const brands = await productAPI.getBrands();
-    const brandMap = brands.reduce((acc, brand) => {
-      acc[brand.id] = brand.slug; // Dùng slug làm tên
-      return acc;
-    }, {} as Record<string, string>);
+    const allProducts = await getAllProducts();
+    const brands = await getAllBrands();
+    const brandMap: Record<number, string> = {};
+    brands.forEach(b => { brandMap[b.id] = b.title; });
 
-    // Transform data để match với format mong đợi
+    // Only products with video_url
+    const withVideo = allProducts.filter(p => p.video_url);
+    const products = withVideo.slice(offset, offset + limit);
+
     const transformedProducts = products.map(product => ({
       id: product.id,
       name: product.name,
       slug: product.slug,
-      description: (product as any).description || '',
+      description: product.description || '',
       price: product.price,
       original_price: product.original_price || null,
       image_url: product.image_url || null,
-      video_url: (product as any).video_url || null,
+      video_url: product.video_url || null,
       rating: product.rating || null,
       brand_id: product.brand_id || null,
       brand: product.brand_id ? brandMap[product.brand_id] : null,
@@ -59,4 +57,4 @@ export const GET: APIRoute = async ({ request }) => {
       }
     );
   }
-}; 
+};

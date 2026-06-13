@@ -1,16 +1,15 @@
 import type { APIRoute } from 'astro';
-import { productAPI } from '../../lib/supabase';
+import { getAllBrands } from '../../lib/collections';
 
-export const GET: APIRoute = async ({ request }) => {
+export const GET: APIRoute = async () => {
   try {
-    const brands = await productAPI.getBrands();
+    const brands = await getAllBrands();
 
-    // Transform data để match với format mong đợi
     const transformedBrands = brands.map(brand => ({
       id: brand.id,
-      title: brand.slug, // Dùng slug làm title tạm thời
+      title: brand.title,
       slug: brand.slug,
-      image_url: null
+      image_url: brand.image_url || null
     }));
 
     return new Response(
@@ -33,4 +32,4 @@ export const GET: APIRoute = async ({ request }) => {
       }
     );
   }
-}; 
+};

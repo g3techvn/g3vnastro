@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import type { FilterState } from './BrandFilter';
 import ModalBuyNowForm from './ModalBuyNowForm';
 
@@ -197,74 +196,54 @@ const BrandProductListMobile: React.FC<BrandProductListMobileProps> = ({
 
       setLoading(true);
       try {
-        const supabase = createClient(
-          import.meta.env.PUBLIC_SUPABASE_URL,
-          import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+        const res = await fetch('/api/products');
+        const json = await res.json();
+        const allProducts = (json.products || []) as Product[];
+
+        // Filter by brandId
+        let filtered = allProducts.filter((p: Product) => String(p.brand_id) === String(brandId));
+
+        // Extract unique categories from these products
+        const uniqueCategories = Array.from(
+          new Map(
+            filtered
+              .filter((p: Product) => p.product_cats)
+              .map((p: Product) => [p.product_cats!.slug, {
+                id: p.pd_cat_id!,
+                title: p.product_cats!.title,
+                slug: p.product_cats!.slug
+              }])
+          ).values()
+        );
+        setCategories(uniqueCategories);
+
+        // Apply price range filters
+        filtered = filtered.filter((product: Product) =>
+          product.price >= filters.priceRange.min && product.price <= filters.priceRange.max
         );
 
-        // Fetch products and categories
-        const [productsResult, categoriesResult] = await Promise.all([
-          supabase
-            .from('products')
-            .select(`
-              *,
-              brands(title, slug),
-              product_cats(title, slug)
-            `)
-            .eq('brand_id', brandId)
-            .order('name', { ascending: true }),
-          supabase
-            .from('product_cats')
-            .select('id, title, slug')
-            .order('title', { ascending: true })
-        ]);
+        // Apply category filters
+        if (filters.categories.length > 0) {
+          filtered = filtered.filter((product: Product) =>
+            product.pd_cat_id && filters.categories.includes(product.pd_cat_id)
+          );
+        }
 
-        if (productsResult.error) {
-          console.error('Error fetching products:', productsResult.error);
-          setProducts([]);
-        } else {
-          console.log('Raw products data:', productsResult.data);
-          console.log('Brand ID:', brandId);
-
-          // Apply filters and sorting
-          let filtered = productsResult.data || [];
-
-          // Apply price range filters
-          filtered = filtered.filter(product => {
-            return product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
-          });
-
-          // Apply category filters
-          if (filters.categories.length > 0) {
-            filtered = filtered.filter(product =>
-              product.pd_cat_id && filters.categories.includes(product.pd_cat_id)
-            );
+        // Apply sorting
+        filtered.sort((a: Product, b: Product) => {
+          switch (sortBy) {
+            case 'price_asc':
+              return a.price - b.price;
+            case 'price_desc':
+              return b.price - a.price;
+            case 'name':
+            default:
+              return a.name.localeCompare(b.name);
           }
+        });
 
-          // Apply sorting
-          filtered.sort((a, b) => {
-            switch (sortBy) {
-              case 'price_asc':
-                return a.price - b.price;
-              case 'price_desc':
-                return b.price - a.price;
-              case 'name':
-              default:
-                return a.name.localeCompare(b.name);
-            }
-          });
-
-          console.log('Filtered products:', filtered);
-          setProducts(filtered);
-          onFilteredCountChange(filtered.length);
-        }
-
-        if (categoriesResult.error) {
-          console.error('Error fetching categories:', categoriesResult.error);
-          setCategories([]);
-        } else {
-          setCategories(categoriesResult.data || []);
-        }
+        setProducts(filtered);
+        onFilteredCountChange(filtered.length);
       } catch (error) {
         console.error('Error:', error);
         setProducts([]);

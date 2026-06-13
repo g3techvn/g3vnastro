@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { productAPI } from '../../lib/supabase';
 
 // Thay thế Image của Next.js bằng thẻ img thường
 // Nếu muốn tối ưu hơn, có thể dùng một component Image riêng cho Astro/React
@@ -60,7 +59,9 @@ const MobileHomeHeader: React.FC = () => {
     const fetchProducts = async () => {
       setLoadingProducts(true);
       try {
-        const data = await productAPI.getProducts(100, 0);
+        const res = await fetch('/api/products?limit=100');
+        const json = await res.json();
+        const data = json.products || [];
         setProducts(data || []);
       } catch (err) {
         setProducts([]);

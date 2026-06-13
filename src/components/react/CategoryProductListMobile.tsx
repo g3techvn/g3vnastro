@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import type { FilterState } from './CategoryFilter';
 import ModalBuyNowForm from './ModalBuyNowForm';
 
@@ -200,74 +199,54 @@ const CategoryProductListMobile: React.FC<CategoryProductListMobileProps> = ({
 
       setLoading(true);
       try {
-        const supabase = createClient(
-          import.meta.env.PUBLIC_SUPABASE_URL,
-          import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+        const res = await fetch('/api/products');
+        const json = await res.json();
+        const allProducts = (json.products || []) as Product[];
+
+        // Filter by categoryId
+        let filtered = allProducts.filter((p: Product) => String(p.pd_cat_id) === String(categoryId));
+
+        // Extract unique brands from these products
+        const uniqueBrands = Array.from(
+          new Map(
+            filtered
+              .filter((p: Product) => p.brands)
+              .map((p: Product) => [p.brands!.slug, {
+                id: p.brand_id!,
+                title: p.brands!.title,
+                slug: p.brands!.slug
+              }])
+          ).values()
+        );
+        setBrands(uniqueBrands);
+
+        // Apply price range filters
+        filtered = filtered.filter((product: Product) =>
+          product.price >= filters.priceRange.min && product.price <= filters.priceRange.max
         );
 
-        // Fetch products and brands
-        const [productsResult, brandsResult] = await Promise.all([
-          supabase
-            .from('products')
-            .select(`
-              *,
-              brands(title, slug),
-              product_cats(title, slug)
-            `)
-            .eq('pd_cat_id', categoryId)
-            .order('name', { ascending: true }),
-          supabase
-            .from('brands')
-            .select('id, title, slug')
-            .order('title', { ascending: true })
-        ]);
+        // Apply brand filters
+        if (filters.brands.length > 0) {
+          filtered = filtered.filter((product: Product) =>
+            product.brand_id && filters.brands.includes(product.brand_id)
+          );
+        }
 
-        if (productsResult.error) {
-          console.error('Error fetching products:', productsResult.error);
-          setProducts([]);
-        } else {
-          console.log('Raw products data:', productsResult.data);
-          console.log('Category ID:', categoryId);
-          
-          // Apply filters and sorting
-          let filtered = productsResult.data || [];
-          
-          // Apply price range filters
-          filtered = filtered.filter(product => {
-            return product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
-          });
-
-          // Apply brand filters
-          if (filters.brands.length > 0) {
-            filtered = filtered.filter(product => 
-              product.brand_id && filters.brands.includes(product.brand_id)
-            );
+        // Apply sorting
+        filtered.sort((a: Product, b: Product) => {
+          switch (sortBy) {
+            case 'price_asc':
+              return a.price - b.price;
+            case 'price_desc':
+              return b.price - a.price;
+            case 'name':
+            default:
+              return a.name.localeCompare(b.name);
           }
+        });
 
-          // Apply sorting
-          filtered.sort((a, b) => {
-            switch (sortBy) {
-              case 'price_asc':
-                return a.price - b.price;
-              case 'price_desc':
-                return b.price - a.price;
-              case 'name':
-              default:
-                return a.name.localeCompare(b.name);
-            }
-          });
-
-          console.log('Filtered products:', filtered);
-          setProducts(filtered);
-          onFilteredCountChange(filtered.length);
-        }
-
-        if (brandsResult.error) {
-          console.error('Error fetching brands:', brandsResult.error);
-          setBrands([]);
-        } else {
-          setBrands(brandsResult.data || []);
-        }
+        setProducts(filtered);
+        onFilteredCountChange(filtered.length);
       } catch (error) {
         console.error('Error:', error);
         setProducts([]);

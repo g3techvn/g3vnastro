@@ -73,6 +73,7 @@ const BrandPageDesktop: React.FC<BrandPageDesktopProps> = ({
             initialFilters={filters}
             brandId={brandData.id}
             availableCategories={availableCategories}
+            initialProducts={initialProducts}
           />
         </div>
 

@@ -1,79 +1,14 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { supabase } from "../../lib/supabase";
+import { getCategoriesWithProductCount, getBrandsWithProducts } from "../../lib/collections";
 import MobileCategoryList from "../../components/mobile/MobileCategoryList";
 
-let categories: Array<{
-  id: number | string;
-  title: string;
-  description?: string;
-  slug: string;
-  image_url?: string;
-  image_square_url?: string;
-}> = [];
+const categoriesWithCount = await getCategoriesWithProductCount();
+const brandsWithCount = await getBrandsWithProducts();
 
-let brands: Array<{
-  id: number | string;
-  title: string;
-  description?: string;
-  slug: string;
-  image_url?: string;
-  image_square_url?: string;
-}> = [];
-
-try {
-  // Lấy danh mục có sản phẩm từ Supabase
-  const { data: categoriesData, error: categoriesError } = await supabase
-    .from("product_cats")
-    .select(
-      `
-      id,
-      title,
-      description,
-      slug,
-      image_url,
-      image_square_url,
-      products!inner(id)
-    `,
-    )
-    .order("title", { ascending: true });
-
-  if (categoriesError) {
-    console.error("Error fetching categories:", categoriesError);
-  } else {
-    // Chỉ lấy danh mục có ít nhất 1 sản phẩm
-    categories = (categoriesData || []).filter(
-      (cat) => cat.products && cat.products.length > 0,
-    );
-  }
-
-  // Lấy thương hiệu có sản phẩm từ Supabase
-  const { data: brandsData, error: brandsError } = await supabase
-    .from("brands")
-    .select(
-      `
-      id,
-      title,
-      description,
-      slug,
-      image_url,
-      image_square_url,
-      products!inner(id)
-    `,
-    )
-    .order("title", { ascending: true });
-
-  if (brandsError) {
-    console.error("Error fetching brands:", brandsError);
-  } else {
-    // Chỉ lấy thương hiệu có ít nhất 1 sản phẩm
-    brands = (brandsData || []).filter(
-      (brand) => brand.products && brand.products.length > 0,
-    );
-  }
-} catch (error) {
-  console.error("Error fetching data:", error);
-}
+// Only show categories/brands that have products
+const categories = categoriesWithCount.filter(c => c.product_count > 0);
+const brands = brandsWithCount.filter(b => b.product_count > 0);
 
 const title = "Danh mục & Thương hiệu | G3 - Công Thái Học";
 const description =

@@ -1,14 +1,14 @@
 export const COMPANY_INFO = {
   name: 'Công Ty Cổ phần Công nghệ G3 Việt Nam',
   shortName: 'G3Tech',
-  hotline: '0962636574',
+  hotline: '0947776662',
   email: 'info@g-3.vn',
   supportEmail: 'info@g-3.vn',
   address: 'Tầng 7, Tòa nhà Charmvit, số 117 Trần Duy Hưng, Q. Cầu Giấy, TP. Hà Nội.',
   website: 'https://g-3.vn',
   workingHours: '8:00 - 17:30 (Thứ 2 - Thứ 6)',
   supportHours: '8:00 - 22:00 hàng ngày',
-  zalo: 'https://zalo.me/0962636574',
+  zalo: 'https://zalo.me/0947776662',
   storeLocations: [
     {
       name: 'G3 Tech - Phố Vọng',
@@ -83,7 +83,7 @@ export const HELP_CONTACT_METHODS = [
     icon: '📞',
     title: 'Hotline',
     // value: '0979983355',
-    value: '0962636574',
+    value: '0947776662',
     description: '8:00 - 22:00 hàng ngày',
     type: 'phone'
   },
@@ -143,7 +143,7 @@ export const FAQ_DATA = [
   {
     id: 6,
     question: 'Tôi có thể xem ghế trực tiếp không?',
-    answer: 'Bạn có thể đến showroom của chúng tôi để trải nghiệm trực tiếp. Chúng tôi có 3 cửa hàng tại Hà Nội và TP.HCM. Xem chi tiết địa chỉ trong mục "Showroom" hoặc gọi hotline 0979983355.',
+    answer: 'Bạn có thể đến showroom của chúng tôi để trải nghiệm trực tiếp. Chúng tôi có 3 cửa hàng tại Hà Nội và TP.HCM. Xem chi tiết địa chỉ trong mục "Showroom" hoặc gọi hotline 0947776662.',
     category: 'product'
   },
   {

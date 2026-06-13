@@ -1,31 +1,31 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../lib/supabase';
+import { getAllProducts, getAllBrands } from '../../lib/collections';
 
 export const GET: APIRoute = async () => {
   try {
-    // Lấy danh sách sản phẩm
-    const { data: products, error: productsError } = await supabase
-      .from('products')
-      .select('id, name, slug, price, original_price, image_url, rating, sold_count, brand_id')
-      .order('created_at', { ascending: false })
-      .limit(100);
+    const allProducts = await getAllProducts();
+    const brands = await getAllBrands();
 
-    if (productsError) {
-      return new Response(JSON.stringify({ error: productsError.message }), { status: 500 });
-    }
+    const products = allProducts.slice(0, 100).map(p => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      price: p.price,
+      original_price: p.original_price ?? null,
+      image_url: p.image_url ?? null,
+      rating: p.rating ?? null,
+      sold_count: p.sold_count ?? 0,
+      brand_id: p.brand_id ?? null,
+    }));
 
-    // Lấy danh sách thương hiệu
-    const { data: brands, error: brandsError } = await supabase
-      .from('brands')
-      .select('id, title, slug')
-      .order('title', { ascending: true });
-
-    if (brandsError) {
-      return new Response(JSON.stringify({ error: brandsError.message }), { status: 500 });
-    }
+    const transformedBrands = brands.map(b => ({
+      id: b.id,
+      title: b.title,
+      slug: b.slug,
+    }));
 
     return new Response(
-      JSON.stringify({ products: products || [], brands: brands || [] }),
+      JSON.stringify({ products, brands: transformedBrands }),
       {
         status: 200,
         headers: { 'Content-Type': 'application/json' }

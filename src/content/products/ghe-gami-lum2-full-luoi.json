@@ -1,0 +1,37 @@
+{
+  "id": 7,
+  "name": "Ghế Gami Lum2 Full lưới",
+  "slug": "ghe-gami-lum2-full-luoi",
+  "description": "Ghế Gami Lum2 Full lưới - thiết kế full lưới thoáng mát, hỗ trợ lưng tốt, phù hợp văn phòng.",
+  "price": 2980000,
+  "original_price": null,
+  "image_url": "/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1.jpg",
+  "gallery_url": "gami/ghe-gami-lum2-full-luoi",
+  "gallery_array": [
+    "/g3tech/products/gami/ghe-gami-lum2-full-luoi/gami-lum2-full-luoi-g-3.vn-1.jpg"
+  ],
+  "rating": 4.7,
+  "sold_count": 198,
+  "brand_id": 1,
+  "pd_cat_id": 1,
+  "status": "active",
+  "tinh_nang": [
+    "Full lưới thoáng mát",
+    "Tựa lưng điều chỉnh ngả",
+    "Kê tay 3D",
+    "Tựa đầu cố định"
+  ],
+  "loi_ich": [
+    "Thoáng mát toàn thân",
+    "Phù hợp cả ngày làm việc",
+    "Thiết kế hiện đại"
+  ],
+  "thong_so_ky_thuat": [
+    { "title": "Tải trọng tối đa", "value": "130kg" },
+    { "title": "Bảo hành", "value": "2 năm" },
+    { "title": "Chất liệu lưới", "value": "Lưới mesh" },
+    { "title": "Tay ghế", "value": "3D" }
+  ],
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2026-06-01T00:00:00Z"
+}

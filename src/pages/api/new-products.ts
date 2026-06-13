@@ -1,51 +1,25 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../lib/supabase';
+import { getFeaturedProductsByIds } from '../../lib/collections';
 
 export const GET: APIRoute = async () => {
   try {
-    // Danh sách ID sản phẩm cụ thể cho phần "mới lên kệ"
-    const featuredProductIds = [17, 1, 5, 30, 28, 16];
-    
-    const { data: products, error } = await supabase
-      .from('products')
-      .select(`
-        id,
-        name,
-        slug,
-        price,
-        original_price,
-        image_url,
-        rating,
-        sold_count,
-        brands(title)
-      `)
-      .in('id', featuredProductIds);
+    // New arrivals - newest products (IDs 10-14 are the new Gami products)
+    const featuredProductIds = [10, 11, 12, 13, 14, 1];
 
-    if (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-    }
+    const products = await getFeaturedProductsByIds(featuredProductIds);
 
-    // Sắp xếp sản phẩm theo thứ tự ID đã chỉ định
     const orderedProducts = featuredProductIds
-      .map(id => products?.find(product => product.id === id))
-      .filter(product => product !== undefined);
+      .map(id => products.find(p => p.id === id))
+      .filter(p => p !== undefined);
 
-    let finalProducts = orderedProducts;
-
-    // Transform data để match với frontend expectations
-    const transformedProducts = (finalProducts || []).map(product => ({
+    const transformedProducts = orderedProducts.map(product => ({
       id: product.id,
       name: product.name,
       slug: product.slug,
       price: product.price,
       original_price: product.original_price,
       image_url: product.image_url,
-      image_square_url: product.image_url, // Sử dụng image_url thay thế
+      image_square_url: product.image_url, // fallback
       rating: product.rating,
       sold_count: product.sold_count,
       brand: product.brands?.title || ''
@@ -53,16 +27,12 @@ export const GET: APIRoute = async () => {
 
     return new Response(JSON.stringify({ products: transformedProducts }), {
       status: 200,
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
     return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' }
     });
   }
-}; 
+};

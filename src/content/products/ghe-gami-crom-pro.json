@@ -1,0 +1,44 @@
+{
+  "id": 5,
+  "name": "Ghế Gami Crom Pro",
+  "slug": "ghe-gami-crom-pro",
+  "description": "Ghế Gami Crom Pro - phiên bản cao cấp nhất dòng Crom, tích hợp đầy đủ tính năng công thái học tiên tiến, khung hợp kim toàn bộ.",
+  "price": 13700000,
+  "original_price": 14300000,
+  "image_url": "/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1.webp",
+  "gallery_url": "gami/ghe-gami-crom-pro",
+  "gallery_array": [
+    "/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-1.webp",
+    "/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-2.webp",
+    "/g3tech/products/gami/ghe-gami-crom-pro/ghe-gami-crom-pro-g-3.vn-3.webp"
+  ],
+  "rating": 5.0,
+  "sold_count": 89,
+  "brand_id": 1,
+  "pd_cat_id": 1,
+  "status": "active",
+  "tinh_nang": [
+    "Khung hợp kim cao cấp toàn bộ",
+    "Lưới Wintex nhập khẩu Hàn Quốc",
+    "Tựa đầu NeckFlow 4D - 8 hướng",
+    "Lưng BackLift 2D nâng hạ 8 nấc",
+    "Kê tay 6D hợp kim nhôm",
+    "Ngả lưng 145 độ có khóa",
+    "Piston Class 4 tải trọng 160kg"
+  ],
+  "loi_ich": [
+    "Cao cấp nhất dòng Crom",
+    "Điều chỉnh hoàn toàn theo cơ thể",
+    "Bảo hành 5 năm"
+  ],
+  "thong_so_ky_thuat": [
+    { "title": "Tải trọng tối đa", "value": "160kg" },
+    { "title": "Bảo hành", "value": "5 năm" },
+    { "title": "Chất liệu lưới", "value": "Wintex - Hàn Quốc" },
+    { "title": "Chân ghế", "value": "Hợp kim nhôm" },
+    { "title": "Tay ghế", "value": "6D hợp kim" },
+    { "title": "Ngả lưng", "value": "145 độ" }
+  ],
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2026-06-01T00:00:00Z"
+}

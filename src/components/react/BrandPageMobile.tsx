@@ -193,6 +193,7 @@ const BrandPageMobile: React.FC<BrandPageMobileProps> = ({
         initialFilters={filters}
         brandId={brandData.id}
         availableCategories={availableCategories}
+        initialProducts={initialProducts}
       />
 
       {/* Mobile Sort Modal */}

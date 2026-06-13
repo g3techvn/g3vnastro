@@ -1,83 +1,31 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { supabase } from "../../lib/supabase";
+import { getAllCategories, getProductsByCategoryId, getAllBrands, type CategoryEntry, type ProductEntry, type BrandEntry } from "../../lib/collections";
 import CategoryPageWrapper from "../../components/react/CategoryPageWrapper";
 
 export async function getStaticPaths() {
-  // Fetch all categories to generate static paths
-  let categories: Array<{
-    id: string;
-    slug: string;
-    title: string;
-    image_url?: string;
-    description?: string;
-  }> = [];
-
-  try {
-    const { data, error } = await supabase
-      .from("product_cats")
-      .select("id, slug, title, image_url, description")
-      .order("title", { ascending: true });
-
-    if (!error && data) {
-      categories = data;
-    }
-  } catch (error) {
-    console.error("Error fetching categories for static paths:", error);
-  }
-
+  const categories = await getAllCategories();
   return categories.map((category) => ({
     params: { slug: category.slug },
     props: { category },
   }));
 }
 
+interface Props {
+  category: CategoryEntry;
+}
+
 const { slug } = Astro.params;
 const { category } = Astro.props;
 
 // Pre-fetch products data at build time for better performance
-let initialProducts: any[] = [];
-let brands: Array<{ id: string; title: string; slug: string }> = [];
+const allProducts = await getProductsByCategoryId(category.id);
+const initialProducts: ProductEntry[] = allProducts;
 
-try {
-  // Fetch products for this category
-  const { data: productsData, error: productsError } = await supabase
-    .from("products")
-    .select(
-      `
-      *,
-      brands(title, slug),
-      product_cats(title, slug)
-    `,
-    )
-    .eq("pd_cat_id", category.id)
-    .order("name", { ascending: true });
-
-  if (!productsError && productsData) {
-    initialProducts = productsData;
-  }
-
-  // Fetch brands for filter - only if we have products
-  if (productsData && productsData.length > 0) {
-    const brandIds = [
-      ...new Set(productsData.map((p) => p.brand_id).filter(Boolean)),
-    ];
-
-    if (brandIds.length > 0) {
-      const { data: brandsData, error: brandsError } = await supabase
-        .from("brands")
-        .select("id, title, slug")
-        .in("id", brandIds)
-        .order("title", { ascending: true });
-
-      if (!brandsError && brandsData) {
-        brands = brandsData;
-      }
-    }
-  }
-} catch (error) {
-  console.error("Error pre-fetching category data:", error);
-}
+// Gather brands that have products in this category
+const allBrands = await getAllBrands();
+const brandIds = [...new Set(allProducts.map((p) => p.brand_id).filter(Boolean))];
+const brands: BrandEntry[] = allBrands.filter((b) => brandIds.includes(b.id));
 
 const categoryInfo = {
   title: category?.title || slug || "Danh mục sản phẩm",
@@ -111,9 +59,9 @@ const description =
 >
   <CategoryPageWrapper
     categorySlug={slug}
-    categoryData={category}
-    initialProducts={initialProducts}
-    availableBrands={brands}
+    categoryData={{ ...category, id: String(category.id), description: category.description ?? undefined, image_url: category.image_url ?? undefined }}
+    initialProducts={initialProducts.map(p => ({ ...p, id: String(p.id), brand_id: p.brand_id ? String(p.brand_id) : undefined, pd_cat_id: p.pd_cat_id ? String(p.pd_cat_id) : undefined, original_price: p.original_price ?? undefined, image_url: p.image_url ?? undefined, image_square_url: p.image_square_url ?? undefined, rating: p.rating ?? undefined }))}
+    availableBrands={brands.map(b => ({ ...b, id: String(b.id) }))}
     client:idle
   />
 </Layout>

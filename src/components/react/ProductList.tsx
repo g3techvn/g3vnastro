@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import type { FilterState } from './ProductFilter';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import ModalBuyNowForm from './ModalBuyNowForm';
@@ -45,25 +44,9 @@ const ProductList: React.FC<ProductListProps> = ({ filters, sortBy = 'price_desc
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const supabase = createClient(
-        import.meta.env.PUBLIC_SUPABASE_URL,
-        import.meta.env.PUBLIC_SUPABASE_ANON_KEY
-      );
-
-      const { data, error } = await supabase
-        .from('products')
-        .select(`
-          *,
-          brands(title, slug),
-          product_cats(title, slug)
-        `)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        setError(error.message);
-      } else {
-        setProducts(data || []);
-      }
+      const res = await fetch('/api/products');
+      const json = await res.json();
+      setProducts(json.products || []);
     } catch (err) {
       setError('Có lỗi xảy ra khi tải sản phẩm');
     } finally {

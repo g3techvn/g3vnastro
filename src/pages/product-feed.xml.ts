@@ -1,57 +1,19 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../lib/supabase';
+import { getAllProducts } from '../lib/collections';
 import { COMPANY_INFO } from '../constants';
 
 // Google Merchant Center Product Feed
 export const GET: APIRoute = async () => {
   try {
-    console.log('Fetching products from Supabase...');
-
-    // Use the same query as ProductList component
-    const { data: rawProducts, error } = await supabase
-      .from('products')
-      .select(`
-        *,
-        brands(title, slug),
-        product_cats(title, slug)
-      `)
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Error fetching products:', error);
-      throw error;
-    }
-
-    console.log(`Fetched ${rawProducts?.length || 0} products from database`);
+    const rawProducts = await getAllProducts();
 
     // Filter products that are suitable for the feed
-    let products: any[] = [];
-
-    if (rawProducts && rawProducts.length > 0) {
-      console.log(`Processing ${rawProducts.length} products for feed`);
-
-      // Filter out products that shouldn't be in the feed
-      products = rawProducts.filter(product => {
-        // Must have basic required fields
-        if (!product.name || !product.slug || !product.id) {
-          console.log(`Skipping product ${product.id}: missing name, slug, or id`);
-          return false;
-        }
-
-        // Must have a valid price (at least 1000 VND)
-        const price = product.price || 0;
-        if (price < 1000) {
-          console.log(`Skipping product ${product.id}: invalid price ${price}`);
-          return false;
-        }
-
-        return true;
-      });
-
-      console.log(`After filtering: ${products.length} valid products for feed`);
-    } else {
-      console.warn('No products found in database');
-    }
+    let products = rawProducts.filter(product => {
+      if (!product.name || !product.slug || !product.id) return false;
+      const price = product.price || 0;
+      if (price < 1000) return false;
+      return true;
+    });
 
     // Generate XML feed
     const baseUrl = COMPANY_INFO.website;
@@ -144,14 +106,14 @@ export const GET: APIRoute = async () => {
 
       // Fallback description if empty or too short
       if (!description || description.length < 10) {
-        const brand = (product as any).brands?.title || 'G3Tech';
-        const category = (product as any).product_cats?.title || 'sản phẩm văn phòng';
-        description = `${product.name} - ${brand} chất lượng cao. ${category} chính hãng với bảo hành đầy đủ. Giao hàng nhanh toàn quốc tại G-3.vn.`;
+        const brandTitle = product.brands?.title || 'G3Tech';
+        const categoryTitle = product.product_cats?.title || 'sản phẩm văn phòng';
+        description = `${product.name} - ${brandTitle} chất lượng cao. ${categoryTitle} chính hãng với bảo hành đầy đủ. Giao hàng nhanh toàn quốc tại G-3.vn.`;
       }
 
       // Get brand and category info from joined data or use defaults
-      const brand = (product as any).brands || { title: 'G3Tech', slug: 'g3tech' };
-      const category = (product as any).product_cats || { title: 'Sản phẩm văn phòng', slug: 'san-pham-van-phong' };
+      const brand = product.brands || { title: 'G3Tech', slug: 'g3tech' };
+      const category = product.product_cats || { title: 'Sản phẩm văn phòng', slug: 'san-pham-van-phong' };
 
       // Determine Google product category based on category (more specific mapping)
       let googleProductCategory = 'Furniture > Office Furniture';
@@ -187,24 +149,15 @@ export const GET: APIRoute = async () => {
       if (product.stock_status === 'out_of_stock' || product.status === 'inactive' || product.status === 'draft') {
         availability = 'out_of_stock';
       }
-      // Optional: Use limited_availability only if you want to show low stock
-      else if (product.inventory_quantity !== undefined && 
-               product.inventory_quantity !== null && 
-               product.inventory_quantity > 0 && 
-               product.inventory_quantity <= 3) {
-        availability = 'limited_availability';
-      }
 
       // FORCE ALL PRODUCTS TO BE IN STOCK (uncomment if needed)
       // availability = 'in_stock';
 
       // Debug logging for availability issues
       if (availability !== 'in_stock') {
-        console.log(`Product ${product.id} (${product.name}): availability=${availability}, inventory=${product.inventory_quantity}, stock_status=${product.stock_status}, status=${product.status}`);
+        console.log(`Product ${product.id} (${product.name}): availability=${availability}`);
       }
 
-      // Format price according to Google Merchant Center standards
-      // Use the validated price from above
       const currentPrice = productPrice;
       const originalPrice = Math.max(0, product.original_price || 0);
 
@@ -242,7 +195,7 @@ export const GET: APIRoute = async () => {
         <g:service>Standard</g:service>
         <g:price>0 VND</g:price>
       </g:shipping>
-      <g:shipping_weight>${product.weight || 5} kg</g:shipping_weight>
+      <g:shipping_weight>5 kg</g:shipping_weight>
       <g:custom_label_0><![CDATA[${brand?.title || 'G3Tech'}]]></g:custom_label_0>
       <g:custom_label_1><![CDATA[${category?.title || 'Office'}]]></g:custom_label_1>
       <g:custom_label_2>Vietnam</g:custom_label_2>
@@ -250,7 +203,7 @@ export const GET: APIRoute = async () => {
       <g:custom_label_4>${availability === 'in_stock' ? 'In Stock' : 'Limited'}</g:custom_label_4>
       <g:mpn>${productId}</g:mpn>
       <g:mobile_link>${baseUrl}/san-pham/${product.slug}</g:mobile_link>
-      ${product.warranty_months ? `<g:warranty>${product.warranty_months} months</g:warranty>` : '<g:warranty>12 months</g:warranty>'}
+      <g:warranty>12 months</g:warranty>      
       <g:return_policy_label>30 days return</g:return_policy_label>
       <pubDate>${new Date(product.created_at || Date.now()).toUTCString()}</pubDate>
     </item>`;

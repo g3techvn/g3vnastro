@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import type { FilterState } from './BrandFilter';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import ModalBuyNowForm from './ModalBuyNowForm';
@@ -67,41 +66,20 @@ const BrandProductList: React.FC<BrandProductListProps> = ({
     try {
       setLoading(true);
       
-      // Check cache first
-      const cached = productCache.get(brandId);
-      if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-        setProducts(cached.data);
+      const supabaseData = productCache.get(brandId);
+      if (supabaseData && Date.now() - supabaseData.timestamp < CACHE_DURATION) {
+        setProducts(supabaseData.data);
         setLoading(false);
         return;
       }
 
-      const supabase = createClient(
-        import.meta.env.PUBLIC_SUPABASE_URL,
-        import.meta.env.PUBLIC_SUPABASE_ANON_KEY
-      );
+      const res = await fetch('/api/products');
+      const json = await res.json();
+      const allProducts: Product[] = json.products || [];
+      const filtered = allProducts.filter(p => String(p.brand_id) === String(brandId));
 
-      const { data, error } = await supabase
-        .from('products')
-        .select(`
-          *,
-          brands(title, slug),
-          product_cats(title, slug)
-        `)
-        .eq('brand_id', brandId)
-        .order('name', { ascending: true });
-
-      if (error) {
-        setError(error.message);
-      } else {
-        const products = data || [];
-        setProducts(products);
-        
-        // Cache the results
-        productCache.set(brandId, {
-          data: products,
-          timestamp: Date.now()
-        });
-      }
+      setProducts(filtered);
+      productCache.set(brandId, { data: filtered, timestamp: Date.now() });
     } catch (err) {
       setError('Có lỗi xảy ra khi tải sản phẩm');
     } finally {
